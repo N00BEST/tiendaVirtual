@@ -1,0 +1,31 @@
+{
+  "name": "tiendavirtual",
+  "version": "1.0.0",
+  "description": "Tienda virtual de ensayo",
+  "main": "App.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/N00BEST/tiendaVirtual.git"
+  },
+  "keywords": [
+    "ECommerce",
+    "VirtualShop",
+    "NodeJS"
+  ],
+  "author": "N00BEST, kreyyalvarez, kathemozo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/N00BEST/tiendaVirtual/issues"
+  },
+  "homepage": "https://github.com/N00BEST/tiendaVirtual#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "mysql2": "^1.5.3",
+    "nodemon": "^1.18.3",
+    "sequelize": "^4.38.0",
+    "ws": "^6.0.0"
+  }
+}
