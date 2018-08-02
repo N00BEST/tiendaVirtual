@@ -1,0 +1,38 @@
+form{
+    width: 35%;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+}
+
+header{
+	background: #2c3e50 !important;
+	color:white !important;
+	height: 20%;
+}
+
+.boton{
+	background: #2c3e50;
+	color: white;
+	padding: 3px;
+	border-radius: 3px;
+	border: 1px solid #2c3e50;
+	width: 140px;
+}
+
+h2{
+	font-size: 25px !important;
+}
+
+h1{
+	font-size: 35px !important;
+}
+
+a{
+	color:black  !important;
+}
+
+table{
+	width: 100%;
+	border-color: black;
+}
