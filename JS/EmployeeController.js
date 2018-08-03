@@ -69,3 +69,19 @@ module.exports.postInventario = (producto)=> {
 		}
 	);
 };
+
+module.exports.existeModelo = (codigo) => {
+	return new Promise(
+		(resolve, reject) => {
+			database.Modelo.findAll({codigo: codigo}).then((row)=>{
+				if(row.length == 0) {
+					reject(null);
+				} else {
+					resolve();
+				}
+			}).catch((err)=>{
+				reject(err);
+			});
+		}
+	)
+}

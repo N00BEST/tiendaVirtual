@@ -3,12 +3,13 @@
 <head>
 <title>Titulo de la web</title>
 <meta charset="utf-8" />
-<link rel="stylesheet" href="Crear.css" />
+<link rel="stylesheet" href="CSS/Crear.css" />
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+<script src="JS/newProducto.js"></script>
 </head>
 <body>
     <header>
@@ -23,18 +24,18 @@
     
 
    <div class="container">
-
-    <form action="" methot="get">
+    <div id="notificacion"></div>
+    <form action="javascript:void(0)" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <h2>Crear producto</h2>
             </div>
             <div class="form-group">
                 <label for="cod">Código de modelo:</label>
-                <input class="form-control form-control-sm" type="text" name="cod" id="cod" maxlength="20" required>
+                <input class="form-control form-control-sm" type="text" name="cod" id="codigo" maxlength="20">
             </div>
             <div class="form-group">
                 <label for="nomelo">Nombre:</label>
-                <input class="form-control form-control-sm" type="text" name="nombre" id="nombre"  maxlength="100" required>
+                <input class="form-control form-control-sm" type="text" name="nombre" id="nombre"  maxlength="100">
             </div>    
             <div class="form-group">
                 <label for="descripcion">Descripción:</label>
@@ -42,15 +43,15 @@
             </div>
             <div class="form-group">
                 <label for="img">Imagen:</label>
-                <input class="form-control form-control-sm form-control-file border" type="file" name="img" id="img">
+                <input class="form-control form-control-sm form-control-file border" type="file" accept="image/*" name="img" id="imagen">
             </div>
             <div class="form-group">
                 <label for="precio">Precio:</label>
-                <input class="form-control form-control-sm" type="number" name="precio" id="precio" max="99999999">
+                <input class="form-control form-control-sm" type="text" name="precio" id="precio" value="0">
             </div>
             <div class="form-group">
                 <label for="cantidad">Cantidad total:</label>
-                <input class="form-control form-control-sm" type="number" name="cantidad" id="cantidad" >
+                <input class="form-control form-control-sm" type="text" name="cantidad" id="cantidad" value="0">
             </div>
             <div class="form-group">
                 <div class="panel-group">
@@ -197,7 +198,7 @@
         </div>
             
             <div class="form-group">
-                <input class="boton" type="submit" value="Aceptar">
+                <input class="boton" type="submit" value="Aceptar" id="submit">
             </div>
     </form>
 </div>
