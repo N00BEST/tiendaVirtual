@@ -73,7 +73,7 @@ module.exports.postInventario = (producto)=> {
 module.exports.existeModelo = (codigo) => {
 	return new Promise(
 		(resolve, reject) => {
-			database.Modelo.findAll({codigo: codigo}).then((row)=>{
+			database.Modelo.findAll({where: {codigo: codigo}}).then((row)=>{
 				if(row.length == 0) {
 					reject(null);
 				} else {
