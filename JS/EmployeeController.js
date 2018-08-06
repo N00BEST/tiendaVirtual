@@ -1,4 +1,7 @@
 const database = require('./EmployeeDB');
+const path = require('path');
+const fs = require('fs');
+const files = require('./Files');
 
 module.exports.postModel = (model) => {
 	return new Promise(
@@ -85,3 +88,54 @@ module.exports.existeModelo = (codigo) => {
 		}
 	)
 }
+
+module.exports.validarImagen = (file, cb) => {
+	// Regular expresion con las extensiones permitidas
+	const regex = /jpeg|jpg|png|gif/;
+
+	//Evaluar si la extensión del archivo coincide con la expresion regular
+	const extname = regex.test(path.extname(file.originalname).toLowerCase());
+
+	//Evaluar si el mimetype del archivo coincide con la expresión regualr
+	const mime = regex.test(file.mimetype);
+
+	if(extname && mime) {
+		cb(null, true);
+	} else {
+		cb('El archivo no es una imagen');
+	}
+};
+
+module.exports.agregarModelo = (modelo, file) => {
+	return new Promise ((resolve, reject) => {
+		module.exports.existeModelo(modelo.codigo).then(()=>{
+			reject('duplicado');
+		}).catch((err)=>{
+			if(err) {
+				console.log(err);
+				reject(err);
+			} else {
+				let imagen;
+				if(typeof file !== 'undefined'){
+					let oldPath = __dirname + '/../' + file.path;
+					let newPath = __dirname + '/../Public/IMG/Productos/' + modelo.codigo + path.extname(oldPath);
+					if(path.basename(newPath) === 'default.jpg') {
+						newPath = __dirname + '/../Public/IMG/Productos/' + files.genRandomName(5) + path.extname(oldPath);
+						imagen = 'IMG/Productos/' + path.basename(newPath);
+					} else {
+						imagen = 'IMG/Productos/'+modelo.codigo + path.extname(oldPath);
+					}
+					fs.renameSync(path.resolve(oldPath), path.resolve(newPath));
+				} else {
+					imagen = 'IMG/Productos/default.jpg';
+				}
+				modelo.imagen = imagen;
+				module.exports.postModel(modelo).then((row)=>{
+					resolve();
+				}).catch((err)=>{
+					reject(err);
+				});
+			}
+		});	
+	});
+};

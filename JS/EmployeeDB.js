@@ -91,7 +91,7 @@ const Modelo = database.define('modelo', {
 		type: Sequelize.TEXT,
 		defaultValue: ''
 	},
-	foto: {
+	imagen: {
 		type: Sequelize.STRING, 
 		defaultValue: ''
 	},
@@ -124,7 +124,7 @@ const Categoria = database.define('categoria', {
 		type: Sequelize.STRING(30), 
 		defaultValue: ''
 	}, 
-	foto: {
+	imagen: {
 		type: Sequelize.STRING,
 		defaultValue: ''
 	},

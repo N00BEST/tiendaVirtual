@@ -9,7 +9,7 @@
 <script src="JS/jquery.min.js"></script>
 <script src="JS/popper.min.js"></script>
 <script src="JS/bootstrap1.min.js"></script>
-<script src="JS/newProducto.js"></script>
+<script src=""></script>
 </head>
 <body>
     <header>
@@ -23,23 +23,35 @@
     </header>
 
    <div class="container">
-    <div id="notificacion" class="" >
+    <div id="notificacion" class="alert alert-<%= typeof clase != 'undefined' ? clase : ''%>" >
+        <%  if(typeof clase != 'undefined') {
+                if(clase === 'success') { %>
+                    El producto <strong><%= modelo.codigo + '-' + modelo.nombre%></strong> fue agregado <strong>éxitosamente</strong>
+                <% } else if(err === 'duplicado') { console.log(JSON.stringify(modelo));%>
+                    <strong>Error:</strong> El código <strong><%= modelo.codigo %></strong> ya está registrado.
+                <% } else if(err === 'imagen'){ %>
+                    <strong>Error:</strong> <%= msg %>
+                <% } else { %>
+                    <strong>Error:</strong> No se ha podido registrar el producto.
+                <% }
+            } 
+            var clase = ''; %>
     </div>
-    <form action="javascript:void(0)" method="post" enctype="multipart/form-data" id="form_NuevoProducto">
+    <form action="../nuevoProducto" method="post" enctype="multipart/form-data" id="form_NuevoProducto">
             <div class="form-group">
                 <h2>Crear producto</h2>
             </div>
             <div class="form-group">
                 <label for="cod">Código de modelo:</label>
-                <input class="form-control form-control-sm" type="text" name="cod" id="codigo" maxlength="20">
+                <input class="form-control form-control-sm" type="text" name="codigo" id="codigo" maxlength="20" value="<%= clase === 'danger' && typeof modelo != 'undefined' ? modelo.codigo : ''%>">
             </div>
             <div class="form-group">
                 <label for="nomelo">Nombre:</label>
-                <input class="form-control form-control-sm" type="text" name="nombre" id="nombre"  maxlength="100">
+                <input class="form-control form-control-sm" type="text" name="nombre" id="nombre"  maxlength="100" value="<%= clase === 'danger' && typeof nmodelo != 'undefined' ? modelo.nombre : ''%>">
             </div>    
             <div class="form-group">
                 <label for="descripcion">Descripción:</label>
-                <input class="form-control form-control-sm" type="textarea" name="descr" id="descripcion"  maxlength="500">
+                <input class="form-control form-control-sm" type="textarea" name="descripcion" id="descripcion"  maxlength="500" value="<%= clase === 'danger' && typeof modelo != 'undefined' ? modelo.descripcion : ''%>">
             </div>
             <div class="form-group">
                 <label for="img">Imagen:</label>
@@ -47,11 +59,11 @@
             </div>
             <div class="form-group">
                 <label for="precio">Precio:</label>
-                <input class="form-control form-control-sm" type="text" name="precio" id="precio" value="0">
+                <input class="form-control form-control-sm" type="text" name="precio" id="precio" value="<%= clase === 'danger' && typeof modelo != 'undefined' ? modelo.precio : 0%>">
             </div>
             <div class="form-group">
                 <label for="cantidad">Cantidad total:</label>
-                <input class="form-control form-control-sm" type="text" name="cantidad" id="cantidad" value="0">
+                <input class="form-control form-control-sm" type="text" name="cantidad" id="cantidad" value="<%= clase === 'danger' && typeof modelo != 'undefined' ? modelo.cantidad : 0%>">
             </div>
             <div class="form-group">
                 <div class="panel-group">

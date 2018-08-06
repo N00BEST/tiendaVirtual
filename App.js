@@ -5,6 +5,7 @@ const multer = require('multer');
 const ejs = require('ejs');
 const path = require('path');
 const Strings = require('./JS/Files');
+const fs = require('fs');
 
 const app = express();
 
@@ -57,67 +58,55 @@ app.get('/nuevoProducto', (req, res)=>{
 	res.render('newProducto');
 });
 
-const upload = multer({
-	storage: storage
-}).single('imagen');
-
 app.post('/nuevoProducto', (req, res)=>{
-	
+	const upload = multer({
+		storage: storage,
+		limits: {
+					fileSize: 1 * 1000000 // 1 MB
+				},
+		fileFilter: (req, file, cb) =>{
+			Employee.validarImagen(file, cb);
+		}
+	}).single('imagen');
 	upload(req, res, (err) => {
-		if(err){
-			console.log(`Oops, something went wrong. ${err}`);
-		} else {
-			console.log(req.file);
+		let modelo = {
+			codigo: req.body.codigo,
+			nombre: req.body.nombre,
+			descripcion: req.body.descripcion,
+			imagen: 'default.jpg',
+			precio: req.body.precio,
+			cantidad: req.body.cantidad
+		};
+		if(err) {
+			err = err == 'Error: File too large' ? 'La imagen es muy pesada' : err;
 			let obj = {
-				estado: 'true',
-				codigo: 'Test',
-				nombre: 'Testing'
-			};
-			res.end(JSON.stringify(obj));
-		}
-	});
-	/*modelo = {
-		codigo: req.body.codigo,
-		nombre: req.body.nombre,
-		descripcion: req.body.descripcion,
-		foto: req.body.imagen,
-		precio: req.body.precio,
-		cantidad: req.body.cantidad
-	};
-	Employee.existeModelo(modelo.codigo).then(()=>{
-		//Si el código ya existe
-		let obj = {
-			estado: 'duplicado',
-			codigo: modelo.codigo
-		}
-		res.end(JSON.stringify(obj));
-	}).catch((err)=>{
-		//Si el código no se ha registrado
-		if(!err) {	
-			//Si no hubo un error en la consulta anterior
-			Employee.postModel(modelo).then((row)=>{
-				//Si se pudo agregar el modelo a la BBDD.
+				clase: 'danger', 
+				err: 'imagen',
+				msg: err
+			}
+			res.render('newProducto', obj);
+		} else {
+			Employee.agregarModelo(modelo, req.file).then(()=>{
 				let obj = {
-					estado: 'true',
-					codigo: row.codigo,
-					nombre: row.nombre
+					clase: 'success',
+					modelo: modelo
 				};
-				res.end(JSON.stringify(obj));
-			}).catch(()=>{
-				//Si no se pudo agregar el modelo a la BBDD.
+				res.render('newProducto', obj);
+			}).catch((err)=>{
+				let msg = '';
+				if(err != 'duplicado') {
+					msg = err;
+					err = 'Error';
+				}
 				let obj = {
-					estado: 'false'
+					clase: 'danger', 
+					err: err,
+					msg: msg,
+					modelo: modelo
 				};
-				res.end(JSON.stringify(obj));
+				res.render('newProducto', obj);
 			});
 		}
-	});*/
-});
-
-app.get('/test', (req, res) => {
-	res.render('test', {
-		clase: 'alert',
-		clase2: 'alert-success'
 	});
 });
 
