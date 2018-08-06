@@ -1,5 +1,8 @@
 $(document).ready(()=>{
-	$("#submit").click(()=>{
+	$('#imagen').on('change', prepareUpload);
+	$('#form_NuevoProducto').on('submit', uploadFiles);
+
+	/*$("#submit").click(()=>{
 		var codigo = $("#codigo").val();
 		var nombre = $("#nombre").val();
 		var descripcion = $("#descripcion").val();
@@ -72,5 +75,21 @@ $(document).ready(()=>{
 				}
 			);
 		}
-	});
+	});*/
 });
+
+var file;
+
+function prepareUpload(event) {
+	file = event.target.files;
+}
+
+function uploadFiles(event) {
+	let imagen = file; 
+	console.log(imagen);
+	$.post("http://localhost:8000/nuevoProducto", {
+		imagen: imagen
+	}, (response) => {
+		console.log(`Response: ${response}`);
+	});
+}

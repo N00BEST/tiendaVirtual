@@ -21,12 +21,17 @@ $(document).ready(()=>{
 						$("#descripcion").val("");
 					} else {
 						clase += "danger";
-						mensaje = `<strong>No</strong> se pudo agregar la categoría`;
+						mensaje = `<strong>Error:</strong> No se pudo agregar la categoría`;
 					}
 					notificacion.className = clase;
 					notificacion.innerHTML = mensaje;
 					$("#notificacion").append(notificacion);
 				});
+		} else {
+			let notificacion = document.createElement("div");
+			notificacion.className = "alert alert-danger";
+			notificacion.innerHTML = "<strong>Error:</strong> El nombre no puede estar vacío";
+			$("#notificacion").append(notificacion);
 		}
 	});
 });

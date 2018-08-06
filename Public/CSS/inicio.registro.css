@@ -1,0 +1,77 @@
+body{
+	background: #2B2D42;
+	font-family: 'Open Sans', sans-serif;
+	color: #EDF2F4;
+}
+
+/*Inicio de sesion y Formulario*/
+.logo{
+	text-align: center;
+}
+
+h2{
+	padding: 20px 0;
+	font-weight: 400;
+	font-size: 20px;
+}
+
+
+.formulario input[type="text"],
+.formulario input[type="password"]{
+	padding: 10px 10px;
+}
+
+.formulario input[type="text"]:hover,
+.formulario input[type="password"]:hover{
+	-webkit-box-shadow: 0px 0px 10px 0px rgba(226,196,102,0.85);
+	-moz-box-shadow: 0px 0px 10px 0px rgba(226,196,102,0.85);
+	box-shadow: 0px 0px 10px 0px rgba(226,196,102,0.85);
+}
+
+
+/*Boton*/
+.boton button{
+	color: #2B2D42;
+	font-weight: 400;
+	background: #E2C466;
+	border-radius: 20px;
+}
+
+.boton button:hover{
+	color: #EDF2F4;
+	background: #A58F4B;
+	box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.24); 
+}
+
+/*Enlaces a registro*/
+.enlace{
+	padding: 5px 5px;
+	text-align: center;
+}
+
+.enlace p{
+	color: #EDF2F4;
+	font-weight: 300;
+}
+
+.enlace a{
+	color: #8D99AE;
+	text-decoration: none;
+	padding: 0 5px;
+	font-weight: 400;
+}
+
+.enlace a:hover{
+	color: #A58F4B;
+	margin-bottom: 2px;	
+	text-decoration: none;
+}
+
+textarea{
+	max-height: 60px;
+	resize: none;
+}
+
+.fecha input[type="date"]{
+	height: 60px;
+}

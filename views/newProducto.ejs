@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<title>Titulo de la web</title>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="CSS/Crear.css" />
+
+<link rel="stylesheet" href="CSS/bootstrap1.min.css">
+<script src="JS/jquery.min.js"></script>
+<script src="JS/popper.min.js"></script>
+<script src="JS/bootstrap1.min.js"></script>
+<script src="JS/newProducto.js"></script>
+</head>
+<body>
+    <header>
+    	<div class="container-fluid">
+    		<p>Nombre empleado</p>
+    	</div>
+    	<div class="container page-header">
+  			<h1>Titulo</h1>
+		</div>
+        
+    </header>
+
+   <div class="container">
+    <div id="notificacion" class="" >
+    </div>
+    <form action="javascript:void(0)" method="post" enctype="multipart/form-data" id="form_NuevoProducto">
+            <div class="form-group">
+                <h2>Crear producto</h2>
+            </div>
+            <div class="form-group">
+                <label for="cod">Código de modelo:</label>
+                <input class="form-control form-control-sm" type="text" name="cod" id="codigo" maxlength="20">
+            </div>
+            <div class="form-group">
+                <label for="nomelo">Nombre:</label>
+                <input class="form-control form-control-sm" type="text" name="nombre" id="nombre"  maxlength="100">
+            </div>    
+            <div class="form-group">
+                <label for="descripcion">Descripción:</label>
+                <input class="form-control form-control-sm" type="textarea" name="descr" id="descripcion"  maxlength="500">
+            </div>
+            <div class="form-group">
+                <label for="img">Imagen:</label>
+                <input class="form-control form-control-sm form-control-file border" type="file" accept="image/*" name="imagen" id="imagen">
+            </div>
+            <div class="form-group">
+                <label for="precio">Precio:</label>
+                <input class="form-control form-control-sm" type="text" name="precio" id="precio" value="0">
+            </div>
+            <div class="form-group">
+                <label for="cantidad">Cantidad total:</label>
+                <input class="form-control form-control-sm" type="text" name="cantidad" id="cantidad" value="0">
+            </div>
+            <div class="form-group">
+                <div class="panel-group">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <p class="panel-title">
+                                <a data-toggle="collapse" href="#detalles">Detalles:</a>
+                            </p>
+                        </div>
+                        <div id="detalles" class="panel-collapse collapse show">
+                            <div class="panel-body">
+                                <table>
+                                    <tr>
+                                        <td>Colores:</td>
+                                        <td>Tallas:</td> 
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label><input type="checkbox" value="negro"> Negro</label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label><input type="checkbox" value="XXXS"> XXXS</label>
+                                            </div>
+                                        </td> 
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label><input type="checkbox" value="blanco"> Blanco</label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label><input type="checkbox" value="XXS"> XXS</label>
+                                            </div>
+                                        </td> 
+                                    </tr> 
+                                    <tr>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label><input type="checkbox" value="azul"> Azul</label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label><input type="checkbox" value="XS"> XS</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label><input type="checkbox" value="amarillo"> Amarillo</label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label><input type="checkbox" value="S"> S</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label><input type="checkbox" value="rojo"> Rojo</label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label><input type="checkbox" value="m"> M</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label><input type="checkbox" value="morado"> Morado</label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label><input type="checkbox" value="L"> L</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label><input type="checkbox" value="verde"> Verde</label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label><input type="checkbox" value="XL"> XL</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label><input type="checkbox" value="anaranjado"> Anaranjado</label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label><input type="checkbox" value="XXL"> XXL</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label><input type="checkbox" value="gris"> Gris</label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label><input type="checkbox" value="XXXL"> XXXL</label>
+                                            </di>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label><input type="checkbox" value="marron"> Marron</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label><input type="checkbox" value="crema"> Crema</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+            
+            <div class="form-group">
+                <input class="boton" type="submit" value="Aceptar" id="submit">
+            </div>
+    </form>
+</div>
+    
+    
+</body>
+</html>

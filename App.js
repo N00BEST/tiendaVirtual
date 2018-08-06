@@ -2,19 +2,40 @@ const express = require('express');
 const bodyParser = require("body-parser");
 const Employee = require('./JS/EmployeeController');
 const multer = require('multer');
+const ejs = require('ejs');
+const path = require('path');
+const Strings = require('./JS/Files');
 
 const app = express();
-const upload = multer({dest: 'Temp/'});
 
 const __PORT = process.env.PORT || 8000;
 
+// View Engine
+app.set('view engine', 'ejs');
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+// Storage Engine to Uploads
+const storage = multer.diskStorage({
+	destination: './Temp/',
+	filename: (req, file, cb) => {
+		cb(null, Strings.genRandomName(10) + path.extname(file.originalname));
+	}
+});
+
+app.use('/nuevaCategoria', bodyParser.json());
+app.use('/nuevaCategoria', bodyParser.urlencoded({extended: false}));
+
+// Public folder with the static documents
 app.use(express.static(__dirname + '/Public/'));
 
+// ROUTE TO INDEX 
+app.get('/', (req, res) => {
+	//res.sendFile(__dirname + '/Public/HTML/index.view.html');
+	res.render('index');
+});
+
 app.get('/nuevaCategoria', (req, res)=>{
-	res.sendFile(__dirname + '/Public/HTML/newCategoria.html');
+	//res.sendFile(__dirname + '/Public/HTML/newCategoria.html');
+	res.render('newCategoria');
 });
 
 app.post('/nuevaCategoria', (req, res) => {
@@ -32,11 +53,30 @@ app.post('/nuevaCategoria', (req, res) => {
 });
 
 app.get('/nuevoProducto', (req, res)=>{
-	res.sendFile(__dirname + '/Public/HTML/newProducto.html');
+	//res.sendFile(__dirname + '/Public/HTML/newProducto.html');
+	res.render('newProducto');
 });
 
-app.post('/nuevoProducto', upload.single('avatar'), (req, res, next)=>{
-	modelo = {
+const upload = multer({
+	storage: storage
+}).single('imagen');
+
+app.post('/nuevoProducto', (req, res)=>{
+	
+	upload(req, res, (err) => {
+		if(err){
+			console.log(`Oops, something went wrong. ${err}`);
+		} else {
+			console.log(req.file);
+			let obj = {
+				estado: 'true',
+				codigo: 'Test',
+				nombre: 'Testing'
+			};
+			res.end(JSON.stringify(obj));
+		}
+	});
+	/*modelo = {
 		codigo: req.body.codigo,
 		nombre: req.body.nombre,
 		descripcion: req.body.descripcion,
@@ -71,6 +111,13 @@ app.post('/nuevoProducto', upload.single('avatar'), (req, res, next)=>{
 				res.end(JSON.stringify(obj));
 			});
 		}
+	});*/
+});
+
+app.get('/test', (req, res) => {
+	res.render('test', {
+		clase: 'alert',
+		clase2: 'alert-success'
 	});
 });
 

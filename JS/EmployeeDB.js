@@ -121,9 +121,13 @@ const Categoria = database.define('categoria', {
 		autoIncrement: true
 	},
 	nombre: {
-		type: Sequelize.STRING(20), 
+		type: Sequelize.STRING(30), 
 		defaultValue: ''
 	}, 
+	foto: {
+		type: Sequelize.STRING,
+		defaultValue: ''
+	},
 	descripcion: {
 		type: Sequelize.TEXT,
 		defaultValue: ''
