@@ -1,95 +1,110 @@
 $(document).ready(()=>{
-	$('#imagen').on('change', prepareUpload);
-	$('#form_NuevoProducto').on('submit', uploadFiles);
-
-	/*$("#submit").click(()=>{
-		var codigo = $("#codigo").val();
-		var nombre = $("#nombre").val();
-		var descripcion = $("#descripcion").val();
-		var imagen = $("#imagen").val();
-		var precio = $("#precio").val();
-		var cantidad = $("#cantidad").val();
-		$("#notificacion").empty();
-		console.log(`Foto: ${imagen}`);
-		if(isNaN(precio) || isNaN(cantidad) || precio < 0 || cantidad < 0
-			|| codigo.length == 0 || codigo.length > 20 || nombre.length == 0
-			|| nombre.length > 100) {
-			//ERROR 
-			let notificacion = document.createElement("div");
-			notificacion.className = "alert alert-danger";
-			let mensaje = "<strong>Error:</strong> ";
-			if (isNaN(precio)) {
-				mensaje += "El precio debe ser un número. Separe los decimales con un .";
-			} else if (isNaN(cantidad)) {
-				mensaje += "La cantidad debe ser un número. Separe los decimales con un ."; 
-			} else if(precio < 0) {
-				mensaje += "El precio no puede ser negativo";
-			} else if(cantidad < 0) {
-				mensaje += "La cantidad no puede ser negativa";
-			} else if(codigo.length == 0){
-				mensaje += "El código no puede estar vacío";
-			} else if(codigo.length > 20){
-				mensaje += "El código no puede tener más de 20 caracteres";
-			} else if(nombre.length == 0){
-				mensaje += "El nombre no puede estar vacío";
-			} else if(nombre.length > 100){
-				mensaje += "El nombre no puede tener más de 100 caracteres";
-			}
-			notificacion.innerHTML = mensaje;
-			$("#notificacion").append(notificacion);
-		} else {
-			//Data válida
-			$.post("http://localhost:8000/nuevoProducto",
-				{
-					codigo: codigo,
-					nombre: nombre,
-					descripcion: descripcion,
-					foto: imagen,
-					precio: precio,
-					cantidad: cantidad
-				},
-				(response) => {
-					let notificacion = document.createElement("div");
-					notificacion.className = "alert alert-";
-					let mensaje;
-					response = JSON.parse(response);
-					console.log(`Estatus de la respuesta: ${response.estado}`);
-					if(response.estado === 'true'){
-						notificacion.className += "success";
-						mensaje = `El producto <strong>${response.codigo}-${response.nombre}</strong> fue agregado <strong>éxitosamente</strong>`;
-						$("#codigo").val("");
-						$("#nombre").val("");
-						$("#descripcion").val("");
-						$("#imagen").val("");
-						$("#precio").val("0");
-						$("#cantidad").val("0");
-					} else if(response.estado === "duplicado"){
-						notificacion.className += "danger";
-						mensaje = `<stron>Error:</strong> El código <strong>${response.codigo}</strong> ya está registrado.`;
-					} else {
-						notificacion.className += "danger";
-						mensaje = `<strong>Error:</strong> No se ha podido registrar el producto.`;
-					}
-					notificacion.innerHTML = mensaje;
-					$("#notificacion").append(notificacion);
-				}
-			);
-		}
-	});*/
+	$('#form_NuevoProducto').on('submit', submit);
+	$('#codigo').on('change', checkCodigo);
+	$('#nombre').on('change', checkNombre);
+	$('#precio').on('change', checkPrecio);
+	$('#cantidad').on('change', checkCantidad);
 });
 
-var file;
+var __CODIGO = false;
+var __NOMBRE = false;
+var __PRECIO = true;
+var __CANTIDAD = true;
 
-function prepareUpload(event) {
-	file = event.target.files;
+function submit(event) {
+	checkCodigo(null);
+	checkNombre(null);
+	checkCantidad(null);
+	checkPrecio(null);
+	if(!(__CODIGO && __NOMBRE && __PRECIO && __CANTIDAD)) {
+		event.preventDefault();
+		$('#notificacion').empty(); 
+		$('#notificacion').addClass('alert-danger'); 
+		$('#notificacion').text('El formulario contiene errores. Por favor corríjalos antes de continuar.');
+		$(window).scrollTop(0);
+	}
 }
 
-function uploadFiles(event) {
-	let imagen = file; 
-	console.log(imagen);
-	$.post("http://localhost:8000/nuevoProducto", {
-		imagen: imagen
-	}, (response) => {
-		console.log(`Response: ${response}`);
-	});
+function checkCodigo(event) {
+	let codigo = $('#codigo').val();
+	if(codigo.length > 0) {
+		$.post('http://localhost:8000/check/' + codigo, (response) => {
+			if(response === 'valido') {
+				$('#codigo').removeClass('is-invalid');
+				$('#codigo').addClass('is-valid');
+				$('#alerta_codigo').text('');
+				__CODIGO = true;
+			} else if(response === 'vacio') {
+				$('#codigo').removeClass('is-valid');
+				$('#codigo').addClass('is-invalid');
+				$('#alerta_codigo').text('El código no puede estar vacío.');
+				__CODIGO = false;
+			} else {
+				$('#codigo').removeClass('is-valid');
+				$('#codigo').addClass('is-invalid');
+				$('#alerta_codigo').text('El código ya existe.');
+				__CODIGO = false;
+			}
+		});
+	} else {
+		$('#codigo').removeClass('is-valid');
+		$('#codigo').addClass('is-invalid');
+		$('#alerta_codigo').text('El código no puede estar vacío.');
+		__CODIGO = false;
+	}
+}
+
+function checkNombre(event) {
+	let nombre = $('#nombre').val();
+	if(nombre.length > 0){
+		$('#nombre').removeClass('is-invalid');
+		$('#alerta_nombre').text('');
+		__NOMBRE = true;
+	} else {
+		$('#nombre').addClass('is-invalid');
+		$('#alerta_nombre').text('El nombre no puede estar vacío.');
+		__NOMBRE = false;
+	}
+}
+
+function checkPrecio(event) {
+	let precio = $('#precio').val();
+	if(precio.length > 0){
+		if(isNaN(precio)){
+			$('#precio').addClass('is-invalid');
+			$('#alerta_precio').text('El precio debe ser un número real.');
+			__PRECIO = false;
+		} else {
+			if(precio < 0){
+				$('#precio').addClass('is-invalid');
+				$('#alerta_precio').text('El precio debe ser mayor a 0.00');
+				__PRECIO = false;
+			} else {
+				$('#precio').removeClass('is-invalid');
+				$('#alerta_precio').text('');
+				__PRECIO = true;
+			}
+		}
+	}
+}
+
+function checkCantidad(event) {
+	let cantidad = $('#cantidad').val();
+	if(cantidad.length > 0){
+		if(isNaN(cantidad) || cantidad.indexOf('.') !== -1){
+			$('#cantidad').addClass('is-invalid');
+			$('#alerta_cantidad').text('La cantidad debe ser un número entero.');
+			__CANTIDAD = false;
+		} else {
+			if(cantidad < 0){
+				$('#cantidad').addClass('is-invalid');
+				$('#alerta_cantidad').text('La cantidad debe ser mayor o igual a 0');
+				__CANTIDAD = false;
+			} else {
+				$('#cantidad').removeClass('is-invalid');
+				$('#alerta_cantidad').text('');
+				__CANTIDAD = true;
+			}
+		}
+	}
 }

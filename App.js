@@ -28,11 +28,17 @@ app.use('/nuevaCategoria', bodyParser.urlencoded({extended: false}));
 // Public folder with the static documents
 app.use(express.static(__dirname + '/Public/'));
 
+// -------     RUTAS DEL CLIENTE     -------
 // ROUTE TO INDEX 
 app.get('/', (req, res) => {
 	//res.sendFile(__dirname + '/Public/HTML/index.view.html');
 	res.render('index');
 });
+
+
+// -------     RUTAS DEL EMPLEADO    -------
+
+// ------- INICIO DE NUEVA CATEGORIA -------
 
 app.get('/nuevaCategoria', (req, res)=>{
 	//res.sendFile(__dirname + '/Public/HTML/newCategoria.html');
@@ -52,6 +58,10 @@ app.post('/nuevaCategoria', (req, res) => {
 		res.end('false');
 	});
 });
+
+// -------   FIN DE NUEVA CATEGORIA  -------
+
+// ------- INICIO DE NUEVO PRODUCTO -------
 
 app.get('/nuevoProducto', (req, res)=>{
 	//res.sendFile(__dirname + '/Public/HTML/newProducto.html');
@@ -86,28 +96,70 @@ app.post('/nuevoProducto', (req, res)=>{
 			}
 			res.render('newProducto', obj);
 		} else {
-			Employee.agregarModelo(modelo, req.file).then(()=>{
-				let obj = {
-					clase: 'success',
-					modelo: modelo
-				};
-				res.render('newProducto', obj);
-			}).catch((err)=>{
-				let msg = '';
-				if(err != 'duplicado') {
-					msg = err;
-					err = 'Error';
+			//VALIDAR CAMPOS DEL MODELO
+			let obj = {
+				clase: '', 
+				modelo: modelo,
+				msg: '', 
+				err: null
+			}
+			let valido = true;
+			valido = modelo.codigo.length > 0 && modelo.nombre.length > 0 && !isNaN(modelo.precio) && !isNaN(modelo.cantidad) 
+			&& modelo.cantidad >= 0 && modelo.precio >= 0 && modelo.cantidad.indexOf('.') === -1;
+			if(valido){
+				modelo.cantidad = modelo.cantidad === '' ? 0 : modelo.cantidad;
+				modelo.precio = modelo.precio === '' ? 0.0 : modelo.precio;
+				Employee.agregarModelo(modelo, req.file).then(()=>{
+					obj = {
+						clase: 'success',
+						modelo: modelo
+					};
+					res.render('newProducto', obj);
+				}).catch((err)=>{
+					let msg = '';
+					if(err != 'duplicado') {
+						msg = err;
+						err = 'Error';
+					}
+					obj = {
+						clase: 'danger', 
+						err: err,
+						msg: msg,
+						modelo: modelo
+					};
+					res.render('newProducto', obj);
+				});
+			} else {
+				obj = {
+					clase: 'danger',
+					modelo: modelo, 
+					err: 'invalido',
+					msg: 'Los datos suministrados son incorrectos.'
 				}
-				let obj = {
-					clase: 'danger', 
-					err: err,
-					msg: msg,
-					modelo: modelo
-				};
 				res.render('newProducto', obj);
-			});
+			}
 		}
 	});
+});
+
+// -------   FIN DE NUEVO PRODUCTO  -------
+
+// VALIDAR SI UN CÓDIGO YA ESTÁ REGISTRADO 
+app.post('/check/:cod', (req, res)=> {
+	res.contentType('text/plain');
+	if(req.params.cod.length > 0) {
+		Employee.existeModelo(req.params.cod).then(()=>{
+			res.end('invalido');
+		}).catch((err)=>{
+			if(!err){
+				res.end('valido');
+			} else {
+				res.end('invalido');
+			}
+		});
+	} else {
+		res.end('vacio');
+	}
 });
 
 app.listen(__PORT, ()=>{

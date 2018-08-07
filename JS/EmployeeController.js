@@ -10,7 +10,7 @@ module.exports.postModel = (model) => {
 				console.log(`[ ÉXITO ] Modelo ${row.codigo}-${row.nombre} creado.`);
 				resolve(row);
 			}).catch((err)=>{
-				console.log(`[ ERROR ] Modelo ${model.codigo}-${model.nombre} no se pudo crear.`);
+				console.log(`[ ERROR ] Modelo ${model.codigo}-${model.nombre} no se pudo crear. ${err}`);
 				reject(null);
 			});
 		}
