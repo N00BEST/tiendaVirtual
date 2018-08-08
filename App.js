@@ -2,10 +2,9 @@ const express = require('express');
 const bodyParser = require("body-parser");
 const Employee = require('./JS/EmployeeController');
 const multer = require('multer');
-const ejs = require('ejs');
 const path = require('path');
 const Strings = require('./JS/Files');
-const fs = require('fs');
+const Client = require('./JS/ClientController');
 
 const app = express();
 
@@ -33,6 +32,32 @@ app.use(express.static(__dirname + '/Public/'));
 app.get('/', (req, res) => {
 	//res.sendFile(__dirname + '/Public/HTML/index.view.html');
 	res.render('index');
+});
+
+app.get('/Producto/:producto', (req, res)=>{
+	if(req.params.producto === 'all'){
+		//res.contentType = 'application/json';
+		Client.getProductos().then((row)=>{
+			let resultado = [];
+			row.forEach(p => {
+				let obj = {
+					codigo: p.codigo, 
+					nombre: p.nombre, 
+					precio: p.precio, 
+					disponible: p.cantidad > 0, 
+					imagen: p.imagen, 
+					descripcion: p.descripcion
+				};
+				resultado.push(obj);
+			});
+			res.send(resultado);
+		}).catch((err)=>{
+			res.send(err);
+		});
+	} else {
+		res.contentType = 'text/plain';
+		res.send('Página no encontrada');
+	}
 });
 
 
@@ -160,6 +185,16 @@ app.post('/check/:cod', (req, res)=> {
 	} else {
 		res.end('vacio');
 	}
+});
+
+
+
+
+
+
+// RUTA PARA PRUEBAS
+app.get('/test', (req, res)=>{
+	res.render('test');
 });
 
 app.listen(__PORT, ()=>{

@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 
-const database = new Sequelize('tiendaTest', 'empleado', 'randomPass', {
+const database = new Sequelize('tiendaTest', 'cliente', 'randomPass', {
 	host: 'localhost',
 	dialect: 'mysql',
 	operatorsAliases: false,
@@ -33,14 +33,19 @@ const Cliente = database.define('cliente', {
 		allowNull: false,
 		primaryKey: true,
 		autoIncrement: true
+	}, 
+	user: {
+		type: Sequelize.STRING(10),
+		unique: true,
+		allowNull: false
+	},
+	password: {
+		type: Sequelize.STRING(64),
+		allowNull: false
 	},
 	correo: {
 		type: Sequelize.STRING(50),
 		unique: true,
-		allowNull: false
-	}, 
-	password: {
-		type: Sequelize.STRING(64),
 		allowNull: false
 	},
 	nombre: {
@@ -235,7 +240,7 @@ const Orden = database.define('orden', {
 
 
 database.authenticate().then(()=>{
-	console.log('Connected to database from Employee sucessfully');
+	console.log('Connected to database from Client sucessfully');
 }).catch((err)=>{
 	console.log(`Oops, something went wrong with the database.\n${err}`);
 });
