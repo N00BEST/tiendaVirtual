@@ -1,0 +1,227 @@
+body{
+	font-family: 'Open Sans', sans-serif, 'Lobster', cursive, 'Kaushan Script', 'Roboto';
+	background: #EBEBED;
+	overflow-x: hidden;
+}
+
+/*menu de navegacion */
+header .navbar{
+	width: 100%;
+	position: fixed;
+  	z-index: 100;
+}
+
+header .navbar .navbar-toggler{
+	color: #fff;
+}
+
+.menu .navbar span{
+	color: #EDF2F4;
+	
+}
+
+.navbar{
+	background: #2B2D42;
+}
+
+.navbar a{
+	color: #EDF2F4;
+}
+
+.navbar a:hover{
+	color: #E2C466;
+}
+
+.navbar .dropdown-menu{
+	background: #1a1d21;
+}
+
+.navbar .dropdown-menu .dropdown-item{
+	background: #1a1d21;
+	color: #E2C466;
+}
+
+.navbar .dropdown-menu .dropdown-item:hover{
+	background: #1c77c3;
+	color: #EDF2F4;
+}
+
+/*Barra de busqueda */
+.busqueda{
+	margin-top: 10px;
+}
+
+.busqueda input[type="search"]{
+
+	width: 100%;
+}
+
+.busqueda input[type="search"]:focus{
+	-webkit-box-shadow: 0px 0px 5px 0px rgba(226,196,102,0.85);
+	-moz-box-shadow: 0px 0px 5px 0px rgba(226,196,102,0.85);
+	box-shadow: 0px 0px 5px 0px rgba(226,196,102,0.85);
+}
+
+/* Botones Ingresar y crear tu cuenta */
+.navbar .inicioregistro{
+	display: flex;
+	justify-content: center;
+}
+
+.navbar .btn-ingresar{
+	border-radius: 20px;
+	background: #2B2D42;
+	color: #E2C466;
+	padding: 5px 10px;
+}
+
+.navbar .btn-ingresar:hover{color: #EDF2F4;}
+
+.navbar .btn-crear{
+	border-radius: 20px;
+	background: #2B2D42;
+}
+
+.navbar .btn-crear a{
+	border-radius: 20px;
+	color: #E2C466;
+	background: #2B2D42;
+	padding: 5px 10px;
+	text-decoration: none;
+}
+
+.navbar .btn-crear a:hover{
+	border-radius: 20px;
+	color: #2B2D42;
+	background: #EDF2F4;
+}
+
+/*modal ingresar*/
+
+#ModalCenterTitle {
+	font-family: 'Kaushan Script', cursive;
+	font-size: 50px;
+	font-weight: 400;
+	color: #2B2D42;
+}
+
+.modal-body .titulo{
+	font-family: 'Lobster', cursive;
+	font-size: 20px;
+	font-weight: 400;
+	text-align: center;
+	color: #2B2D42;
+}
+
+.modal-body .formulario label{
+	color: #2B2D42;
+	font-size: 16px;
+	font-weight: 700;
+}
+
+.modal-body .nocuenta{
+	text-align: center;
+	color: #2B2D42;
+}
+
+.modal-body .nocuenta a{
+	font-family: 'Lobster', cursive;
+	text-decoration: none;
+	color: #2B2D42;
+}
+
+.modal-body .nocuenta a:hover{
+	color: #1A1D21;
+}
+
+.modal-footer .btn{border-radius: 20px;}
+
+.modal-footer .cerrar{
+	background: #1a1d21;
+	color: #EDF2F4;
+}
+
+.modal-footer .cerrar:hover{
+	background: #585a5d;
+	color: #EDF2F4;
+}
+
+.modal-footer .ingresar{
+	background: #ef233c;
+	color: #EDF2F4;
+}
+
+.modal-footer .ingresar:hover{
+	background: #cf425a;
+	color: #EDF2F4;
+}
+
+/* Productos y modal de los productos*/
+
+main .articulos_title p{
+	text-align: left;
+	color: #1c77c3;
+	font-size: 50px;
+	font-family: 'Roboto', sans-serif;
+	padding: 20px 0;
+}
+
+main .card-body .card-title,
+main .card-body .modal-title{
+	color: #ef233c;
+	font-size: 30px;
+}
+
+main .card-body .modal-body img{
+	max-width: 100%;
+}
+
+main .card-body .modal-body .card-text{
+	padding: 20px 0;
+	margin: 15px 0;
+	font-size: 25px;
+}
+
+main .card-body .modal-body .text-muted{
+	text-align: right;
+}
+
+/* Footer */
+
+footer{
+	background: #2B2D42;
+	color: #E2C466;
+	text-align: center;
+	font-size: 10px;
+	font-weight: 300;
+	padding: 20px 20px;
+}
+
+footer h6{
+	margin-bottom: 15px;
+}
+
+footer a{
+	padding: 10px 15px;
+	color: #E2C466;
+	text-decoration: none;
+	font-size: 12px;
+	font-weight: 400;
+}
+
+footer a:hover{
+	text-decoration: none;
+	color: #EDF2F4;
+}
+
+footer p{
+	line-height: 30px;
+}
+
+/*Responsive design*/
+@media screen and (max-width: 960px){
+	header .navbar{
+		width: 100%;
+		position: static;
+	}
+}

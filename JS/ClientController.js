@@ -1,4 +1,6 @@
 const database = require('./ClientDB');
+const sequelize = require('sequelize');
+const {or} = sequelize.Op;
 
 module.exports.existeCorreo = (correo) => {
 	return new Promise((resolve, reject)=> {
@@ -44,4 +46,40 @@ module.exports.getProductos = () => {
 			});
 		}
 	);
+};
+
+module.exports.getProducto = (codigo) => {
+	return new Promise((resolve, reject) => {
+		database.Modelo.findAll({where: {codigo: codigo}}).then((row)=>{
+			if(row.length > 0) {
+				resolve(row[0]);
+			} else {
+				reject();
+			}
+		}).catch((err)=>{
+			reject();
+		});
+	});
+};
+
+module.exports.buscarProducto = (patron) => {
+	return new Promise((resolve, reject)=>{
+		let lookupValue = patron.toLowerCase().trim();
+		database.Modelo.findAll({
+			where: {
+				[or]:  [{
+							nombre: sequelize.where(sequelize.fn('LOWER', sequelize.col('nombre')), 'LIKE', '%' + lookupValue + '%')
+						},
+						{
+							descripcion: sequelize.where(sequelize.fn('LOWER', sequelize.col('descripcion')), 'LIKE', '%' + lookupValue + '%')
+						}]
+			}
+		}).then((rows)=>{
+			console.log(`[ BUSQUEDA = "${lookupValue}" ] Se encontraron ${rows.length} productos que coinciden con la busqueda.`);
+			resolve(rows);
+		}).catch((err)=>{
+			console.log('ERROR: ' + err);
+			reject(err);
+		});
+	});
 };

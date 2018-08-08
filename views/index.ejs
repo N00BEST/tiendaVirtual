@@ -23,7 +23,7 @@
 				</button>
 
 		  		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-		  			<a class="navbar-brand" href="index.view.html"><img src="../img/logo/tv_22.png" width="150" height="50" alt=""></a>
+		  			<a class="navbar-brand" href="/"><img src="../img/logo/tv_22.png" width="150" height="50" alt=""></a>
 		  			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		  				<span class="navbar-toggler-icon"></span>
 		  			</button>
@@ -32,7 +32,7 @@
 		  				<a class="nav-link" href="#">Inicio</a>
 		  			</li>
 		  			<li class="nav-item">
-		  				<a class="nav-link" href="#">Productos</a>
+		  				<a class="nav-link" href="/Productos">Productos</a>
 		  			</li>
 		  			<li class="nav-item dropdown">
 		  				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categorias</a>
@@ -56,8 +56,8 @@
 		  	</div>
 			<!-- Barra de busqueda -->
 		  	<div class="col-sm-6 col-md-6 col-lg-6 col-xl-3">
-		  		<form class="busqueda form-inline" action="" method="">
-		  			<input class="form-control" type="search" placeholder="Buscar Producto" aria-label="Search">
+		  		<form class="busqueda form-inline" action="/Busqueda" method="post">
+		  			<input class="form-control" type="search" placeholder="Buscar Producto" id="buscar" name="buscar" aria-label="Search">
 		  		</form>
 		  	</div>
 
@@ -93,7 +93,7 @@
 								</form>
 					
 								<div class="nocuenta">
-									<p class="no_cuenta">¿Aun no tienes cuenta?<a href="registrate.view.html"> Registrate</a></p>
+									<p class="no_cuenta">¿Aun no tienes cuenta? <a href="registrate.view.html">Registrate</a></p>
 								</div>
 				      		</div>
 					
@@ -289,8 +289,8 @@
 	<!-- ARTICULOS DESDE LA BASE DE DATOS -->
 	<section class="contenedor-main mt-3">
 		<main class="articulos container">
-			<div class="articulos_title col text-center">
-				<p>Artículos más recientes</p>
+			<div class="articulos_title col">
+				<center><p>Artículos más recientes</p></center>
 			</div>
 			<div class="row">
 				<div class="col">
@@ -391,7 +391,7 @@
 	</footer>
 
 	<script src="JS/jquery.min.js"></script>
-	<script src="JS/index.js"></script>
+	<script src="JS/productos.js"></script>
 	<script src="JS/bootstrap.min.js"></script>
 </body>
 </html>

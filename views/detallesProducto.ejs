@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Productos en TiendaVirtual</title>
+    <link rel="icon" href="../IMG/icono/tag.png">
+    <link rel="stylesheet" href="../CSS/bootstrap.min.css">
+    <link rel="stylesheet" href="../CSS/estilos_categorias.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Lobster" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
+</head>
+
+<body>
+    <!-- barra de busqueda, nav, modal -->
+    <header>
+        <div class="row">
+            <div class="col">
+
+                <nav class="navbar navbar-expand-xl">
+                    <!-- Menu de Navegacion -->
+                    <div class="col-sm-4 col-md-6 col-lg-4 col-xl-6">
+                        <button class="navbar-toggler navbar-toggler-right navbar-dark" data-toggle="collapse" data-target="#navbarSupportedContent"
+                            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Menu">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <a class="navbar-brand" href="../">
+                                <img src="../IMG/logo/tv_22.png" width="150" height="50" alt="">
+                            </a>
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                                aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <ul class="navbar-nav mr-3">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="../">Inicio</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="../Productos">Productos</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">Categorias</a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="tecnologia.view.html">Tecnologia</a>
+                                        <a class="dropdown-item" href="deporte.view.html">Deporte</a>
+                                        <a class="dropdown-item" href="musica.view.html">Musica</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="moda.view.html">Moda</a>
+                                        <a class="dropdown-item" href="libro.view.html">Libros</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="acercade.view.html">Acerca De</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="carrito.view.html">
+                                        <img src="../IMG/icono/carrito-de-la-compra.png" alt=""> Carrito</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Barra de busqueda -->
+                    <div class="col-sm-6 col-md-6 col-lg-6 col-xl-3">
+                        <form class="busqueda form-inline" action="../Busqueda" method="POST">
+                            <input class="form-control" type="search" placeholder="Buscar Producto" id="buscar" name="buscar" aria-label="Search">
+                        </form>
+                    </div>
+
+                    <!-- Inicio y Registro -->
+                    <div class="inicioregistro col-sm-12 col-md-12 col-lg-12 col-xl-3">
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn-ingresar btn" data-toggle="modal" data-backdrop="false" data-dismiss="modal" data-target="#ModalCenter">Ingresar</button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="ModalCenter" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h2 class="modal-title" id="ModalCenterTitle">Hola!</h2>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p class="titulo">Ingresa tu cuenta aqui</p>
+
+                                        <form action="" method="" class="formulario" id="">
+                                            <div class="form-group">
+                                                <label for="">Correo</label>
+                                                <input type="text" class="form-control" placeholder="correo@ejemplo.com" name="Correo" id="Correo" pattern="[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.-]+\.[a-zA-Z0-9.-]+">
+                                            </div>
+
+                                            <div class="form-group mt-3">
+                                                <label for="">Contraseña</label>
+                                                <input type="password" class="form-control" placeholder="Ejem: 123456789" name="pass" id="pass">
+                                            </div>
+                                        </form>
+
+                                        <div class="nocuenta">
+                                            <p class="no_cuenta">¿Aun no tienes cuenta?
+                                                <a href="registrate.view.html"> Registrate</a>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="cerrar btn" data-dismiss="modal">Cerrar</button>
+                                        <button type="button" class="ingresar btn">Ingresar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-crear btn">
+                            <a href="registrate.view.html">Crear una cuenta</a>
+                        </button>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- ARTICULOS DESDE LA BASE DE DATOS -->
+    <main>
+        <div class="container mt-5 mb-3">
+            <div class="row justify-content-center ">
+                <div class="articulos_title col-12 mt-5">
+                    <p>Productos en TiendaVirtual</p>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- Card's para los articulos -->
+                        <div class="card-columns">
+                            <!-- Cada card tiene un tamaño automatico, al añadirle el articulo desde la base de datos, se debe adaptar automaticamente -->
+                            <div class="card">
+                                <img class="card-img-top" src=<%=imagen%> alt="Card image cap">
+                                <div class="card-body">
+                                    <h5 class="card-title"><%= nombre %></h5>
+                                    <p class="card-text"><%= descripcion %></p>
+                                    <p class="text-muted"><%= precio %></p>
+                                    <a href="#" class="btn btn-danger">Añadir a carrito</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Redes sociales, Acerca de , Mi cuenta -->
+    <footer class="contenedor-footer mt-5">
+        <!-- Acerca De, redes sociales, mi cuenta -->
+        <div class="row">
+            <!-- Acerca De -->
+            <div class="col-md-4 mb-3">
+                <h6>Acerca De</h6>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. At distinctio repellat reprehenderit omnis expedita
+                    odio maiores dolor magnam ipsum perferendis, aperiam delectus, commodi dolores, alias provident voluptas
+                    quis cupiditate nobis incidunt hic dolorum debitis minima.</p>
+            </div>
+            <!-- Redes Sociales -->
+            <div class="redes_sociales col-md-4 mb-5 ">
+                <h6>Redes Sociales</h6>
+                <a href="#">
+                    <img src="../IMG/icono/instagram.png" alt="">
+                </a>
+                <a href="#">
+                    <img src="../IMG/icono/facebook.png" alt="">
+                </a>
+                <a href="#">
+                    <img src="../IMG/icono/twitter.png" alt="">
+                </a>
+            </div>
+            <!-- Mi cuenta -->
+            <div class="col-md-4 mb-3">
+                <h6>Mi cuenta</h6>
+                <a href="inicio_sesion.view.html">Ingresar</a>
+                <a href="registrate.view.html">Crear cuenta</a>
+            </div>
+        </div>
+        <!-- Copyright -->
+        <div class="row">
+            <div class="col-12">
+                <p>Copyright © 2018-2018 TiendaVirtual Venezuela</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../JS/jquery.min.js"></script>
+    <script src="../JS/bootstrap.min.js"></script>
+</body>
+
+</html>

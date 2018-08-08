@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Música | TiendaVirtual</title>
+    <link rel="icon" href="../img/icono/tag.png">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/categorias.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Lobster" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- barra de busqueda, nav, modal -->
+    <header>
+        <div class="row">
+            <div class="col">
+                <!-- Menu de Navegacion -->
+                <nav class="navbar navbar-expand-xl">
+                    <div class="col-sm-4 col-md-6 col-lg-4 col-xl-6">
+                        <button class="navbar-toggler navbar-toggler-right navbar-dark" data-toggle="collapse" data-target="#navbarSupportedContent"
+                            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Menu">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <a class="navbar-brand" href="index.view.html">
+                                <img src="../img/logo/tv_22.png" width="150" height="50" alt="">
+                            </a>
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                                aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <ul class="navbar-nav mr-3">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="index.view.html">Inicio</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="productos.view.html">Productos</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">Categorias</a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="tecnologia.view.html">Tecnologia</a>
+                                        <a class="dropdown-item" href="deporte.view.html">Deporte</a>
+                                        <a class="dropdown-item" href="musica.view.html">Musica</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="moda.view.html">Moda</a>
+                                        <a class="dropdown-item" href="libro.view.html">Libros</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="acercade.view.html">Acerca De</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="carrito.view.html"><img src="../img/icono/carrito-de-la-compra.png" alt=""> Carrito</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Barra de busqueda -->
+                    <div class="col-sm-6 col-md-6 col-lg-6 col-xl-3">
+                        <form class="busqueda form-inline" action="" method="">
+                            <input class="form-control" type="search" placeholder="Buscar Producto" aria-label="Search">
+                        </form>
+                    </div>
+
+                    <!-- Inicio y Registro -->
+                    <div class="inicioregistro col-sm-12 col-md-12 col-lg-12 col-xl-3">
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn-ingresar btn" data-toggle="modal" data-backdrop="false" data-dismiss="modal" data-target="#ModalCenter">Ingresar</button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="ModalCenter" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h2 class="modal-title" id="ModalCenterTitle">Hola!</h2>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p class="titulo">Ingresa tu cuenta aqui</p>
+
+                                        <form action="" method="" class="formulario" id="">
+                                            <div class="form-group">
+                                                <label for="">Correo</label>
+                                                <input type="text" class="form-control" placeholder="correo@ejemplo.com" name="Correo" id="Correo" pattern="[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.-]+\.[a-zA-Z0-9.-]+">
+                                            </div>
+
+                                            <div class="form-group mt-3">
+                                                <label for="">Contraseña</label>
+                                                <input type="password" class="form-control" placeholder="Ejem: 123456789" name="pass" id="pass">
+                                            </div>
+                                        </form>
+
+                                        <div class="nocuenta">
+                                            <p class="no_cuenta">¿Aun no tienes cuenta?
+                                                <a href="registrate.view.html"> Registrate</a>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="cerrar btn" data-dismiss="modal">Cerrar</button>
+                                        <button type="button" class="ingresar btn">Ingresar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-crear btn">
+                            <a href="registrate.view.html">Crear una cuenta</a>
+                        </button>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenido -->
+    <main>
+        <div class="container mt-5 mb-3">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-6">
+                    <h6>Música: Instrumentos musicales</h6>
+                </div>
+                <div class="row mt-3">
+                    <div class="card-group">
+
+                        <!-- Celulares y Telefonos -->
+                        <div class="col-xm-4 col-sm-6 col-md-4">
+                            <div class="card mb-3">
+                                <img src="../img/categorias/instrumentos_musicales/guitarra.jpg" class="card-img-top img-fluid" alt="">
+                                <div class="card-block">
+                                    <h3 class="card-title">Guitarras</h3>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">Electricas</li>
+                                        <li class="list-group-item">Acusticas</li>
+                                    </ul>
+                                </div>
+                                <a href="../categorias.views/guitarras.html" class="btn btn-block">Ver más</a>
+                            </div>
+                        </div>
+
+                        <!-- Computacion -->
+                        <div class="col-xm-4 col-sm-6 col-md-4">
+                            <div class="card mb-3">
+                                <img src="../img/categorias/instrumentos_musicales/bateria.jpg" class="card-img-top img-fluid" alt="">
+                                <div class="card-block">
+                                    <h3 class="card-title">Baterias y Percusion</h3>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">Percusion</li>
+                                        <li class="list-group-item">Baterias completas</li>
+                                    </ul>
+                                </div>
+                                <a href="../categorias.views/baterias.html" class="btn btn-block">Ver más</a>
+                            </div>
+                        </div>
+
+                        <!-- Camaras -->
+                        <div class="col-xm-4 col-sm-6 col-md-4">
+                            <div class="card mb-3">
+                                <img src="../img/categorias/instrumentos_musicales/dj.jpg" class="card-img-top img-fluid" alt="">
+                                <div class="card-block">
+                                    <h3 class="card-title">Audio profesional y DJ's</h3>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">Microfonos</li>
+                                        <li class="list-group-item">Consolas de sonido</li>
+                                        <li class="list-group-item">Cornetas</li>
+                                        <li class="list-group-item">Amplificadores</li>
+                                    </ul>
+                                </div>
+                                <a href="../categorias.views/dj.html" class="btn btn-block">Ver más</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Redes sociales, Acerca de , Mi cuenta -->
+    <footer class="container mt-3">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <h6>Acerca De</h6>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. At distinctio repellat reprehenderit omnis expedita
+                    odio maiores dolor magnam ipsum perferendis, aperiam delectus, commodi dolores, alias provident voluptas
+                    quis cupiditate nobis incidunt hic dolorum debitis minima.</p>
+            </div>
+            <div class="redes_sociales col-md-4 mb-5 ">
+                <h6>Redes Sociales</h6>
+                <a href="#">
+                    <img src="../img/icono/instagram.png" alt="">
+                </a>
+                <a href="#">
+                    <img src="../img/icono/facebook.png" alt="">
+                </a>
+                <a href="#">
+                    <img src="../img/icono/twitter.png" alt="">
+                </a>
+            </div>
+            <!-- Mi cuenta -->
+            <div class="col-md-4 mb-3">
+                <h6>Mi cuenta</h6>
+                <a href="inicio_sesion.view.html">Ingresar</a>
+                <a href="registrate.view.html">Crear cuenta</a>
+            </div>
+
+
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <p>Copyright © 2018-2018 TiendaVirtual Venezuela</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/jquery.min.js "></script>
+    <script src="../js/bootstrap.min.js "></script>
+</body>
+
+</html>

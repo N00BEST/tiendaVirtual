@@ -21,8 +21,8 @@ const storage = multer.diskStorage({
 	}
 });
 
-app.use('/nuevaCategoria', bodyParser.json());
-app.use('/nuevaCategoria', bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
 
 // Public folder with the static documents
 app.use(express.static(__dirname + '/Public/'));
@@ -55,11 +55,53 @@ app.get('/Producto/:producto', (req, res)=>{
 			res.send(err);
 		});
 	} else {
-		res.contentType = 'text/plain';
-		res.send('Página no encontrada');
+		Client.getProducto(req.params.producto).then((producto)=>{
+			if(producto.publico){
+				let resultado = {
+					nombre: producto.nombre,
+					imagen: '../' + producto.imagen,
+					descripcion: producto.descripcion,
+					precio: producto.precio,
+					disponible: producto.cantidad > 0
+				};
+				res.render('detallesProducto', resultado);
+			} else {
+				res.render('404');
+			}
+		}).catch((err)=>{
+			res.render('404');
+		});
 	}
 });
 
+app.get('/Productos', (req, res)=>{
+	res.render('productos');
+});
+
+app.post('/Busqueda', (req, res)=>{
+	Client.buscarProducto(req.body.buscar).then((rows)=>{
+		let resultado = [];
+		for(let i = 0; i < rows.length; i++){
+			let producto = {
+				codigo: rows[i].codigo,
+				nombre: rows[i].nombre,
+				precio: rows[i].precio,
+				imagen: rows[i].imagen,
+				descripcion: rows[i].descripcion
+			}
+
+			resultado.push(producto);
+		}
+		res.render('busqueda', {
+			error: false,
+			resultado: resultado,
+			busqueda: req.body.buscar
+		});
+	}).catch((err)=>{
+		console.log(`[ ERROR ] Error al buscar: ${err}`);
+		res.render('busqueda', { error: true, busqueda: '' });
+	});
+});
 
 // -------     RUTAS DEL EMPLEADO    -------
 
@@ -190,6 +232,11 @@ app.post('/check/:cod', (req, res)=> {
 
 
 
+
+// DESPLEGAR PÁGINA DE 404
+app.get('*', (req, res)=>{
+	res.render('404');
+});
 
 
 // RUTA PARA PRUEBAS
