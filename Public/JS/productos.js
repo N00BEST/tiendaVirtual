@@ -11,7 +11,7 @@ function desplegarProducto(){
 		if(typeof Productos !== 'undefined') {
 			//En caso de que ya se hayan cargado los Productos desde el API
 			let tope = Productos.length;
-			for(let i = 0; i < 2 && i < tope; i++){
+			for(let i = 0; i < 10 && i < tope; i++){
 				let modelo = Productos.shift();
 
 				let card = document.createElement('div');

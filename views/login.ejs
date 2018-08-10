@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<title>Iniciar Sesión</title>
+	<link rel="icon" href="IMG/icono/cart.png">
+	<link rel="stylesheet" href="CSS/bootstrap.min.css">
+	<link rel="stylesheet" href="CSS/inicio.registro.css">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,700" rel="stylesheet">
+</head>
+<body>
+	<div class="container">
+		<!-- Inicio de sesion, formulario -->
+		<form action="javascript:void(0)" method="POST" class="formulario">
+			<div class="row justify-content-center mt-5">
+				<div class="col-md-6">
+					<div class="logo">
+						<a href="/"><img src="IMG/logo/TV.png" alt="" width="150" height="125"></a>
+						<h2>Inicio de Sesión</h2>
+						<small id="notificacion" class="text-danger"></small>
+					</div>
+
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="Correo" name="correo" id="correo">
+						<small class="text-danger" id="alerta_correo"></small>
+					</div>
+
+					<div class="form-group mt-3">
+						<input type="password" class="form-control" placeholder="Contraseña" name="pass" id="pass">
+					</div>
+				</div>
+			</div>
+
+			<!-- Boton de Inicion de sesion -->
+			<div class="row justify-content-center mt-3 form-group">
+				<div class="boton col-md-4">
+					<button class="btn btn-block" id="submit">Iniciar Sesion</button>
+				</div>
+			</div>
+		</form>
+
+		<!-- Enlace a registro -->
+		<div class="row justify-content-center mt-3">
+			<div class="enlace col-md-6">
+				<p>¿Aun no tienes cuenta?
+					<a href="/Registrarse"> Registrate</a>
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<script src="JS/jquery.min.js"></script>
+	<script src="JS/login.js"></script>
+	<script src="JS/bootstrap.min.js"></script>
+</body>
+</html>

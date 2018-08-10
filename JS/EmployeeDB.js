@@ -49,12 +49,13 @@ const Cliente = database.define('cliente', {
 	apellido: {
 		type: Sequelize.STRING(100)
 	},
-	edad: {
-		type: Sequelize.SMALLINT(3)
+	cedula: {
+		type: Sequelize.STRING(10),
+		allowNull: false,
+		unique: true
 	},
-	sexo: {
-		type: Sequelize.ENUM('M', 'F'),
-		defaultValue: 'M'
+	nacimiento: {
+		type: Sequelize.DATE()
 	},
 	direccion: {
 		type: Sequelize.STRING(200),
@@ -63,6 +64,10 @@ const Cliente = database.define('cliente', {
 	telefono: {
 		type: Sequelize.STRING(15),
 		defaultValue: ''
+	},
+	token: {
+		type: Sequelize.STRING(64),
+		allowNull: false
 	}
 });
 
@@ -232,7 +237,7 @@ const Orden = database.define('orden', {
 		defaultValue: 0
 	}
 });
-
+Orden.belongsTo(Pedido);
 
 database.authenticate().then(()=>{
 	console.log('Connected to database from Employee sucessfully');
@@ -281,7 +286,7 @@ Pertenece.sync({force: false}).then(()=>{
 	console.log('Tabla Pertenece sincronizada');
 });
 
-Inventario.sync({force: true}).then(()=>{
+Inventario.sync({force: false}).then(()=>{
 	console.log('Tabla Inventario sincronizada');
 });
 

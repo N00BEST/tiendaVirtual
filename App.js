@@ -5,6 +5,8 @@ const multer = require('multer');
 const path = require('path');
 const Strings = require('./JS/Files');
 const Client = require('./JS/ClientController');
+const session = require('express-session');
+const files = require('./JS/Files');
 
 const app = express();
 
@@ -23,6 +25,7 @@ const storage = multer.diskStorage({
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(session({ secret: files.genRandomName(20), saveUninitialized: true, resave: false }));
 
 // Public folder with the static documents
 app.use(express.static(__dirname + '/Public/'));
@@ -30,8 +33,15 @@ app.use(express.static(__dirname + '/Public/'));
 // -------     RUTAS DEL CLIENTE     -------
 // ROUTE TO INDEX 
 app.get('/', (req, res) => {
-	//res.sendFile(__dirname + '/Public/HTML/index.view.html');
-	res.render('index');
+	if(typeof req.session.correo === 'undefined'){
+		console.log('USUARIO SIN CUENTA');
+		res.render('index');
+	} else {
+		console.log('USUARIO CON CUENTA');
+		res.render('indexSesion', {
+			nombre: req.session.nombre
+		})
+	}
 });
 
 app.get('/Producto/:producto', (req, res)=>{
@@ -78,8 +88,8 @@ app.get('/Productos', (req, res)=>{
 	res.render('productos');
 });
 
-app.post('/Busqueda', (req, res)=>{
-	Client.buscarProducto(req.body.buscar).then((rows)=>{
+app.get('/Busqueda', (req, res)=>{
+	Client.buscarProducto(req.query.buscar).then((rows)=>{
 		let resultado = [];
 		for(let i = 0; i < rows.length; i++){
 			let producto = {
@@ -95,12 +105,90 @@ app.post('/Busqueda', (req, res)=>{
 		res.render('busqueda', {
 			error: false,
 			resultado: resultado,
-			busqueda: req.body.buscar
+			busqueda: req.query.buscar.trim()
 		});
 	}).catch((err)=>{
 		console.log(`[ ERROR ] Error al buscar: ${err}`);
 		res.render('busqueda', { error: true, busqueda: '' });
 	});
+});
+
+app.get('/Registrarse', (req, res)=>{
+	if(typeof req.session.correo === 'undefined'){
+		res.render('registrarse');
+	} else {
+		res.redirect('/');
+	}
+});
+
+app.post('/Registrarse', (req, res)=>{
+	
+	/* 
+		Nombre, Apellido, Correo, Teléfono, Cédula, Dirección, Nacimiento, Contraseña y Recontraseña
+	*/
+	let cliente = {
+		nombre: req.body.nombre,
+		apellido: req.body.apellido,
+		correo:	req.body.correo,
+		telefono: req.body.telefono,
+		cedula: req.body.cedula,
+		direccion: req.body.direccion,
+		password: req.body.pass
+	}
+	if(req.body.nacimiento.length > 0) {
+		cliente.nacimiento = req.body.nacimiento;
+	}
+	if(cliente.password === req.body.pass2){
+		Client.agregarCliente(cliente).then(()=>{
+			res.contentType('text/plain');
+			req.session.correo = cliente.correo;
+			req.session.nombre = cliente.nombre;
+			res.send('success');
+		}).catch((err)=>{
+			if(err === 'duplicado'){
+				res.contentType('text/plain');
+				res.send('email');
+			} else {
+				res.send('error');
+			}
+		});
+	} else {
+		res.contentType('text/plain');
+		res.send('passwords');
+	}
+});
+
+app.get('/Login', (req, res)=>{
+	if(typeof req.session.correo === 'undefined'){
+		res.render('login');
+	} else {
+		res.redirect('/');
+	}
+});
+
+app.post('/Login', (req, res)=>{
+	res.contentType('text/plain');
+	if(typeof req.session.correo === 'undefined'){
+		let cliente = {
+			correo: req.body.correo,
+			password: req.body.pass
+		};
+		Client.iniciarSesion(cliente).then((client)=>{
+			req.session.correo = client.correo;
+			req.session.nombre = client.nombre;
+			res.send('success');
+		}).catch((err)=>{
+			if(err === 'incorrecta'){
+				res.send('password');
+			} else if(err === 'no existe') {
+				res.send('email');
+			} else {
+				res.send('error');
+			}
+		});
+	} else {
+		res.send('error');
+	}
 });
 
 // -------     RUTAS DEL EMPLEADO    -------
@@ -229,19 +317,65 @@ app.post('/check/:cod', (req, res)=> {
 	}
 });
 
-
-
-
-
-// DESPLEGAR PÁGINA DE 404
-app.get('*', (req, res)=>{
-	res.render('404');
+// VALIDAR SI UN CORREO O UNA CÉDULA YA ESTÁN REGISTRADOS
+app.get('/exists/:string', (req, res)=>{
+	res.contentType('text/plain');
+	if(/^([VEJPG])?\d{7,9}$/g.test(req.params.string)){
+		Client.existeCedula(req.params.string.trim()).then(()=>{
+			res.send('true');
+		}).catch((err)=>{
+			if(!err){
+				res.send('false');
+			} else {
+				res.send('error');
+			}
+		});
+	} else if(/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/g.test(req.params.string)) {
+		Client.existeCorreo(req.params.string.trim()).then(()=>{
+			res.send('true');
+		}).catch((err)=>{
+			if(!err){
+				res.send('false');
+			} else {
+				res.send('error');
+			}
+		});
+	} else {
+		res.send('error');
+	}
 });
+
+
+
+
+
 
 
 // RUTA PARA PRUEBAS
 app.get('/test', (req, res)=>{
-	res.render('test');
+		res.render('test');
+});
+
+app.post('/test', (req, res)=>{
+	if(typeof req.body.user !== 'undefined' && req.body.user.toLowerCase() === 'noobest'){
+		if(req.body.password === '1234'){
+			console.log('Aquí 1');
+			req.session.user = "NOOBEST";
+			res.redirect('/test');
+		} else {
+			console.log('Aquí 2');
+			res.contentType('text/plain');
+			res.send('Contraseña incorrecta');
+		}
+	} else {
+		console.log('Aquí 3 ' + req.body.user + ' ' + req.body.password);
+		res.redirect('/test');
+	}
+});
+
+// DESPLEGAR PÁGINA DE 404
+app.get('*', (req, res)=>{
+	res.render('404');
 });
 
 app.listen(__PORT, ()=>{
