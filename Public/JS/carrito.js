@@ -4,13 +4,13 @@ $(document).ready(()=>{
 });
 
 function iniciarAgregar(){
-	$(".card-body button.agg").off('click', agregar);
-	$(".card-body button.agg").on('click', agregar);
+	$("button.agg").off('click', agregar);
+	$("button.agg").on('click', agregar);
 }
 
 function iniciarQuitar(){
-	$(".card-body button.quit").off('click',quitar);
-	$(".card-body button.quit").on('click',quitar);
+	$("button.quit").off('click',quitar);
+	$("button.quit").on('click',quitar);
 }
 
 function agregar(event) {
@@ -27,7 +27,6 @@ function agregar(event) {
 		$('#cantidad_' + codigo).removeClass('text-muted');
 		$('#cantidad_' + codigo).addClass('text-success font-weight-bold');
 		setTimeout(()=>{
-			console.log('No funciona');
 			$('#cantidad_' + codigo).removeClass('text-success font-weight-bold');
 			$('#cantidad_' + codigo).addClass('text-muted');
 		}, 600);

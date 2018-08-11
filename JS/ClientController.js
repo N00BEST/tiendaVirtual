@@ -89,7 +89,7 @@ module.exports.getCarrito = (articulos) => {
 
 module.exports.getProducto = (codigo) => {
 	return new Promise((resolve, reject) => {
-		database.Modelo.findAll({where: {codigo: codigo}}).then((row)=>{
+		database.Modelo.findAll({where: {codigo: codigo, publico: true}}).then((row)=>{
 			if(row.length > 0) {
 				resolve(row[0]);
 			} else {
@@ -222,37 +222,41 @@ module.exports.alCarrito = (codigo, correo) =>{
 						//Si existe el pedido
 						//Buscar el producto
 						module.exports.getProducto(codigo).then((producto)=>{
-							database.Orden.findOrCreate({
-								where: {
-									modeloID: producto.ID,
-									pedidoID: pedido.ID
-								},
-								defaults: {
-									cantidad: 1,
-									costo: producto.precio
-								}
-							}).then((orden)=>{
-								//Orden es un arreglo. orden[0] es la orden y orden[1] es un booleano
-								//indicando si se creó (true) o si se encontró (false)
-								if(!orden[1]) {
-									//Si el objeto fue encontrado
-									orden[0].updateAttributes({
-										cantidad: orden[0].cantidad + 1,
-										costo: producto.precio * (orden[0].cantidad + 1)
-									}).then(()=>{
-										console.log(`[ EXITO ] Orden agregada `);
-										resolve(orden[0].cantidad + 1);
-									}).catch((err)=>{
-										console.log(`[ ERROR ] En agregar al carrito. ${err.message} `);
-										reject(err);
-									});
-								} else {
-									resolve(1);
-								}
-							}).catch((err)=>{
-								console.log(`[ ERROR ] En agregar al carrito. ${err.message} `);
-								reject(err);
-							});
+							if(producto.cantidad > 0){
+								database.Orden.findOrCreate({
+									where: {
+										modeloID: producto.ID,
+										pedidoID: pedido.ID
+									},
+									defaults: {
+										cantidad: 1,
+										costo: producto.precio
+									}
+								}).then((orden)=>{
+									//Orden es un arreglo. orden[0] es la orden y orden[1] es un booleano
+									//indicando si se creó (true) o si se encontró (false)
+									if(!orden[1]) {
+										//Si el objeto fue encontrado
+										orden[0].updateAttributes({
+											cantidad: orden[0].cantidad + 1,
+											costo: producto.precio * (orden[0].cantidad + 1)
+										}).then(()=>{
+											console.log(`[ EXITO ] Orden agregada `);
+											resolve(orden[0].cantidad + 1);
+										}).catch((err)=>{
+											console.log(`[ ERROR ] En agregar al carrito. ${err.message} `);
+											reject(err);
+										});
+									} else {
+										resolve(1);
+									}
+								}).catch((err)=>{
+									console.log(`[ ERROR ] En agregar al carrito. ${err.message} `);
+									reject(err);
+								});
+							} else {
+								reject('no');
+							}
 						}).catch((err)=>{
 							if(err.message !== '404'){
 								console.log(`[ ERROR ] En agregar al carrito. ${err.message} `);
@@ -269,19 +273,23 @@ module.exports.alCarrito = (codigo, correo) =>{
 						database.Pedido.create(pedido).then((_pedido)=>{
 							//Agregar orden al pedido
 							module.exports.getProducto(codigo).then((producto)=>{
-								let orden = {
-									cantidad: 1,
-									costo: producto.precio,
-									modeloID: producto.ID, 
-									pedidoID: _pedido.ID
+								if(producto.cantidad > 0){
+									let orden = {
+										cantidad: 1,
+										costo: producto.precio,
+										modeloID: producto.ID, 
+										pedidoID: _pedido.ID
+									}
+									database.Orden.create(orden).then(()=>{
+										console.log('[ Exito ] Orden creada');
+										resolve();
+									}).catch((err)=>{
+										console.log(`[ ERROR ] En agregar al carrito. ${err.message} `);
+										reject(err);
+									});
+								} else {
+									reject('no');
 								}
-								database.Orden.create(orden).then(()=>{
-									console.log('[ Exito ] Orden creada');
-									resolve();
-								}).catch((err)=>{
-									console.log(`[ ERROR ] En agregar al carrito. ${err.message} `);
-									reject(err);
-								});
 							}).catch((err)=>{
 								if(err.message !== '404'){
 									console.log(`[ ERROR ] En agregar al carrito. ${err.message} `);

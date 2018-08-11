@@ -40,7 +40,7 @@ function desplegarProducto(){
 				titulo.innerText = modelo.nombre;
 
 				agotado.innerText = modelo.disponible ? '' : 'AGOTADO';
-				agotado.className = 'text-secondary';
+				agotado.className = 'text-muted font-weight-bold';
 
 				descripcion.className = "card-text text-body";
 				descripcion.innerText = modelo.descripcion;

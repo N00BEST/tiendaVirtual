@@ -72,12 +72,13 @@
                     </div>
 
                     <!-- Inicio y Registro -->
-                    <div class="inicioregistro col-sm-12 col-md-12 col-lg-12 col-xl-3">
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn-ingresar btn" data-toggle="modal" data-backdrop="false" data-dismiss="modal" data-target="#ModalCenter">Ingresar</button>
-                        <!-- Modal -->
-                        <div class="modal fade" id="ModalCenter" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
+                    <% if(typeof nombre === 'undefined') { %>
+                        <div class="inicioregistro col-sm-12 col-md-12 col-lg-12 col-xl-3">
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn-ingresar btn" data-toggle="modal" data-backdrop="false" data-dismiss="modal" data-target="#ModalCenter">Ingresar</button>
+                            <!-- Modal -->
+                            <div class="modal fade" id="ModalCenter" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h2 class="modal-title" id="ModalCenterTitle">¡Bienvenido!</h2>
@@ -87,7 +88,7 @@
                                     </div>
                                     <div class="modal-body">
                                         <p class="titulo">Ingresa tu cuenta aqui</p>
-                        
+                                        <small class="text-danger" id="notificacion"></small>
                                         <form action="javascript:void(0)" method="post" class="formulario" id="form_MiniLogin">
                                             <div class="form-group">
                                                 <label for="">Correo</label>
@@ -99,22 +100,56 @@
                                                 <input type="password" class="form-control" placeholder=" ******** " name="pass" id="pass">
                                             </div>
                                         </form>
-                        
+                            
                                         <div class="nocuenta">
                                             <p class="no_cuenta">¿Aún no tienes cuenta? <a href="/Registrarse">Regístrate</a></p>
                                         </div>
                                     </div>
+                            
                                     <div class="modal-footer">
                                         <button type="button" class="cerrar btn" data-dismiss="modal">Cerrar</button>
                                         <button type="button" class="ingresar btn" id="submit">Ingresar</button>
                                     </div>
                                 </div> 
+                                </div>
+                            </div>
+                            <a href="/Registrarse"><button type="button" class="btn-crear btn">Crear una cuenta</button></a>
+                        </div>
+                    <% } else { %>
+                        <div class="inicioregistro col-sm-12 col-md-12 col-lg-12 col-xl-3">
+                            <!-- Icono de inicio de sesion -->
+                            <a href="#" class="btn btn-ingresar">
+                                <%= nombre %>
+                                <img src="IMG/icono/user(1).png" alt="">
+                            </a>
+                            
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn-ingresar btn" data-toggle="modal" data-backdrop="false" data-dismiss="modal"data-target="#ModalCenter">
+                                <!-- Icono de cerrar sesion -->
+                                <img src="IMG/icono/sign-in.png" alt=""> Cerrar sesión
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade" id="ModalCenter" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h2 class="modal-title" id="ModalCenterTitle">¿Chao?</h2>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p class="titulo">¿Seguro que quieres salir?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="cerrar btn" data-dismiss="modal">Cancelar</button>
+                                            <button type="button" class="ingresar btn">Cerrar sesión</button>
+                                        </div>
+                                    </div>
+                            </div>
                             </div>
                         </div>
-                        <button type="button" class="btn-crear btn">
-                            <a href="registrate.view.html">Crear una cuenta</a>
-                        </button>
-                    </div>
+                    <% } %>
                 </nav>
             </div>
         </div>

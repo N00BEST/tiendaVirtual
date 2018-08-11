@@ -26,6 +26,7 @@ function checkCorreo(event){
 			} else if(response === 'true'){
 				$('#correo').removeClass('is-invalid');
 				$('#alerta_correo').text('');
+				$('#notificacion').text('');
 				__CORREO = true;
 			} else {
 				$('#correo').removeClass('is-invalid');
@@ -45,16 +46,14 @@ function enviar(){
 			correo: $('#correo').val(),
 			pass: $('#pass').val()
 		}, (response)=>{
-			switch(response){
-				case 'success':
-					window.location.replace('/');
+			window.location.href = response;
+		}).catch((error)=>{
+			switch(error.status){
+				case 404:
+					$('#notificacion').text('El correo no está registrado.');
 				break;
 
-				case 'email':
-					$('#notificacion').text('El correo no existe.');
-				break;
-
-				case 'password':
+				case 401:
 					$('#notificacion').text('Contraseña incorrecta.');
 				break;
 
@@ -63,5 +62,7 @@ function enviar(){
 				break;
 			}
 		});
+	} else {
+		$('#notificacion').text('El correo no está registrado.');
 	}
 }

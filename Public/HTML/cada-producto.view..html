@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <title><%= producto.nombre %> | TiendaVirtual</title>
-    <link rel="icon" href="../IMG/icono/tag.png">
-    <link rel="stylesheet" href="../CSS/bootstrap.min.css">
-    <link rel="stylesheet" href="../CSS/estilos_categorias.css">
+    <title>Articulo | TiendaVirtual</title>
+    <link rel="icon" href="../img/icono/tag.png">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../categorias.views/css/estilos_categorias.css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Lobster" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
@@ -28,8 +28,8 @@
                         </button>
 
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <a class="navbar-brand" href="../">
-                                <img src="../IMG/logo/tv_22.png" width="150" height="50" alt="">
+                            <a class="navbar-brand" href="index.view.html">
+                                <img src="../img/logo/tv_22.png" width="150" height="50" alt="">
                             </a>
                             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                                 aria-expanded="false" aria-label="Toggle navigation">
@@ -37,10 +37,10 @@
                             </button>
                             <ul class="navbar-nav mr-3">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="../">Inicio</a>
+                                    <a class="nav-link" href="index.view.html">Inicio</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="../Productos">Productos</a>
+                                    <a class="nav-link" href="productos.view.html">Productos</a>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
@@ -55,101 +55,69 @@
                                     </div>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="../AcercaDe">Acerca De</a>
+                                    <a class="nav-link" href="acercade.view.html">Acerca De</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="../MiCarrito">
-                                        <img src="../IMG/icono/carrito-de-la-compra.png" alt=""> Carrito</a>
+                                    <a class="nav-link" href="carrito.view.html">
+                                        <img src="../img/icono/carrito-de-la-compra.png" alt=""> Carrito</a>
                                 </li>
                             </ul>
                         </div>
                     </div>
                     <!-- Barra de busqueda -->
                     <div class="col-sm-6 col-md-6 col-lg-6 col-xl-3">
-                        <form class="busqueda form-inline" action="../Busqueda" method="get">
-                            <input class="form-control" type="search" placeholder="Buscar Producto" id="buscar" name="buscar" aria-label="Search">
+                        <form class="busqueda form-inline" action="" method="">
+                            <input class="form-control" type="search" placeholder="Buscar Producto" aria-label="Search">
                         </form>
                     </div>
 
                     <!-- Inicio y Registro -->
-                    <% if(typeof nombre === 'undefined') { %>
-                        <div class="inicioregistro col-sm-12 col-md-12 col-lg-12 col-xl-3">
-                            <!-- Button trigger modal -->
-                            <button type="button" class="btn-ingresar btn" data-toggle="modal" data-backdrop="false" data-dismiss="modal" data-target="#ModalCenter">Ingresar</button>
-                            <!-- Modal -->
-                            <div class="modal fade" id="ModalCenter" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="inicioregistro col-sm-12 col-md-12 col-lg-12 col-xl-3">
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn-ingresar btn" data-toggle="modal" data-backdrop="false" data-dismiss="modal" data-target="#ModalCenter">Ingresar</button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="ModalCenter" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h2 class="modal-title" id="ModalCenterTitle">¡Bienvenido!</h2>
+                                        <h2 class="modal-title" id="ModalCenterTitle">Hola!</h2>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
                                     <div class="modal-body">
                                         <p class="titulo">Ingresa tu cuenta aqui</p>
-                                        <small class="text-danger" id="notificacion"></small>
-                                        <form action="javascript:void(0)" method="post" class="formulario" id="form_MiniLogin">
+
+                                        <form action="" method="" class="formulario" id="">
                                             <div class="form-group">
                                                 <label for="">Correo</label>
-                                                <input type="text" class="form-control" placeholder="correo@ejemplo.com" name="correo" id="correo">
+                                                <input type="text" class="form-control" placeholder="correo@ejemplo.com" name="Correo" id="Correo" pattern="[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.-]+\.[a-zA-Z0-9.-]+">
                                             </div>
-                            
+
                                             <div class="form-group mt-3">
                                                 <label for="">Contraseña</label>
-                                                <input type="password" class="form-control" placeholder=" ******** " name="pass" id="pass">
+                                                <input type="password" class="form-control" placeholder="Ejem: 123456789" name="pass" id="pass">
                                             </div>
                                         </form>
-                            
+
                                         <div class="nocuenta">
-                                            <p class="no_cuenta">¿Aún no tienes cuenta? <a href="/Registrarse">Regístrate</a></p>
+                                            <p class="no_cuenta">¿Aun no tienes cuenta?
+                                                <a href="registrate.view.html"> Registrate</a>
+                                            </p>
                                         </div>
                                     </div>
-                            
+
                                     <div class="modal-footer">
                                         <button type="button" class="cerrar btn" data-dismiss="modal">Cerrar</button>
-                                        <button type="button" class="ingresar btn" id="submit">Ingresar</button>
+                                        <button type="button" class="ingresar btn">Ingresar</button>
                                     </div>
-                                </div> 
                                 </div>
                             </div>
-                            <a href="/Registrarse"><button type="button" class="btn-crear btn">Crear una cuenta</button></a>
                         </div>
-                    <% } else { %>
-                        <div class="inicioregistro col-sm-12 col-md-12 col-lg-12 col-xl-3">
-                            <!-- Icono de inicio de sesion -->
-                            <a href="#" class="btn btn-ingresar">
-                                <%= nombre %>
-                                <img src="IMG/icono/user(1).png" alt="">
-                            </a>
-                            
-                            <!-- Button trigger modal -->
-                            <button type="button" class="btn-ingresar btn" data-toggle="modal" data-backdrop="false" data-dismiss="modal"data-target="#ModalCenter">
-                                <!-- Icono de cerrar sesion -->
-                                <img src="IMG/icono/sign-in.png" alt=""> Cerrar sesión
-                            </button>
-                            <!-- Modal -->
-                            <div class="modal fade" id="ModalCenter" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h2 class="modal-title" id="ModalCenterTitle">¿Chao?</h2>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <p class="titulo">¿Seguro que quieres salir?</p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="cerrar btn" data-dismiss="modal">Cancelar</button>
-                                            <button type="button" class="ingresar btn">Cerrar sesión</button>
-                                        </div>
-                                    </div>
-                            </div>
-                            </div>
-                        </div>
-                    <% } %>
+                        <button type="button" class="btn-crear btn">
+                            <a href="registrate.view.html">Crear una cuenta</a>
+                        </button>
+                    </div>
                 </nav>
             </div>
         </div>
@@ -160,24 +128,22 @@
         <div class="container mt-5 mb-3">
             <div class="row justify-content-between">
                 <div class="articulos_title col-12 mt-5 mb-3">
-                    <p class="border-bottom"><%= producto.nombre %></p>
+                    <p class="border-bottom">Articulo que elegiste</p>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-lg-6 border-right">
                     <div class="card">
-                        <img class="card-img-top" src=<%= '../' + producto.imagen %> alt="Card image cap">
+                        <img class="card-img-top" src="img/bg2.jpg" alt="Card image cap">
                     </div>   
                 </div>
     
                 <div class="articulos-body col-lg-6">
-                    <h6><%= producto.nombre %></h6>
-                    <small class="text-muted font-weight-bold"><%= producto.disponible ? '' : 'AGOTADO' %></small>
-                    <p><%= producto.descripcion %></p>
-                    <p class="text-muted"><%= producto.precio %></p>
-                    <button id=<%= 'boton_' + producto.codigo %> class="btn btn-outline-danger agg">Añadir al Carrito</button><br />
-                    <small id=<%= 'alerta_' + producto.codigo %>></small>
+                    <h6>Titulo del Articulo</h6>
+                    <p>Descripcion del articulo</p>
+                    <p class="text-muted">Precio del articulo</p>
+                    <a href="#" class="btn btn-outline-danger">Añadir a carrito</a>
                 </div>
             </div>
         </div>
@@ -198,20 +164,20 @@
             <div class="redes_sociales col-md-4 mt-3">
                 <h6>Redes Sociales</h6>
                 <a href="#">
-                    <img src="../IMG/icono/instagram.png" alt="">
+                    <img src="../img/icono/instagram.png" alt="">
                 </a>
                 <a href="#">
-                    <img src="../IMG/icono/facebook.png" alt="">
+                    <img src="../img/icono/facebook.png" alt="">
                 </a>
                 <a href="#">
-                    <img src="../IMG/icono/twitter.png" alt="">
+                    <img src="../img/icono/twitter.png" alt="">
                 </a>
             </div>
             <!-- Mi cuenta -->
             <div class="col-md-4 mt-3">
                 <h6>Mi cuenta</h6>
-                <a href="/Login">Ingresar</a>
-                <a href="/Registrarse">Crear cuenta</a>
+                <a href="inicio_sesion.view.html">Ingresar</a>
+                <a href="registrate.view.html">Crear cuenta</a>
             </div>
             <!-- Copyright -->
             
@@ -222,9 +188,7 @@
 
     </footer>
 
-    <script src="../JS/jquery.min.js"></script>
-    <script src="../JS/carrito.js"></script>
-    <script src="../JS/login.js"></script>
-    <script src="../JS/bootstrap.min.js"></script>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
 </body>
 </html>

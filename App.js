@@ -42,10 +42,8 @@ app.use((req, res, next) => {
 // ROUTE TO INDEX 
 app.get('/', (req, res) => {
 	if(typeof req.session.correo === 'undefined'){
-		console.log(`[ Carrito Anónimo ] ${JSON.stringify(req.session.carrito)}`);
 		res.render('index');
 	} else {
-		console.log(`[ Carrito Usuario ] ${JSON.stringify(req.session.carrito)}`);
 		res.render('indexSesion', {
 			nombre: req.session.nombre
 		})
@@ -53,32 +51,40 @@ app.get('/', (req, res) => {
 });
 
 app.get('/Productos', (req, res)=>{
-	res.render('productos');
+	res.render('productos', {
+		nombre: req.session.nombre
+	});
 });
 
 app.get('/Busqueda', (req, res)=>{
-	Client.buscarProducto(req.query.buscar).then((rows)=>{
-		let resultado = [];
-		for(let i = 0; i < rows.length; i++){
-			let producto = {
-				codigo: rows[i].codigo,
-				nombre: rows[i].nombre,
-				precio: rows[i].precio,
-				imagen: rows[i].imagen,
-				descripcion: rows[i].descripcion
-			}
+	if(typeof req.query.buscar !== 'undefined'){
+		Client.buscarProducto(req.query.buscar).then((rows)=>{
+			let resultado = [];
+			for(let i = 0; i < rows.length; i++){
+				let producto = {
+					codigo: rows[i].codigo,
+					nombre: rows[i].nombre,
+					precio: rows[i].precio,
+					imagen: rows[i].imagen,
+					descripcion: rows[i].descripcion,
+					disponible: rows[i].cantidad > 0
+				}
 
-			resultado.push(producto);
-		}
-		res.render('busqueda', {
-			error: false,
-			resultado: resultado,
-			busqueda: req.query.buscar.trim()
+				resultado.push(producto);
+			}
+			res.render('busqueda', {
+				error: false,
+				resultado: resultado,
+				busqueda: req.query.buscar.trim(), 
+				nombre: req.session.nombre
+			});
+		}).catch((err)=>{
+			console.log(`[ ERROR ] Error al buscar: ${err}`);
+			res.render('busqueda', { error: true, busqueda: '', nombre: req.session.nombre });
 		});
-	}).catch((err)=>{
-		console.log(`[ ERROR ] Error al buscar: ${err}`);
-		res.render('busqueda', { error: true, busqueda: '' });
-	});
+	} else {
+		res.redirect('/Productos');
+	}
 });
 
 app.get('/Registrarse', (req, res)=>{
@@ -147,19 +153,20 @@ app.post('/Login', (req, res)=>{
 			Client.sincronizarCarrito(req.session.carrito, client.correo).then(()=>{
 				Client.actualizarPedido(client.correo);
 			}).catch((err)=>{});
-			res.send('success');
+			let url = req.header('Referer') || '/';
+			res.send(url);
 		}).catch((err)=>{
 			if(err === 'incorrecta'){
-				res.send('password');
+				res.sendStatus(401);
 			} else if(err === 'no existe') {
-				res.send('email');
+				res.sendStatus(404);
 			} else {
 				console.log(`[ ERROR ] Al iniciar sesión. ${err.message} `);
-				res.send('error');
+				res.sendStatus(500);
 			}
 		});
 	} else {
-		res.send('error');
+		res.sendStatus(500);
 	}
 });
 
@@ -179,13 +186,15 @@ app.get('/MiCarrito', (req, res)=>{
 					precio: articulo.precio,
 					imagen: articulo.imagen,
 					descripcion: articulo.descripcion,
-					cantidad: req.session.carrito[articulo.codigo]
+					cantidad: req.session.carrito[articulo.codigo], 
+					disponible: articulo.cantidad > 0
 				}
 				resultado.push(modelo);
 			}
 			res.render('carrito', { 
 				error: false,
-				Carrito: resultado 
+				Carrito: resultado, 
+				nombre: req.session.nombre
 			});
 		}).catch((err)=>{
 			res.render('carrito', {
@@ -207,27 +216,53 @@ app.get('/MiCarrito', (req, res)=>{
 						precio: articulo.precio,
 						imagen: articulo.imagen,
 						descripcion: articulo.descripcion,
-						cantidad: req.session.carrito[articulo.codigo]
+						cantidad: req.session.carrito[articulo.codigo],
+						disponible: articulo.cantidad > 0
 					}
 					resultado.push(modelo);
 				}
 				res.render('carrito', { 
 					error: false,
-					Carrito: resultado 
+					Carrito: resultado, 
+					nombre: req.session.nombre
 				});
 			}).catch((err)=>{
 				console.log(`[ ERROR ] Ocurrió un error accediendo al carrito. ${err} `);
 				res.render('carrito', {
-					error: true
+					error: true, 
+					nombre: req.session.nombre
 				});
 			});
 		}).catch((err)=>{
 			console.log(`[ ERROR ] Ocurrió un error accediendo al carrito. ${err} `);
 			res.render('carrito', {
-				error: true
+				error: true,
+				nombre: req.session.nombre
 			});
 		});
 	}
+});
+
+app.get('/Producto/:codigo', (req, res)=>{
+	Client.getProducto(req.params.codigo).then((producto)=>{
+		let resultado = {
+			codigo: producto.codigo,
+			nombre: producto.nombre,
+			imagen: producto.imagen,
+			precio: producto.precio,
+			descripcion: producto.descripcion,
+			disponible: producto.cantidad > 0
+		}
+		res.render('detallesProducto', {
+			producto: resultado
+		});
+	}).catch((err)=>{
+		if(err.message !== '404'){
+			console.log(`[ ERROR ] Ocurrió un error consultando un producto. ${err.message} `);
+		}
+		res.render('404');
+	})
+	
 });
 
 // -------     RUTAS DEL EMPLEADO    -------
@@ -256,6 +291,13 @@ app.get('/Admin/NuevoProducto', (req, res)=>{
 		res.render('newProducto');
 	});
 });
+
+app.get('/Admin', (req, res)=>{
+
+});
+
+
+// ------     RUTAS TIPO API      -------
 
 // CARGAR NUEVAS CATEGORÍAS
 app.post('/Admin/NuevaCategoria', (req, res) => {
@@ -538,6 +580,7 @@ app.post('/quitar/:cod', (req, res)=>{
 	}
 });
 
+// OBTENER INFORMACIÓN SOBRE UN PRODUCTO
 app.get('/producto/:producto', (req, res)=>{
 	if(req.params.producto === 'all'){
 		//res.contentType = 'application/json';
@@ -576,6 +619,17 @@ app.get('/producto/:producto', (req, res)=>{
 		}).catch((err)=>{
 			res.sendStatus(404);
 		});
+	}
+});
+
+// CERRAR SESSIÓN
+app.get('/Logout', (req, res)=>{
+	if(typeof req.session.correo !== 'undefined'){
+		req.session.regenerate((err)=>{
+			res.redirect('/');
+		});
+	} else {
+		res.redirect('/');
 	}
 });
 

@@ -6,7 +6,6 @@ const files = require('./Files');
 module.exports.postModel = (model) => {
 	return new Promise(
 		(resolve, reject) => {
-			model.publico = true;
 			database.Modelo.create(model).then((row)=>{
 				console.log(`[ ÉXITO ] Modelo ${row.codigo}-${row.nombre} creado.`);
 				resolve(row);
