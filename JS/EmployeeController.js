@@ -140,3 +140,36 @@ module.exports.agregarModelo = (modelo, file) => {
 		});	
 	});
 };
+
+module.exports.getCategorias = () =>{
+	return new Promise((resolve, reject)=>{
+		//Select * from categorias;
+		database.Categoria.findAll().then((rows)=>{
+			console.log(`[ EXITO ] Se consultaron ${rows.length} categorías. `)
+			resolve(rows);
+		}).catch((err)=>{
+			console.log(`[ ERROR ] No se pudo consultar las categorías. ${err.message} `);
+			reject();
+		});
+	});
+};
+
+module.exports.pertenece = (modelo, categoria) =>{
+	if(typeof modelo === 'undefined' || typeof categoria === 'undefined'
+	   || modelo.length === 0 || categoria.length === 0){
+		//Si no se ingresan un nombre o una categoría.
+		return Promise.reject(new Error('Modelo o categoría incorrectos.'));
+	} else {
+		return new Promise((resolve, reject)=>{
+			let row = {
+				modeloID: modelo,
+				categoriaID: categoria
+			}
+			database.Pertenece.create(row).then((row)=>{
+				resolve();
+			}).catch((err)=>{
+				reject(err);
+			});
+		});
+	}
+}

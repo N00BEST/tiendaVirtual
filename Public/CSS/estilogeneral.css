@@ -1,0 +1,44 @@
+header{
+	background-color: #230742;
+	color:white;
+}
+
+nav a{
+	background-color: #230742 !important;
+	border-color: #230742 !important;
+	color: white !important;
+}
+
+.boton{
+	background: #230742 !important;
+	border-color: #230742 !important;
+	color: white !important;
+}
+
+p{
+	text-align: justify;
+}
+
+h2{
+	font-size: 25px !important;
+}
+
+h3{
+	font-size: 22px !important;
+}
+
+h4{
+	font-size: 20px !important;
+}
+
+.cursor{
+	cursor:pointer; 
+	cursor: hand;
+}
+
+.table-wrapper-scroll-y{
+  display: block;
+  max-height: 350px;
+  overflow-y: auto;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+}

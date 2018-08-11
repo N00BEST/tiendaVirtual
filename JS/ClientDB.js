@@ -302,3 +302,4 @@ module.exports.Talla = Talla;
 module.exports.Inventario = Inventario;
 module.exports.Pedido = Pedido;
 module.exports.Orden = Orden;
+module.exports.DB = database;

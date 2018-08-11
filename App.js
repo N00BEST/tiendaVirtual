@@ -14,6 +14,8 @@ const __PORT = process.env.PORT || 8000;
 
 // View Engine
 app.set('view engine', 'ejs');
+// Routes Case Sentive
+app.set('case sensitive routing', true);
 
 // Storage Engine to Uploads
 const storage = multer.diskStorage({
@@ -30,57 +32,22 @@ app.use(session({ secret: files.genRandomName(20), saveUninitialized: true, resa
 // Public folder with the static documents
 app.use(express.static(__dirname + '/Public/'));
 
+// Inicializar carritos anónimos
+app.use((req, res, next) => {
+	req.session.carrito = typeof req.session.carrito === 'undefined' ? { productos: [] } : req.session.carrito;
+	next();
+});
+
 // -------     RUTAS DEL CLIENTE     -------
 // ROUTE TO INDEX 
 app.get('/', (req, res) => {
 	if(typeof req.session.correo === 'undefined'){
-		console.log('USUARIO SIN CUENTA');
+		console.log(`[ Carrito Anónimo ] ${JSON.stringify(req.session.carrito)}`);
 		res.render('index');
 	} else {
-		console.log('USUARIO CON CUENTA');
 		res.render('indexSesion', {
 			nombre: req.session.nombre
 		})
-	}
-});
-
-app.get('/Producto/:producto', (req, res)=>{
-	if(req.params.producto === 'all'){
-		//res.contentType = 'application/json';
-		Client.getProductos().then((row)=>{
-			let resultado = [];
-			row.forEach(p => {
-				let obj = {
-					codigo: p.codigo, 
-					nombre: p.nombre, 
-					precio: p.precio, 
-					disponible: p.cantidad > 0, 
-					imagen: p.imagen, 
-					descripcion: p.descripcion
-				};
-				resultado.push(obj);
-			});
-			res.send(resultado);
-		}).catch((err)=>{
-			res.send(err);
-		});
-	} else {
-		Client.getProducto(req.params.producto).then((producto)=>{
-			if(producto.publico){
-				let resultado = {
-					nombre: producto.nombre,
-					imagen: '../' + producto.imagen,
-					descripcion: producto.descripcion,
-					precio: producto.precio,
-					disponible: producto.cantidad > 0
-				};
-				res.render('detallesProducto', resultado);
-			} else {
-				res.render('404');
-			}
-		}).catch((err)=>{
-			res.render('404');
-		});
 	}
 });
 
@@ -191,16 +158,69 @@ app.post('/Login', (req, res)=>{
 	}
 });
 
-// -------     RUTAS DEL EMPLEADO    -------
+app.get('/MiCarrito', (req, res)=>{
+	if(typeof req.session.correo === 'undefined'){
+		//Usuario que no ha iniciado sesión.
+		//Recuperar artículos desde la base de datos, armar resultado
+		//Desplegar resultado en vista
+		let resultado = [];
+		Client.getCarrito(req.session.carrito.productos).then((rows)=>{
+			let tope = rows.length;
+			for(let i = 0; i < tope; i++) {
+				let articulo = rows.shift();
+				let modelo = {
+					codigo: articulo.codigo, 
+					nombre: articulo.nombre,
+					precio: articulo.precio,
+					imagen: articulo.imagen,
+					descripcion: articulo.descripcion,
+					cantidad: req.session.carrito[articulo.codigo]
+				}
+				resultado.push(modelo);
+			}
+			res.render('carrito', { 
+				error: false,
+				Carrito: resultado 
+			});
+		}).catch((err)=>{
+			res.render('carrito', {
+				error: true
+			});
+		});
+	} else {
+		//Usuario que ya inició sesión. Caso fácil
+	}
+});
 
-// ------- INICIO DE NUEVA CATEGORIA -------
+// -------     RUTAS DEL EMPLEADO    -------
 
 app.get('/nuevaCategoria', (req, res)=>{
 	//res.sendFile(__dirname + '/Public/HTML/newCategoria.html');
 	res.render('newCategoria');
 });
 
-app.post('/nuevaCategoria', (req, res) => {
+app.get('/Admin/NuevoProducto', (req, res)=>{
+	Employee.getCategorias().then((rows)=>{
+		let resultado = {
+			categorias: [],
+			error: false
+		}
+		let tope = rows.length;
+		for(let i = 0; i < tope; i++){
+			let categoria = rows.shift();
+			let nueva = {
+				id: categoria.ID
+			}
+			resultado.categorias.push(nueva);
+		}
+		res.render('newProducto', resultado);
+	}).catch(()=>{
+		res.render('newProducto');
+	});
+});
+
+// CARGAR NUEVAS CATEGORÍAS
+app.post('/Admin/NuevaCategoria', (req, res) => {
 	let nombre = req.body.nombre.trim();
 	let descripcion = req.body.descripcion.trim();
 	categoria = {
@@ -214,16 +234,8 @@ app.post('/nuevaCategoria', (req, res) => {
 	});
 });
 
-// -------   FIN DE NUEVA CATEGORIA  -------
-
-// ------- INICIO DE NUEVO PRODUCTO -------
-
-app.get('/nuevoProducto', (req, res)=>{
-	//res.sendFile(__dirname + '/Public/HTML/newProducto.html');
-	res.render('newProducto');
-});
-
-app.post('/nuevoProducto', (req, res)=>{
+// CARGAR NUEVOS PRODUCTOS
+app.post('/Admin/NuevoProducto', (req, res)=>{
 	const upload = multer({
 		storage: storage,
 		limits: {
@@ -240,13 +252,15 @@ app.post('/nuevoProducto', (req, res)=>{
 			descripcion: req.body.descripcion,
 			imagen: 'default.jpg',
 			precio: req.body.precio,
-			cantidad: req.body.cantidad
+			cantidad: req.body.cantidad,
+			descuento: req.body.descuento,
+			publico: req.body.visibilidad
 		};
 		if(err) {
 			err = err == 'Error: File too large' ? 'La imagen es muy pesada' : err;
 			let obj = {
-				clase: 'danger', 
-				err: 'imagen',
+				clase: 'alert-danger', 
+				error: true,
 				msg: err
 			}
 			res.render('newProducto', obj);
@@ -254,34 +268,52 @@ app.post('/nuevoProducto', (req, res)=>{
 			//VALIDAR CAMPOS DEL MODELO
 			let obj = {
 				clase: '', 
-				modelo: modelo,
+				producto: modelo,
 				msg: '', 
-				err: null
+				error: false
 			}
 			let valido = true;
 			valido = modelo.codigo.length > 0 && modelo.nombre.length > 0 && !isNaN(modelo.precio) && !isNaN(modelo.cantidad) 
+			&& !isNaN(modelo.descuento) && modelo.descuento >= 0 && (visibilidad === 'publico' || visibilidad === 'privado')
 			&& modelo.cantidad >= 0 && modelo.precio >= 0 && modelo.cantidad.indexOf('.') === -1;
 			if(valido){
 				modelo.cantidad = modelo.cantidad === '' ? 0 : modelo.cantidad;
 				modelo.precio = modelo.precio === '' ? 0.0 : modelo.precio;
-				Employee.agregarModelo(modelo, req.file).then(()=>{
+				Employee.agregarModelo(modelo, req.file).then((row)=>{
 					obj = {
-						clase: 'success',
-						modelo: modelo
+						producto: modelo
 					};
+
+					Employee.getCategorias().then((categorias)=>{
+						let tope = categorias.length;
+						for(let i = 0; i < tope; i++) {
+							let id = categorias.shift().ID;
+							if(typeof req.body[id] !== 'undefined'){
+								Employee.pertenece(row.ID, id).then(()=>{
+									console.log(`[ EXITO ] ${row.ID} agregado a ${id} `);
+								}).catch((err)=>{
+									console.log(`[ ERROR ] No se pudo asociar ${row.ID} con ${id}. ${err.message} `);
+								})
+							}
+						}
+					}).catch((err)=>{});
+					console.log(`[ EXITO ] Agregado el modelo ${modelo.codigo}-${modelo.nombre} `);
 					res.render('newProducto', obj);
 				}).catch((err)=>{
 					let msg = '';
 					if(err != 'duplicado') {
-						msg = err;
-						err = 'Error';
+						msg = 'Error: El código ya está registrado.';
+						err = true;
+					} else{
+						msg = 'Error: No se pudo agregar el producto.';
+						err = true;
 					}
 					obj = {
-						clase: 'danger', 
-						err: err,
+						error: err,
 						msg: msg,
-						modelo: modelo
+						producto: modelo
 					};
+					console.log(`[ ERROR ] Agregando producto: ${err.message} `);
 					res.render('newProducto', obj);
 				});
 			} else {
@@ -296,8 +328,6 @@ app.post('/nuevoProducto', (req, res)=>{
 		}
 	});
 });
-
-// -------   FIN DE NUEVO PRODUCTO  -------
 
 // VALIDAR SI UN CÓDIGO YA ESTÁ REGISTRADO 
 app.post('/check/:cod', (req, res)=> {
@@ -345,6 +375,164 @@ app.get('/exists/:string', (req, res)=>{
 	}
 });
 
+// AGREGAR UN PRODUCTO AL CARRITO
+app.post('/agregar/:cod', (req, res)=>{
+	let codigo = req.params.cod;
+	if(typeof req.session.correo === 'undefined'){
+		//Si es un usuario anónimo
+		if(typeof req.session.carrito[codigo] === 'undefined'){
+			Client.alCarrito(codigo).then(()=>{
+				req.session.carrito[codigo] = 1;
+				req.session.carrito.productos.push(codigo);
+				res.send(`${req.session.carrito[codigo]}`);
+			}).catch((err)=>{
+				switch(err.message){
+					case '404':
+						res.sendStatus(404);
+					break;
+
+					case 'no':
+						res.sendStatus(503);
+					break;
+
+					default:
+						res.sendStatus(500);
+					break;
+				}
+			})
+		} else {
+			req.session.carrito[codigo]++;
+			res.send(`${req.session.carrito[codigo]}`);
+		}
+	} else {
+		//Si el usuario está loggeado
+		Client.alCarrito(codigo, req.session.correo).then((cantidad)=>{
+			//Si se pudo agregar el artículo al carrito
+			//Actualizar cantidad del artículo en el carrito
+			req.session.carrito[codigo] = cantidad;
+			res.send(`${req.session.carrito[codigo]}`);
+		}).catch((err)=>{
+			switch(err){
+				case '404': 
+					//Si el artículo a agregar no existe.
+					res.sendStatus(404);
+				break;
+
+				case 'no':
+					//Si el artículo no está disponible para agregarlo
+					res.sendStatus(503);
+				break;
+
+				default: 
+					//Si ocurrió algún error interno del servidor
+					console.log(`[ ERROR ] En agregar al carrito con usuario loggeado ${err}`);
+					res.sendStatus(500);
+				break;
+			}
+		});
+	}
+	
+});
+
+// QUITAR UN PRODUCTO DEL CARRITO
+app.post('/quitar/:cod', (req, res)=>{
+	let codigo = req.params.cod;
+
+	if(typeof req.session.carrito[codigo] === 'undefined' || req.session.carrito[codigo] === 0) {
+		//Si el usuario no tiene ese producto en el carrito o tiene 0 artículos de ese producto
+		//Retornas servicio no disponible
+		res.sendStatus(503);
+	} else if(typeof req.session.correo === 'undefined'){
+		//Si es un usuario anónimo
+		Client.quitarCarrito(codigo).then(()=>{
+			//Si se pudo retirar el artículo del carrito
+			let response = req.session.carrito[codigo] - 1;
+			if(response === 0){
+				req.session.carrito[codigo] = undefined;
+				let index = req.session.carrito.productos.indexOf(codigo);
+				if(index > -1) {
+					req.session.carrito.productos.splice(index, 1);
+				} 
+			} else {
+				req.session.carrito[codigo] = response;
+			}
+			res.send(`${response}`);
+		}).catch((err)=>{
+			switch(err.message){
+				case '404': 
+					//Si el producto no existe
+					res.sendStatus(404);
+					break;
+				default: 
+					//Si ocurrió algún error del servidor
+					console.log(`[ ERROR ] Al quitar artículo de carro anónimo: ${err.message} `);
+					res.sendStatus(500);
+					break;
+			}
+		});
+	} else {
+		//Si es un usuario loggeado
+		Cliente.quitarCarrito(codigo, req.session.correo).then((cantidad)=>{
+			//Si se pudo quitar el artículo del carrito.
+			//Actualizamos el la cantidad de artículos del carrito
+			req.session.carrito[codigo] = cantidad;
+			res.sendStatus(200);
+		}).else((err)=>{
+			switch(err){
+				case '404':
+					//Si el artículo a retirar no existe
+					res.sendStatus(404);
+				break;
+
+				default: 
+					//Si ocurrió algún error interno
+					res.sendStatus(500);
+				break;
+			}
+		});
+	}
+});
+
+app.get('/producto/:producto', (req, res)=>{
+	if(req.params.producto === 'all'){
+		//res.contentType = 'application/json';
+		Client.getProductos().then((row)=>{
+			let resultado = [];
+			row.forEach(p => {
+				let obj = {
+					codigo: p.codigo, 
+					nombre: p.nombre, 
+					precio: p.precio, 
+					disponible: p.cantidad > 0, 
+					imagen: p.imagen, 
+					descripcion: p.descripcion
+				};
+				resultado.push(obj);
+			});
+			res.send(resultado);
+		}).catch((err)=>{
+			res.send(err);
+		});
+	} else {
+		Client.getProducto(req.params.producto).then((producto)=>{
+			if(producto.publico){
+				let resultado = {
+					codigo: producto.codigo,
+					nombre: producto.nombre,
+					imagen: producto.imagen,
+					descripcion: producto.descripcion,
+					precio: producto.precio,
+					disponible: producto.cantidad > 0
+				};
+				res.send(resultado);
+			} else {
+				res.sendStatus(404);
+			}
+		}).catch((err)=>{
+			res.sendStatus(404);
+		});
+	}
+});
 
 
 
@@ -357,26 +545,18 @@ app.get('/test', (req, res)=>{
 });
 
 app.post('/test', (req, res)=>{
-	if(typeof req.body.user !== 'undefined' && req.body.user.toLowerCase() === 'noobest'){
-		if(req.body.password === '1234'){
-			console.log('Aquí 1');
-			req.session.user = "NOOBEST";
-			res.redirect('/test');
-		} else {
-			console.log('Aquí 2');
-			res.contentType('text/plain');
-			res.send('Contraseña incorrecta');
-		}
-	} else {
-		console.log('Aquí 3 ' + req.body.user + ' ' + req.body.password);
-		res.redirect('/test');
-	}
+	console.log(req.body.namCat);
+	res.send(req.body.nombre);
 });
 
 // DESPLEGAR PÁGINA DE 404
 app.get('*', (req, res)=>{
 	res.render('404');
 });
+
+app.post('*', (req, res)=>{
+	res.sendStatus(404);
+})
 
 app.listen(__PORT, ()=>{
 	console.log(`Server running on port ${__PORT}`);

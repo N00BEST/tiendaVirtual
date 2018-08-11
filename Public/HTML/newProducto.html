@@ -1,213 +1,154 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<title>Titulo de la web</title>
-<meta charset="utf-8" />
-<link rel="stylesheet" href="CSS/Crear.css" />
+<meta charset="UTF-8">
+    <title>Pagina - Intranet - Crear Producto</title>
+    <link rel="stylesheet" href="estilos/estilogeneral.css">
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-<script src="JS/newProducto.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 </head>
+
 <body>
     <header>
-    	<div class="container-fluid">
-    		<p>Nombre empleado</p>
-    	</div>
-    	<div class="container page-header">
-  			<h1>Titulo</h1>
-		</div>
-        
+        <div class="container">
+            <nav class="navbar navbar-expand-md navbar-dark cursor">
+                <a class="navbar-brand" href="Vista-Escritorio.html">NombreTitulo</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">Productos</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="Vista-CrearProducto.html">Crear</a>
+                                    <a class="dropdown-item" href="Vista-BuscarProducto.html">Modificar</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">Categorías</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="Vista-CrearCategoria.html">Crear</a>
+                                    <a class="dropdown-item" href="Vista-BuscarCategoria.html">Modificar</a>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="Vista-Pedido.html">Pedidos</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">Empleados</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="Vista-CrearEmpleado.html">Crear</a>
+                                    <a class="dropdown-item" href="Vista-BuscarEmpleado.html">Modificar</a>
+                                </div>
+                            </li> 
+                        </ul>
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">NombreEmpleado</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" role="button" href="#">Cerrar Sesión</a>
+                                </div>
+                            </li>                         
+                        </ul>
+                    </div>  
+            </nav>
+        </div>  
     </header>
-    
+    <br>
 
-    <div>
-        <h1>Prueba</h1>
-        <img src="">
-    </div>
-
-   <div class="container">
-    <div id="notificacion"></div>
-    <form action="javascript:void(0)" method="post" enctype="multipart/form-data">
-            <div class="form-group">
-                <h2>Crear producto</h2>
-            </div>
-            <div class="form-group">
-                <label for="cod">Código de modelo:</label>
-                <input class="form-control form-control-sm" type="text" name="cod" id="codigo" maxlength="20">
-            </div>
-            <div class="form-group">
-                <label for="nomelo">Nombre:</label>
-                <input class="form-control form-control-sm" type="text" name="nombre" id="nombre"  maxlength="100">
-            </div>    
-            <div class="form-group">
-                <label for="descripcion">Descripción:</label>
-                <input class="form-control form-control-sm" type="textarea" name="descr" id="descripcion"  maxlength="500">
-            </div>
-            <div class="form-group">
-                <label for="img">Imagen:</label>
-                <input class="form-control form-control-sm form-control-file border" type="file" accept="image/*" name="imagen" id="imagen">
-            </div>
-            <div class="form-group">
-                <label for="precio">Precio:</label>
-                <input class="form-control form-control-sm" type="text" name="precio" id="precio" value="0">
-            </div>
-            <div class="form-group">
-                <label for="cantidad">Cantidad total:</label>
-                <input class="form-control form-control-sm" type="text" name="cantidad" id="cantidad" value="0">
-            </div>
-            <div class="form-group">
-                <div class="panel-group">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <p class="panel-title">
-                                <a data-toggle="collapse" href="#detalles">Detalles:</a>
-                            </p>
-                        </div>
-                        <div id="detalles" class="panel-collapse collapse show">
-                            <div class="panel-body">
-                                <table>
-                                    <tr>
-                                        <td>Colores:</td>
-                                        <td>Tallas:</td> 
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="negro"> Negro</label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="XXXS"> XXXS</label>
-                                            </div>
-                                        </td> 
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="blanco"> Blanco</label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="XXS"> XXS</label>
-                                            </div>
-                                        </td> 
-                                    </tr> 
-                                    <tr>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="azul"> Azul</label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="XS"> XS</label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="amarillo"> Amarillo</label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="S"> S</label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="rojo"> Rojo</label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="m"> M</label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="morado"> Morado</label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="L"> L</label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="verde"> Verde</label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="XL"> XL</label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="anaranjado"> Anaranjado</label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="XXL"> XXL</label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="gris"> Gris</label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="XXXL"> XXXL</label>
-                                            </di>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="marron"> Marron</label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="crema"> Crema</label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    </table>
-                            </div>
-                        </div>
+    <div class="container contenido">
+        <div class="row">
+        <div class="col-sm-2 col-md-3"></div>
+        <div class="col-xs-12 col-sm-8 col-md-6">
+            <div class="container">
+                <form action="https://www.google.com" methot="get">
+                    <div class="form-group">
+                        <h2>Crear producto</h2>
                     </div>
-                </div>
-        </div>
-            
-            <div class="form-group">
-                <input class="boton" type="submit" value="Aceptar" id="submit">
+                    <div class="form-group">
+                        <label for="cod">Código de modelo:</label>
+                        <input class="form-control form-control-sm" type="text" name="cod" id="cod" maxlength="20" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nomelo">Nombre:</label>
+                        <input class="form-control form-control-sm" type="text" name="nombre" id="nombre"  maxlength="100" required>
+                    </div>    
+                    <div class="form-group">
+                        <label for="descripcion">Descripción:</label>
+                        <input class="form-control form-control-sm" type="textarea" name="descr" id="descripcion"  maxlength="500">
+                    </div>
+                    <div class="form-group">
+                        <label for="img">Imagen:</label>
+                        <input class="form-control form-control-sm form-control-file border" type="file" name="img" id="img">
+                    </div>
+                    <div class="form-group">
+                        <label for="precio">Precio:</label>
+                        <input class="form-control form-control-sm" type="text" name="precio" id="precio">
+                    </div>
+                    <div class="form-group">
+                        <label for="cantidad">Cantidad total:</label>
+                        <input class="form-control form-control-sm" type="text" name="cantidad" id="cantidad" >
+                    </div>
+                    <div class="form-group">
+                        <label for="estadoproducto">Estado:</label>
+                        <select class="form-control" id="estadoproducto">
+                            <option value="publicado">Publicar</option>
+                            <option value="oculto">No publicar</option> 
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="estadoprpducto">Descuento:</label>
+                        <input class="form-control form-control-sm" type="text" name="descuento" id="descuento">
+                    </div> 
+                    <div class="form-group">
+                    <p>Categoría:</p>
+                    <input class="form-control" id="busqueda" type="text" placeholder="Busqueda">
+                    <br>
+                    <div class="table-wrapper-scroll-y">
+                    <table class="table table-sm table-hover">
+                        <thead>
+                          <tr>
+                            <th></th>
+                            <th>Categoría</th>
+                          </tr>
+                        </thead>
+                        <tbody id="tablaCategoria">
+                          <tr>
+                            <td>
+                                <div class="form-check-inline">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" value="opcioncategoria">
+                                    </label>
+                                </div>
+                            </td>
+                            <td>NombreCategoria</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    </div>       
+                    <div class="form-group">
+                        <input class="btn btn-info boton" type="submit" value="Aceptar">
+                    </div>
+                </form>
+                <script>
+                        $(document).ready(function(){
+                          $("#busqueda").on("keyup", function() {
+                            var value = $(this).val().toLowerCase();
+                            $("#tablaCategoria tr").filter(function() {
+                              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                            });
+                          });
+                        });
+                        </script>
             </div>
-    </form>
+        </div>
+    <div class="col-xs-0 col-sm-2 col-md-3"></div>
+    </div>
 </div>
-    
-    
 </body>
 </html>

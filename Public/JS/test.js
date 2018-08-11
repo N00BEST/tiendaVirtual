@@ -1,6 +1,8 @@
 $(document).ready(()=>{
-	$('#boton').click(()=>{
-		console.log('Funciona?');
-		window.location.href = '../';
+	$('#boton').click((e)=>{
+		console.log($(e.target).attr('id'));
 	});
+	console.log('Documento cargado');
 });
+
+var opt = 2;

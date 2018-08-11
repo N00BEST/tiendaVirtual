@@ -4,19 +4,27 @@ $(document).ready(()=>{
 	$('#nombre').on('change', checkNombre);
 	$('#precio').on('change', checkPrecio);
 	$('#cantidad').on('change', checkCantidad);
+	$('#visibilidad').on('change', checkVisibilidad);
+	$('#imagen').on('change', checkImagen);
+	$('#descuento').on('change', checkDescuento);
+	$('#submit').on('click', submit);
 });
 
 var __CODIGO = false;
 var __NOMBRE = false;
 var __PRECIO = true;
 var __CANTIDAD = true;
+var __DESCUENTO = true;
+var __IMAGEN = true;
 
 function submit(event) {
-	checkCodigo(null);
-	checkNombre(null);
-	checkCantidad(null);
-	checkPrecio(null);
-	if(!(__CODIGO && __NOMBRE && __PRECIO && __CANTIDAD)) {
+	checkCodigo();
+	checkNombre();
+	checkCantidad();
+	checkPrecio();
+	checkDescuento();
+	checkImagen();
+	if(!(__CODIGO && __NOMBRE && __PRECIO && __CANTIDAD && __DESCUENTO && __IMAGEN)) {
 		event.preventDefault();
 		$('#notificacion').empty(); 
 		$('#notificacion').addClass('alert-danger'); 
@@ -85,6 +93,10 @@ function checkPrecio(event) {
 				__PRECIO = true;
 			}
 		}
+	} else {
+		$('#precio').removeClass('is-invalid');
+		$('#alerta_precio').text('');
+		__PRECIO = true;
 	}
 }
 
@@ -106,5 +118,63 @@ function checkCantidad(event) {
 				__CANTIDAD = true;
 			}
 		}
+	} else {
+		$('#precio').removeClass('is-invalid');
+		$('#alerta_precio').text('');
+		__PRECIO = true;
+	}
+}
+
+function checkVisibilidad(event) {
+	let value = $('#visibilidad').val();
+	if(value === 'privado'){
+		setTimeout(()=>{$('#alerta_visibilidad').text('El producto no podrá ser visualizado por los clientes.');}, 200);
+	} else {
+		setTimeout(()=>{$('#alerta_visibilidad').text('Los clientes podrán ver el producto.');}, 200);
+	}
+}
+
+function checkImagen(event) {
+	let imagen = $('#imagen')[0].files[0];
+
+	if(typeof imagen !== 'undefined'){
+		$('#notificacionImagen').text(imagen.name);
+		if(imagen.size > 1 * 1000000){
+			$('#alerta_imagen').text('Error: La imagen es demasiado pesada. El límite es 1 MB');
+			__IMAGEN = false;
+		} else {
+			if(!/(jpeg|jpg|png|gif)/i.test(imagen.type)){
+				$('#alerta_imagen').text('Error: Sólo puede subir imágenes.');
+				__IMAGEN = false;
+			} else {
+				$('#alerta_imagen').text('');
+				__IMAGEN = true;
+			}
+		}
+	}
+}
+
+function checkDescuento(event) {
+	let descuento = $('#descuento').val();
+	if(descuento.length > 0){
+		if(isNaN(descuento)){
+			$('#descuento').addClass('is-invalid');
+			$('#alerta_descuento').text('El descuento debe ser un número real.');
+			__DESCUENTO = false;
+		} else {
+			if(descuento < 0){
+				$('#descuento').addClass('is-invalid');
+				$('#alerta_descuento').text('El descuento debe ser mayor a 0.00');
+				__DESCUENTO = false;
+			} else {
+				$('#descuento').removeClass('is-invalid');
+				$('#alerta_descuento').text('');
+				__DESCUENTO = true;
+			}
+		}
+	} else {
+		$('#descuento').removeClass('is-invalid');
+		$('#alerta_descuento').text('');
+		__DESCUENTO = true;
 	}
 }

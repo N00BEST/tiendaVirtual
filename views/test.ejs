@@ -12,7 +12,14 @@
 		<script src="JS/test.js"></script>
 	</head>
 	<body>
-		<h1>Welcome to the super-secret test page</h1>
-		<button id="boton">Botón</button>
+		<form action="/test" method="post">
+			<input type="text" id="nombre" name="nombre" placeholder="nombre"><br />
+			<div class="form-check-inline">
+				<label class="form-check-label">
+					<input type="checkbox" class="form-check-input" name="namCat" id="idCategoria" value="valCat">
+				</label>
+			</div>
+			<input type="submit" value="Enviar">
+		</form>
 	</body>
 </html>

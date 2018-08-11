@@ -1,5 +1,5 @@
 $(window).scroll(desplegarProducto);
-$.get('http://localhost:8000/Producto/all', (response) => {
+$.get('http://localhost:8000/producto/all', (response) => {
 	Productos = response;
 	desplegarProducto();
 });
@@ -21,11 +21,14 @@ function desplegarProducto(){
 				let descripcion = document.createElement('p');
 				let precio = document.createElement('p');
 				let verMas = document.createElement('a');
+				let a = document.createElement('a');
+				let boton = document.createElement('button');
+				let agotado = document.createElement('small');
+				let notificacion = document.createElement('small');
 
 				card.className = "card";
 				card.style = "width: 18rem;";
 				card.id = modelo.codigo;
-				card.href = "/Producto/" + modelo.codigo;
 
 				imagen.className = "card-img-top";
 				imagen.src = modelo.imagen;
@@ -36,6 +39,9 @@ function desplegarProducto(){
 				titulo.className = "card-title";
 				titulo.innerText = modelo.nombre;
 
+				agotado.innerText = modelo.disponible ? '' : 'AGOTADO';
+				agotado.className = 'text-secondary';
+
 				descripcion.className = "card-text text-body";
 				descripcion.innerText = modelo.descripcion;
 
@@ -45,12 +51,23 @@ function desplegarProducto(){
 				verMas.href = '/Producto/' + modelo.codigo;
 				verMas.style = ' text-decoration: none !important;';
 
-				$(body).append(titulo, descripcion, precio);
-				$(card).append(imagen, body);
-				$(verMas).append(card);
-				$('#Productos').append(verMas);
+				a.href = '/Producto/' + modelo.codigo;
+				a.style = ' text-decoration: none !important;';
+
+				boton.id = 'boton_' + modelo.codigo;
+				boton.className = 'btn btn-danger agg';
+				boton.innerText = 'Agregar a Carrito';
+
+				notificacion.id='alerta_' + modelo.codigo;
+
+				$(verMas).append(titulo, agotado, descripcion, precio);
+				$(body).append(verMas, boton, document.createElement('br'), notificacion);
+				$(a).append(imagen);
+				$(card).append(a, body);
+				$('#Productos').append(card);
 
 			}
+			iniciarAgregar();
 		}
 	}
 

@@ -1,224 +1,187 @@
+<% producto = typeof producto === 'undefined' ? {} : producto; %>
+<% categorias = typeof categorias === 'undefined' ? {} : categorias %>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<title>Titulo de la web</title>
-<meta charset="utf-8" />
-<link rel="stylesheet" href="CSS/Crear.css" />
+<meta charset="UTF-8">
+    <title>Pagina - Intranet - Crear Producto</title>
+    <link rel="stylesheet" href="../CSS/estilogeneral.css">
 
-<link rel="stylesheet" href="CSS/bootstrap1.min.css">
-<script src="JS/jquery.min.js"></script>
-<script src="JS/popper.min.js"></script>
-<script src="JS/bootstrap1.min.js"></script>
-<script src="JS/newProducto.js"></script>
+    <link rel="stylesheet" href="../CSS/bootstrap1.min.css">
+    <script src="../JS/jquery.min.js"></script>
+    <script src="../JS/popper.min.js"></script>
+    <script src="../JS/bootstrap1.min.js"></script>
+    <script src="../JS/newProducto.js"></script>
 </head>
+
 <body>
     <header>
-    	<div class="container-fluid">
-    		<p>Nombre empleado</p>
-    	</div>
-    	<div class="container page-header">
-  			<h1>Titulo</h1>
-		</div>
-        
+        <div class="container">
+            <nav class="navbar navbar-expand-md navbar-dark cursor">
+                <a class="navbar-brand" href="/Admin/Principal">NombreTitulo</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">Productos</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="/Admin/NuevoProducto">Crear</a>
+                                    <a class="dropdown-item" href="/Admin/Productos">Modificar</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">Categorías</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="/Admin/NuevaCategoria">Crear</a>
+                                    <a class="dropdown-item" href="/Admin/Categorias">Modificar</a>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Admin/Pedidos">Pedidos</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">Empleados</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="/Admin/NuevoEmpleado">Crear</a>
+                                    <a class="dropdown-item" href="/Admin/Empleados">Modificar</a>
+                                </div>
+                            </li> 
+                        </ul>
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">NombreEmpleado</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" role="button" href="#">Cerrar Sesión</a>
+                                </div>
+                            </li>                         
+                        </ul>
+                    </div>  
+            </nav>
+        </div>  
     </header>
+    <br>
 
-   <div class="container">
-    <div id="notificacion" class="alert alert-<%= typeof clase != 'undefined' ? clase : ''%> text-center" >
-        <%  if(typeof clase != 'undefined') {
-                if(clase === 'success') { %>
-                    El producto <strong><%= modelo.codigo + '-' + modelo.nombre%></strong> fue agregado <strong>éxitosamente</strong>
-                <% } else if(err === 'duplicado') { console.log(JSON.stringify(modelo));%>
-                    <strong>Error:</strong> El código <strong><%= modelo.codigo %></strong> ya está registrado.
-                <% } else if(err === 'imagen' || err === 'invalido'){ %>
-                    <strong>Error:</strong> <%= msg %>
-                <% } else { %>
-                    <strong>Error:</strong> No se ha podido registrar el producto.
-                <% }
-            } 
-            var clase = ''; %>
-    </div>
-    <form action="../nuevoProducto" method="post" enctype="multipart/form-data" id="form_NuevoProducto">
-            <div class="form-group">
-                <h2>Crear producto</h2><small class='text-secondary'> * Campos obligatorios.</small>
-            </div>
-            <div class="form-group">
-                <label for="cod"><a class='text-secondary'>*</a>Código de modelo:</label>
-                <input class="form-control form-control-sm" type="text" name="codigo" id="codigo" maxlength="20" value="<%= clase === 'danger' && typeof modelo != 'undefined' ? modelo.codigo : ''%>">
-                <small id='alerta_codigo' class='text-danger'></small>
-            </div>
-            <div class="form-group">
-                <label for="nomelo"><a class='text-secondary'>*</a>Nombre:</label>
-                <input class="form-control form-control-sm" type="text" name="nombre" id="nombre"  maxlength="100" value="<%= clase === 'danger' && typeof nmodelo != 'undefined' ? modelo.nombre : ''%>">
-                <small id='alerta_nombre' class='text-danger'></small>
-            </div>    
-            <div class="form-group">
-                <label for="descripcion">Descripción:</label>
-                <textarea class="form-control form-control-sm" name="descripcion" id="descripcion"  maxlength="500" value="<%= clase === 'danger' && typeof modelo != 'undefined' ? modelo.descripcion : ''%>"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="img">Imagen:</label>
-                <input class="form-control form-control-sm form-control-file border" type="file" accept="image/*" name="imagen" id="imagen">
-            </div>
-            <div class="form-group">
-                <label for="precio">Precio:</label>
-                <input class="form-control form-control-sm text-right" type="text" name="precio" id="precio" value="<%= clase === 'danger' && typeof modelo != 'undefined' ? modelo.precio : ''%>" placeholder='0.00'>
-                <small id='alerta_precio' class='text-danger'></small>
-            </div>
-            <div class="form-group">
-                <label for="cantidad">Cantidad total:</label>
-                <input class="form-control form-control-sm text-right" type="text" name="cantidad" id="cantidad" value="<%= clase === 'danger' && typeof modelo != 'undefined' ? modelo.cantidad : ''%>" placeholder='0'>
-                <small id='alerta_cantidad' class='text-danger'></small>
-            </div>
-            <div class="form-group">
-                <div class="panel-group">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <p class="panel-title">
-                                <a data-toggle="collapse" href="#detalles">Detalles:</a>
-                            </p>
+    <div class="container contenido">
+        <div class="row">
+        <div class="col-sm-2 col-md-3"></div>
+        <div class="col-xs-12 col-sm-8 col-md-6">
+            <div class="container">
+                <div class="">
+                        <h2>Crear producto</h2>
+                        <div class="alert font-weight-bold text-danger" id="notificacion">
+                            <%= error ? msg : ''%>
                         </div>
-                        <div id="detalles" class="panel-collapse collapse show">
-                            <div class="panel-body">
-                                <table>
-                                    <tr>
-                                        <td>Colores:</td>
-                                        <td>Tallas:</td> 
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="negro"> Negro</label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="XXXS"> XXXS</label>
-                                            </div>
-                                        </td> 
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="blanco"> Blanco</label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="XXS"> XXS</label>
-                                            </div>
-                                        </td> 
-                                    </tr> 
-                                    <tr>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="azul"> Azul</label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="XS"> XS</label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="amarillo"> Amarillo</label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="S"> S</label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="rojo"> Rojo</label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="m"> M</label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="morado"> Morado</label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="L"> L</label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="verde"> Verde</label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="XL"> XL</label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="anaranjado"> Anaranjado</label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="XXL"> XXL</label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="gris"> Gris</label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="XXXL"> XXXL</label>
-                                            </di>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="marron"> Marron</label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="crema"> Crema</label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    </table>
-                            </div>
-                        </div>
-                    </div>
                 </div>
-        </div>
-            
-            <div class="form-group">
-                <input class="boton" type="submit" value="Aceptar" id="submit">
+                <form action="/Admin/NuevoProducto" method="post" enctype="multipart/form-data" id="form_NuevoProducto">
+                    <!-- Código -->
+                    <div class="form-group">
+                        <label for="codigo">Código de modelo:</label>
+                        <input class="form-control form-control-sm" type="text" name="codigo" id="codigo" maxlength="20" value=<%= typeof producto.codigo !== 'undefined' ? producto.codigo : ''%>>
+                        <small class="text-danger" id="alerta_codigo"></small>
+                    </div>
+                    <!-- Nombre -->
+                    <div class="form-group">
+                        <label for="nomelo">Nombre:</label>
+                        <input class="form-control form-control-sm" type="text" name="nombre" id="nombre"  maxlength="100" value=<%= typeof producto.nombre !== 'undefined' ? producto.nombre : ''%>>
+                        <small class="text-danger" id="alerta_nombre"></small>
+                    </div> 
+                    <!-- Descripción -->   
+                    <div class="form-group">
+                        <label for="descripcion">Descripción:</label>
+                        <textarea class="form-control form-control-sm" type="textarea" name="descripcion" id="descripcion"  maxlength="500"><%= typeof producto.descripcion !== 'undefined' ? producto.descripcion : ''%></textarea>
+                    </div>
+                    <!-- Imagen -->
+                    <div class="form-group">
+                        <label for="imagen">Imagen:</label>
+                        <small class="text-muted" id="notificacionImagen">No ha seleccionado ningún archivo.</small>
+                        <div class="custom-file mb-3">
+                            <input type="file" class="custom-file-input" accept="image/*" id="imagen" name="imagen">
+                            <label class="custom-file-label" for="imagen">Seleccionar archivo...</label>
+                        </div>
+                        <small class="text-danger" id="alerta_imagen"></small>
+                    </div>
+                    <!-- Precio -->
+                    <div class="form-group">
+                        <label for="precio">Precio:</label>
+                        <input class="form-control form-control-sm text-right" type="text" name="precio" id="precio" placeholder="0.00" value=<%= typeof producto.precio !== 'undefined' ? producto.precio : ''%>>
+                        <small class="text-danger" id="alerta_precio"></small>
+                    </div>
+                    <!-- Cantidad Total -->
+                    <div class="form-group">
+                        <label for="cantidad">Cantidad total:</label>
+                        <input class="form-control form-control-sm text-right" type="text" name="cantidad" id="cantidad" placeholder="0" value=<%= typeof producto.cantidad !== 'undefined' ? producto.cantidad : ''%>>
+                        <small class="text-danger" id="alerta_cantidad"></small>
+                    </div>
+                    <!-- Visibilidad -->
+                    <div class="form-group">
+                        <label for="visibilidad">Visibilidad:</label>
+                        <select class="form-control custom-select-sm" id="visibilidad">
+                            <option value="privado">Privado</option>
+                            <option value="publico">Público</option> 
+                        </select>
+                        <small class="text-muted" id="alerta_visibilidad">El producto no podrá ser visualizado por los clientes.</small>
+                    </div>
+                    <!-- Descuento -->
+                    <div class="form-group">
+                        <label for="estadoprpducto">Descuento:</label>
+                        <input class="form-control form-control-sm text-right" type="text" name="descuento" id="descuento" placeholder="0" value=<%= typeof producto.descuento !== 'undefined' ? producto.descuento : '' %>>
+                        <small class="text-danger" id="alerta_descuento"></small>
+                    </div> 
+                    <!-- Categorías -->
+                    <div class="form-group">
+                        <p>Categoría:</p>
+                        <input class="form-control" id="busqueda" type="text" placeholder="Buscar...">
+                        <br>
+                        <div class="table-wrapper-scroll-y">
+                            <table class="table table-sm table-hover">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Categoría</th>
+                                </tr>
+                                </thead>
+                                <tbody id="tablaCategoria">
+                                <% let tope = categorias.length; %>
+                                <% for(let i = 0; i < tope; i++) {%>
+                                    <% let categoria = categorias.shift();%>
+                                    <tr>
+                                        <td>
+                                            <div class="form-check-inline">
+                                                <label class="form-check-label">
+                                                    <input type="checkbox" class="form-check-input" name=<%= categoria.id %> value="true">
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td><%= categoria.nombre %></td>
+                                    </tr>
+                                <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div> 
+                    <!-- Botón de Submit -->      
+                    <div class="form-group">
+                        <input class="btn btn-info boton" id="submit" type="submit" value="Crear Producto">
+                    </div>
+                </form>
             </div>
-    </form>
-</div>
-    
-    
+        </div>
+        <div class="col-xs-0 col-sm-2 col-md-3"></div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            $("#busqueda").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#tablaCategoria tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
 </body>
 </html>
