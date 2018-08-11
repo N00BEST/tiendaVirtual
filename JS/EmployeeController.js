@@ -50,10 +50,10 @@ module.exports.postCategoria = (categoria)=> {
 		(resolve, reject) => {
 			database.Categoria.create(categoria).then((row)=>{
 				console.log(`[ ÉXITO ] Categoria "${row.ID}-${row.nombre}" creada.`);
-				resolve();
+				resolve(row);
 			}).catch((err)=>{
 				console.log(`[ ERROR ] Categoria "${categoria.ID}-${categoria.nombre}" no se pudo crear.`);
-				reject();
+				reject(err);
 			});
 		}
 	);
@@ -171,4 +171,32 @@ module.exports.pertenece = (modelo, categoria) =>{
 			});
 		});
 	}
-}
+};
+
+module.exports.agregarCategoria = (categoria, file) => {
+	return new Promise((resolve, reject)=>{
+		console.log('Intentando agregar la categoría');
+		module.exports.postCategoria(categoria).then((guardada)=>{
+			let imagen;
+			if(typeof file !== 'undefined'){
+				let oldPath = __dirname + '/../' + file.path;
+				let newPath = __dirname + '/../Public/IMG/categorias/' + guardada.ID + path.extname(oldPath);
+				fs.renameSync(path.resolve(oldPath), path.resolve(newPath));
+				imagen = 'IMG/categorias/' + path.basename(newPath);
+			} else {
+				imagen = 'IMG/categorias/default.png';
+			}
+			guardada.updateAttributes({
+				imagen: imagen
+			}).then(()=>{
+				resolve();
+			}).catch((error)=>{
+				console.log('[ ERROR ] ' + err.message);
+				reject(error);
+			});
+		}).catch((err)=>{
+			console.log('[ ERROR ] ' + err.message);
+			reject(err);
+		});
+	});
+};

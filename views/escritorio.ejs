@@ -1,0 +1,157 @@
+<% nombre = typeof nombre === 'undefined' ? 'Default' : nombre; %>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Pagina - Intranet - Inicio</title>
+    <meta charset="utf-8">
+    <link rel="icon" href="../IMG/icono/tag.png">
+    <link rel="stylesheet" href="../CSS/estilogeneral.css">
+    <link rel="stylesheet" href="../CSS/imagenes.css">
+
+    <link rel="stylesheet" href="../CSS/bootstrap1.min.css">
+    <script src="../JS/jquery.min.js"></script>
+    <script src="../JS/popper.min.js"></script>
+    <script src="../JS/bootstrap1.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar navbar-expand-md navbar-dark cursor">
+                <a class="navbar-brand" href="/Admin">NombreTitulo</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">Productos</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="/Admin/NuevoProducto">Crear</a>
+                                    <a class="dropdown-item" href="/Admin/Productos">Modificar</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">Categorías</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="/Admin/NuevaCategoria">Crear</a>
+                                    <a class="dropdown-item" href="/Admin/Categorias">Modificar</a>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Admin/Pedidos">Pedidos</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">Empleados</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="/Admin/NuevoEmpleado">Crear</a>
+                                    <a class="dropdown-item" href="/Admin/Empleados">Modificar</a>
+                                </div>
+                            </li> 
+                        </ul>
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown"><%= nombre %></a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" role="button" href="/Logout">Cerrar Sesión</a>
+                                </div>
+                            </li>                         
+                        </ul>
+                    </div>  
+            </nav>
+        </div>  
+    </header>
+    
+    <br>
+ 
+    <div class="container">
+
+       <div class="row">
+           <div class="col-sm-2"></div>
+           <div class="col-sm-8">
+                <div class="container">
+                    <div class="jumbotron fondo">
+                        
+                    <h2 style="text-align:center; font-size: 35px !important">Bienvenido <%= nombre %></h2>
+                    </div>
+                </div>
+                </div>
+        <div class="col-sm-2"></div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="container">
+                <h4>Últimos Productos</h4>
+                <br>
+                <div id="producto" class="carousel slide" data-ride="carousel">
+
+                        <ul class="carousel-indicators">
+                          <li data-target="#producto" data-slide-to="0" class="active"></li>
+                          <li data-target="#producto" data-slide-to="1"></li>
+                          <li data-target="#producto" data-slide-to="2"></li>
+                          <li data-target="#producto" data-slide-to="3"></li>
+                          <li data-target="#producto" data-slide-to="4"></li>
+                        </ul>
+
+                        <% // Aquí va una plantilla con los productos %>
+                      
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img class="carsl rounded" src="../IMG/categorias/categoria1.jpg" alt="Los Angeles">
+                                <div class="carousel-caption">
+                                    <a href="#" style="color: white">
+                                        <h4>NombreProducto</h4>
+                                    </a>                        
+                                </div>
+                            </div>
+                        </div>
+                      
+                        <a class="carousel-control-prev" href="#producto" data-slide="prev">
+                          <span class="carousel-control-prev-icon"></span>
+                        </a>
+                        <a class="carousel-control-next" href="#producto" data-slide="next">
+                          <span class="carousel-control-next-icon"></span>
+                        </a>
+                      
+                </div>
+            </div>
+            <br>
+        </div>
+    
+        <div class="col-sm-6">
+            <div class="container">
+                <h4>Últimas Categorías</h4>
+                <br>
+                <div id="cat" class="carousel slide" data-ride="carousel">
+
+                        <ul class="carousel-indicators">
+                          <li data-target="#cat" data-slide-to="0"></li>
+                          <li data-target="#cat" data-slide-to="1"></li>
+                          <li data-target="#cat" data-slide-to="2"></li>
+                        </ul>
+                      
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img class="carsl rounded" src="categoria1.jpg" alt="Los Angeles">
+                                <div class="carousel-caption">
+                                    <a href="Vista-DetallesCategoria.html" style="color: white">
+                                        <h4>NombreCategoria</h4>
+                                    </a>
+                                </div>
+                            </div>  
+                        </div>
+                        <a class="carousel-control-prev" href="#cat" data-slide="prev">
+                          <span class="carousel-control-prev-icon"></span>
+                        </a>
+                        <a class="carousel-control-next" href="#cat" data-slide="next">
+                          <span class="carousel-control-next-icon"></span>
+                        </a>  
+                </div>
+            </div>
+            <br>
+        </div>
+    </div>
+    
+</body>
+</html>

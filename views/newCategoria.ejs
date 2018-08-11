@@ -1,0 +1,164 @@
+<% nombre = typeof nombre === 'undefined' ? 'Default' : nombre; %>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<title>Pagina - Intranet - Crear categoría</title>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../CSS/estilogeneral.css">
+
+<link rel="stylesheet" href="../CSS/bootstrap1.min.css">
+<script src="../JS/jquery.min.js"></script>
+<script src="../JS/popper.min.js"></script>
+<script src="../JS/bootstrap1.min.js"></script>
+<script src="../JS/newCategoria.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar navbar-expand-md navbar-dark cursor">
+                <a class="navbar-brand" href="/Admin">NombreTitulo</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">Productos</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="/Admin/NuevoProducto">Crear</a>
+                                    <a class="dropdown-item" href="/Admin/Productos">Modificar</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">Categorías</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="/Admin/NuevaCategoria">Crear</a>
+                                    <a class="dropdown-item" href="/Admin/Categorias">Modificar</a>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Admin/Pedidos">Pedidos</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">Empleados</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="/Admin/NuevoEmpleado">Crear</a>
+                                    <a class="dropdown-item" href="/Admin/Empleados">Modificar</a>
+                                </div>
+                            </li> 
+                        </ul>
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown"><%= nombre %></a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" role="button" href="/Logout">Cerrar Sesión</a>
+                                </div>
+                            </li>                         
+                        </ul>
+                    </div>  
+            </nav>
+        </div>  
+    </header>
+    
+    <br>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-5">
+                <div class="container">
+                <div class="form-group">
+                    <h2>Crear categoría</h2>
+                    <div class=<%= (error ? 'text-danger' : 'text-success') %> id="notificacion">
+                            <%= msg %>
+                    </div>
+                </div>
+                    <form action="/Admin/NuevaCategoria" method="post" id="form_NuevaCategoria" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="nombre">Nombre:</label>
+                            <input class="form-control form-control-sm" type="text" name="nombre" id="nombre" required>
+                            <small id="alerta_nombre" class="text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="desc">Descripción:</label>
+                            <textarea class="form-control form-control-sm" type="text" name="descripcion" id="descripcion" maxlength="500"></textarea>
+                        </div>
+                        <!-- Imagen -->
+                        <div class="form-group">
+                            <label for="imagen">Imagen:</label>
+                            <small class="text-muted" id="notificacionImagen">No ha seleccionado ningún archivo.</small>
+                            <div class="custom-file mb-3">
+                                <input type="file" class="custom-file-input" accept="image/*" id="imagen" name="imagen">
+                                <label class="custom-file-label" for="imagen">Seleccionar archivo...</label>
+                            </div>
+                            <small class="text-danger" id="alerta_imagen"></small>
+                        </div>
+                        <div class="form-group">
+                            <p>Agregar productos</p>
+                            <input class="form-control" id="busqueda" type="text" placeholder="Buscar Productos...">
+                            <br>
+                            <div class="table-wrapper-scroll-y">
+                                <table class="table table-sm table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Nombre</th>
+                                        <th>Código</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="tablaProducto">
+                                    <tr>
+                                        <td>
+                                        <div class="form-check-inline">
+                                            <label class="form-check-label">
+                                                <input type="checkbox" class="form-check-input" value="opcionProducto">
+                                            </label>
+                                        </div>
+                                        </td>
+                                        <td>NombreProducto</td>
+                                        <td>CodigoProducto</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input class="btn btn-info boton" type="submit" value="Aceptar">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-sm-7">
+                <div class="container">
+                    <h3>Categorías existentes</h3>
+                    <div class="table-wrapper-scroll-y">
+                        <table class="table table-sm table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Categoría</th>
+                                </tr>
+                            </thead>
+                            <tbody id='tabla_Categorias'>
+                            </tbody>
+                        </table>
+                    </div>
+ 
+                </div>
+                
+
+            </div>
+        </div>
+        
+    </div>
+    
+    <script>
+        $(document).ready(function(){
+            $("#busqueda").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#tablaProducto tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+            });
+        });
+    </script>
+</body>
+</html>

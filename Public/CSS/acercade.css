@@ -1,0 +1,233 @@
+body{
+	font-family: 'Open Sans', sans-serif;
+	background: #2B2D42;
+	overflow-x:hidden;
+	font-family: 'Lobster', cursive;
+	font-family: 'Kaushan Script', cursive;
+	font-family: 'Roboto', sans-serif;
+}
+
+/*menu de navegacion */
+header .navbar{
+	width: 100%;
+	position: fixed;
+  	z-index: 100;
+}
+
+header .navbar .navbar-toggler{
+	color: #fff;
+}
+
+.menu .navbar span{
+	color: #EDF2F4;
+	
+}
+
+.navbar{
+	background: #2B2D42;
+	/*color: #EDF2F4;*/
+}
+
+.navbar a{
+	color: #EDF2F4;
+}
+
+.navbar a:hover{
+	color: #E2C466;
+}
+
+.navbar .dropdown-menu{
+	background: #1a1d21;
+}
+
+.navbar .dropdown-menu .dropdown-item{
+	background: #1a1d21;
+	color: #E2C466;
+}
+
+.navbar .dropdown-menu .dropdown-item:hover{
+	background: #1c77c3;
+	color: #EDF2F4;
+}
+
+/*Barra de busqueda */
+.busqueda{
+	margin-top: 10px;
+}
+
+.busqueda input[type="search"]{
+
+	width: 100%;
+}
+
+.busqueda input[type="search"]:focus{
+	-webkit-box-shadow: 0px 0px 5px 0px rgba(226,196,102,0.85);
+	-moz-box-shadow: 0px 0px 5px 0px rgba(226,196,102,0.85);
+	box-shadow: 0px 0px 5px 0px rgba(226,196,102,0.85);
+}
+
+/* Botones Ingresar y crear tu cuenta */
+.navbar .inicioregistro{
+	display: static;
+	justify-content: center;
+}
+
+.navbar .btn-ingresar{
+	border-radius: 20px;
+	background: #2B2D42;
+	color: #E2C466;
+	padding: 5px 10px;
+}
+
+.navbar .btn-ingresar:hover{color: #EDF2F4;}
+
+.navbar .btn-crear{
+	border-radius: 20px;
+	background: #2B2D42;
+}
+
+.navbar .btn-crear a{
+	border-radius: 20px;
+	color: #E2C466;
+	background: #2B2D42;
+	padding: 5px 10px;
+	text-decoration: none;
+}
+
+.navbar .btn-crear a:hover{
+	border-radius: 20px;
+	color: #2B2D42;
+	background: #EDF2F4;
+}
+
+/*modal*/
+
+#ModalCenterTitle {
+	font-family: 'Kaushan Script', cursive;
+	font-size: 50px;
+	font-weight: 400;
+	color: #2B2D42;
+}
+
+.modal-body .titulo{
+	font-family: 'Lobster', cursive;
+	font-size: 20px;
+	font-weight: 400;
+	text-align: center;
+	color: #2B2D42;
+}
+
+.modal-body .formulario label{
+	color: #2B2D42;
+	font-size: 16px;
+	font-weight: 700;
+}
+
+.modal-body .nocuenta{
+	text-align: center;
+	color: #2B2D42;
+}
+
+.modal-body .nocuenta a{
+	font-family: 'Lobster', cursive;
+	text-decoration: none;
+	color: #2B2D42;
+}
+
+.modal-body .nocuenta a:hover{
+	color: #1A1D21;
+}
+
+.modal-footer .btn{border-radius: 20px;}
+
+.modal-footer .cerrar{
+	background: #1a1d21;
+	color: #EDF2F4;
+}
+
+.modal-footer .cerrar:hover{
+	background: #585a5d;
+	color: #EDF2F4;
+}
+
+.modal-footer .ingresar{
+	background: #ef233c;
+	color: #EDF2F4;
+}
+
+.modal-footer .ingresar:hover{
+	background: #cf425a;
+	color: #EDF2F4;
+}
+
+/* Acerca De */
+
+main{
+	background: #EDF2F4;
+}
+
+main h6{
+	margin-top: 50px;
+	padding: 20px 0;
+	text-align: center;
+	color: #ef233c;
+	font-size: 35px;
+	font-family:'Open Sans', sans-serif;
+	font-weight: 300;
+}
+
+main .novedades .card-title{
+	text-align: center;
+	padding: 20px 0;
+	background: #E2C466;
+	color: #2B2D42; 
+}
+
+main .novedades .card-text{
+	text-align: center;
+	font-size: 15px;
+	font-family: 'Open sans', sans-serif;
+	font-weight: 400;
+	color: #585a5d;
+	padding: 10px 0;
+}
+
+/* Footer */
+
+footer{
+	background: #2B2D42;
+	color: #E2C466;
+	text-align: center;
+	padding: 20px 20px;
+}
+
+footer h6{
+	margin-bottom: 10px;
+}
+
+footer a{
+	padding: 10px 15px;
+	color: #E2C466;
+	text-decoration: none;
+	font-size: 12px;
+	font-weight: 400;
+}
+
+footer a:hover{
+	text-decoration: none;
+	color: #EDF2F4;
+}
+
+footer p{
+	font-size: 12px;
+	line-height: 20px;
+}
+
+
+/*Responsive design*/
+@media screen and (max-width: 960px){
+	header .navbar{
+		width: 100%;
+		position: static;
+	}
+}

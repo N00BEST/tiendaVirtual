@@ -3,6 +3,11 @@ header{
 	color:white;
 }
 
+.dropdown-menu{
+	background-color: #230742 !important;
+	border-color: #230742 !important;
+}
+
 nav a{
 	background-color: #230742 !important;
 	border-color: #230742 !important;
@@ -13,6 +18,10 @@ nav a{
 	background: #230742 !important;
 	border-color: #230742 !important;
 	color: white !important;
+}
+
+.fondo{
+	background-color: white !important;
 }
 
 p{

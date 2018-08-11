@@ -7,6 +7,7 @@ const Strings = require('./JS/Files');
 const Client = require('./JS/ClientController');
 const session = require('express-session');
 const files = require('./JS/Files');
+const favicon = require('serve-favicon');
 
 const app = express();
 
@@ -28,6 +29,7 @@ const storage = multer.diskStorage({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(session({ secret: files.genRandomName(20), saveUninitialized: true, resave: false }));
+app.use(favicon(__dirname + '/Public/IMG/icono/tag.png'));
 
 // Public folder with the static documents
 app.use(express.static(__dirname + '/Public/'));
@@ -265,11 +267,20 @@ app.get('/Producto/:codigo', (req, res)=>{
 	
 });
 
+app.get('/AcercaDe', (req, res)=>{
+	res.render('acerca', {
+		nombre: req.session.nombre
+	});
+});
+
 // -------     RUTAS DEL EMPLEADO    -------
 
-app.get('/nuevaCategoria', (req, res)=>{
+app.get('/Admin/NuevaCategoria', (req, res)=>{
 	
-	res.render('newCategoria');
+	res.render('newCategoria', {
+		error: false,
+		msg: ''
+	});
 });
 
 app.get('/Admin/NuevoProducto', (req, res)=>{
@@ -293,24 +304,70 @@ app.get('/Admin/NuevoProducto', (req, res)=>{
 });
 
 app.get('/Admin', (req, res)=>{
-
+	res.render('escritorio', {
+		nombre: req.session.nombre
+	});
 });
-
 
 // ------     RUTAS TIPO API      -------
 
 // CARGAR NUEVAS CATEGORÍAS
 app.post('/Admin/NuevaCategoria', (req, res) => {
-	let nombre = req.body.nombre.trim();
-	let descripcion = req.body.descripcion.trim();
-	categoria = {
-		nombre: nombre,
-		descripcion: descripcion
-	};
-	Employee.postCategoria(categoria).then(()=>{
-		res.end('true');
-	}).catch(()=>{
-		res.end('false');
+	const upload = multer({
+		storage: storage,
+		limits: {
+					fileSize: 1 * 1000000 // 1 MB
+				},
+		fileFilter: (req, file, cb) =>{
+			Employee.validarImagen(file, cb);
+		}
+	}).single('imagen');
+	upload(req, res, (err)=>{
+		if(err){
+			err = err.message === 'File too large' ? 'La imagen es muy pesada' : err;
+			let obj = {
+				error: true, 
+				msg: err
+			}
+			res.render('newCategoria', obj);
+		} else {
+			let categoria = {
+				nombre: req.body.nombre,
+				descripcion: req.body.descripcion,
+				imagen: 'default.png'
+			}
+			if(categoria.nombre.length > 0 && categoria.descripcion.length <= 500){
+				Employee.agregarCategoria(categoria, req.file).then(()=>{
+					let obj = {
+						error: false,
+						msg: `La categoría "${categoria.nombre}" fue agregada éxitosamente.`, 
+						nombre: req.session.nombre
+					}
+					res.render('newCategoria', obj);
+				}).catch((err)=>{
+					let obj = {
+						error: true,
+						msg: '',
+						nombre: req.session.nombre
+					}
+					switch(err.message){
+						default: 
+							console.log(`[ ERROR ] No se pudo agregar la categoría. ${err.message} `);
+							obj.msg = ('Ocurrió un error, por favor intente de nuevo más tarde.');
+						break;
+					}
+					res.render('newCategoria', obj);
+				});
+			} else {
+				let obj = {
+					error: true,
+					msg: categoria.nombre.length === 0 ? 'El nombre no puede estar vacío' : 'La descripción no puede tener más de 500 caracteres',
+					nombre: req.session.nombre
+				};
+
+				res.render('newCategoría', obj);
+			}
+		}
 	});
 });
 
@@ -334,7 +391,7 @@ app.post('/Admin/NuevoProducto', (req, res)=>{
 			precio: req.body.precio,
 			cantidad: req.body.cantidad,
 			descuento: req.body.descuento,
-			publico: req.body.visibilidad
+			publico: req.body.visibilidad === 'publico'
 		};
 		if(err) {
 			err = err == 'Error: File too large' ? 'La imagen es muy pesada' : err;
@@ -350,18 +407,23 @@ app.post('/Admin/NuevoProducto', (req, res)=>{
 				clase: '', 
 				producto: modelo,
 				msg: '', 
-				error: false
+				error: false,
+				nombre: req.session.nombre
 			}
+			console.log(req.body);
 			let valido = true;
 			valido = modelo.codigo.length > 0 && modelo.nombre.length > 0 && !isNaN(modelo.precio) && !isNaN(modelo.cantidad) 
-			&& !isNaN(modelo.descuento) && modelo.descuento >= 0 && (visibilidad === 'publico' || visibilidad === 'privado')
+			&& !isNaN(modelo.descuento) && modelo.descuento >= 0 && (req.body.visibilidad === 'publico' || req.body.visibilidad === 'privado')
 			&& modelo.cantidad >= 0 && modelo.precio >= 0 && modelo.cantidad.indexOf('.') === -1;
 			if(valido){
 				modelo.cantidad = modelo.cantidad === '' ? 0 : modelo.cantidad;
 				modelo.precio = modelo.precio === '' ? 0.0 : modelo.precio;
+				modelo.descuento = modelo.descuento === '' ? 0.0 : modelo.descuento;
 				Employee.agregarModelo(modelo, req.file).then((row)=>{
 					obj = {
-						producto: modelo
+						producto: modelo,
+						error: false,
+						nombre: req.session.nombre
 					};
 
 					Employee.getCategorias().then((categorias)=>{
@@ -391,7 +453,8 @@ app.post('/Admin/NuevoProducto', (req, res)=>{
 					obj = {
 						error: err,
 						msg: msg,
-						producto: modelo
+						producto: modelo,
+						nombre: req.session.nombre
 					};
 					console.log(`[ ERROR ] Agregando producto: ${err.message} `);
 					res.render('newProducto', obj);
@@ -399,9 +462,10 @@ app.post('/Admin/NuevoProducto', (req, res)=>{
 			} else {
 				obj = {
 					clase: 'danger',
-					modelo: modelo, 
-					err: 'invalido',
-					msg: 'Los datos suministrados son incorrectos.'
+					producto: modelo, 
+					error: true,
+					msg: 'Error: Los datos suministrados son incorrectos.',
+					nombre: req.session.nombre
 				}
 				res.render('newProducto', obj);
 			}
@@ -618,6 +682,22 @@ app.get('/producto/:producto', (req, res)=>{
 			}
 		}).catch((err)=>{
 			res.sendStatus(404);
+		});
+	}
+});
+
+app.get('/categoria/:cat', (req, res)=>{
+	if(req.params.cat === 'all'){
+		Employee.getCategorias().then((categorias)=>{
+			let resultado = [];
+			let tope = categorias.length;
+			for(let i = 0; i < tope; i++) {
+				let categoria = categorias.shift();
+				resultado.push(categoria.nombre);
+			}
+			res.send(resultado);
+		}).catch((err)=>{
+			res.sendStatus(500);
 		});
 	}
 });

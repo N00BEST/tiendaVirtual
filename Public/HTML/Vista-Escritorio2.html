@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Pagina - Intranet - Inicio</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="estilos/estilogeneral.css">
+    <link rel="stylesheet" href="estilos/imagenes.css">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar navbar-expand-md navbar-dark cursor">
+                <a class="navbar-brand" href="Vista-Escritorio.html">NombreTitulo</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">Productos</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="Vista-CrearProducto.html">Crear</a>
+                                    <a class="dropdown-item" href="Vista-BuscarProducto.html">Modificar</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">Categorías</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="Vista-CrearCategoria.html">Crear</a>
+                                    <a class="dropdown-item" href="Vista-BuscarCategoria.html">Modificar</a>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="Vista-Pedido.html">Pedidos</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">Empleados</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="Vista-CrearEmpleado.html">Crear</a>
+                                    <a class="dropdown-item" href="Vista-BuscarEmpleado.html">Modificar</a>
+                                </div>
+                            </li> 
+                        </ul>
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">NombreEmpleado</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" role="button" href="#">Cerrar Sesión</a>
+                                </div>
+                            </li>                         
+                        </ul>
+                    </div>  
+            </nav>
+        </div>  
+    </header>
+    
+    <br>
+ 
+    <div class="container">
+
+       <div class="row">
+           <div class="col-sm-2"></div>
+           <div class="col-sm-8">
+                <div class="container">
+                    <div class="jumbotron fondo">
+                        
+                    <h2 style="text-align:center; font-size: 35px !important">Bienvenido NombreEmpleado</h2>
+                    </div>
+                </div>
+                </div>
+        <div class="col-sm-2"></div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="container">
+                <h4>Ultimos Productos</h4>
+                <br>
+                <div id="prodcuto" class="carousel slide" data-ride="carousel">
+
+                        <ul class="carousel-indicators">
+                          <li data-target="#prodcuto" data-slide-to="0" class="active"></li>
+                          <li data-target="#prodcuto" data-slide-to="1"></li>
+                          <li data-target="#prodcuto" data-slide-to="2"></li>
+                          <li data-target="#prodcuto" data-slide-to="3"></li>
+                          <li data-target="#prodcuto" data-slide-to="4"></li>
+                          <li data-target="#prodcuto" data-slide-to="5"></li>
+                          <li data-target="#prodcuto" data-slide-to="6"></li>
+                          <li data-target="#prodcuto" data-slide-to="7"></li>
+                          <li data-target="#prodcuto" data-slide-to="8"></li>
+                        </ul>
+                      
+                        <div class="carousel-inner">
+                          <div class="carousel-item active">
+                            <img class="carsl rounded" src="categoria1.jpg" alt="Los Angeles">
+                            <div class="carousel-caption">
+                                    <a href="Vista-DetallesProducto.html" style="color: white">
+                                            <h4>NombreProducto</h4>
+                                    </a>
+                                        
+                                      </div>
+                          </div>
+                          <div class="carousel-item">
+                            <img class="carsl rounded" src="producto2.jpg" alt="Chicago">
+                            <div class="carousel-caption">
+                                    <a href="Vista-DetallesProducto.html" style="color: white">
+                                            <h4>NombreProducto</h4>
+                                    </a>
+                                        
+                                      </div>
+                          </div>
+                          <div class="carousel-item">
+                            <img class="carsl rounded" src="foto3.jpg" alt="New York">
+                            <div class="carousel-caption">
+                                <a href="Vista-DetallesProducto.html" style="color: white">
+                                        <h4>NombreProducto</h4>
+                                </a>
+                                    
+                                  </div>
+                          </div>
+                          <div class="carousel-item">
+                                <img class="carsl rounded" src="foto3.jpg" alt="New York">
+                                <div class="carousel-caption">
+                                    <a href="Vista-DetallesProducto.html" style="color: white">
+                                            <h4>NombreProducto</h4>
+                                    </a>
+                                        
+                                      </div>
+                            </div>
+                            <div class="carousel-item">
+                                    <img class="carsl rounded" src="foto3.jpg" alt="New York">
+                                    <div class="carousel-caption">
+                                        <a href="Vista-DetallesProducto.html" style="color: white">
+                                                <h4>NombreProducto</h4>
+                                        </a>
+                                            
+                                          </div>
+                                  </div>
+                                  <div class="carousel-item">
+                                        <img class="carsl rounded" src="foto3.jpg" alt="New York">
+                                        <div class="carousel-caption">
+                                            <a href="Vista-DetallesProducto.html" style="color: white">
+                                                    <h4>NombreProducto</h4>
+                                            </a>
+                                                
+                                              </div>
+                                      </div>
+                                      <div class="carousel-item">
+                                            <img class="carsl rounded" src="foto3.jpg" alt="New York">
+                                            <div class="carousel-caption">
+                                                <a href="Vista-DetallesProducto.html" style="color: white">
+                                                        <h4>NombreProducto</h4>
+                                                </a>
+                                                    
+                                                  </div>
+                                          </div>
+                                          <div class="carousel-item">
+                                                <img class="carsl rounded" src="foto3.jpg" alt="New York">
+                                                <div class="carousel-caption">
+                                                    <a href="Vista-DetallesProducto.html" style="color: white">
+                                                            <h4>NombreProducto</h4>
+                                                    </a>
+                                                        
+                                                      </div>
+                                              </div>
+                                              <div class="carousel-item">
+                                                    <img class="carsl rounded" src="foto3.jpg" alt="New York">
+                                                    <div class="carousel-caption">
+                                                        <a href="Vista-DetallesProducto.html" style="color: white">
+                                                                <h4>NombreProducto</h4>
+                                                        </a>
+                                                            
+                                                          </div>
+                                                  </div>
+                        </div>
+                      
+                        <a class="carousel-control-prev" href="#prodcuto" data-slide="prev">
+                          <span class="carousel-control-prev-icon"></span>
+                        </a>
+                        <a class="carousel-control-next" href="#prodcuto" data-slide="next">
+                          <span class="carousel-control-next-icon"></span>
+                        </a>
+                      
+                      </div>
+            </div>
+            <br>
+        </div>
+    
+        <div class="col-sm-6">
+            <div class="container">
+                <h4>Ultimas Categorías</h4>
+                <br>
+                <div id="cat" class="carousel slide" data-ride="carousel">
+
+                        <ul class="carousel-indicators">
+                          <li data-target="#cat" data-slide-to="0"></li>
+                          <li data-target="#cat" data-slide-to="1"></li>
+                          <li data-target="#cat" data-slide-to="2"></li>
+                          <li data-target="#cat" data-slide-to="3"></li>
+                          <li data-target="#cat" data-slide-to="4"></li>
+                          <li data-target="#cat" data-slide-to="5"></li>
+                          <li data-target="#cat" data-slide-to="6"></li>
+                          <li data-target="#cat" data-slide-to="7"></li>
+                          <li data-target="#cat" data-slide-to="8"></li>
+                        </ul>
+                      
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img class="carsl rounded" src="categoria1.jpg" alt="Los Angeles">
+                                <div class="carousel-caption">
+                                    <a href="Vista-DetallesCategoria.html" style="color: white">
+                                        <h4>NombreCategoria</h4>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <img class="carsl rounded" src="producto2.jpg" alt="Chicago">
+                                <div class="carousel-caption">
+                                    <a href="Vista-DetallesCategoria.html" style="color: white">
+                                        <h4>NombreCategoria</h4>
+                                    </a>
+                                </div>
+                            </div>
+                          <div class="carousel-item">
+                            <img class="carsl rounded" src="foto3.jpg" alt="New York">
+                            <div class="carousel-caption">
+                                <a href="Vista-DetallesCategoria.html" style="color: white">
+                                        <h4>NombreCategoria</h4>
+                                </a>
+                                    
+                                  </div>
+                          </div>
+                          <div class="carousel-item">
+                                <img class="carsl rounded" src="foto3.jpg" alt="New York">
+                                <div class="carousel-caption">
+                                    <a href="Vista-DetallesCategoria.html" style="color: white">
+                                            <h4>NombreCategoria</h4>
+                                    </a>
+                                        
+                                      </div>
+                              </div>
+                              <div class="carousel-item">
+                                    <img class="carsl rounded" src="foto3.jpg" alt="New York">
+                                    <div class="carousel-caption">
+                                        <a href="Vista-DetallesCategoria.html" style="color: white">
+                                                <h4>NombreCategoria</h4>
+                                        </a>
+                                            
+                                          </div>
+                                  </div>
+                                  <div class="carousel-item">
+                                        <img class="carsl rounded" src="foto3.jpg" alt="New York">
+                                        <div class="carousel-caption">
+                                            <a href="Vista-DetallesCategoria.html" style="color: white">
+                                                    <h4>NombreCategoria</h4>
+                                            </a>
+                                                
+                                              </div>
+                                      </div>
+                                      <div class="carousel-item">
+                                            <img class="carsl rounded" src="foto3.jpg" alt="New York">
+                                            <div class="carousel-caption">
+                                                <a href="Vista-DetallesCategoria.html" style="color: white">
+                                                        <h4>NombreCategoria</h4>
+                                                </a>
+                                                    
+                                                  </div>
+                                          </div>
+                                          <div class="carousel-item">
+                                                <img class="carsl rounded" src="foto3.jpg" alt="New York">
+                                                <div class="carousel-caption">
+                                                    <a href="Vista-DetallesCategoria.html" style="color: white">
+                                                            <h4>NombreCategoria</h4>
+                                                    </a>
+                                                        
+                                                      </div>
+                                              </div>
+                                              <div class="carousel-item">
+                                                    <img class="carsl rounded" src="foto3.jpg" alt="New York">
+                                                    <div class="carousel-caption">
+                                                        <a href="Vista-DetallesCategoria.html" style="color: white">
+                                                                <h4>NombreCategoria</h4>
+                                                        </a>
+                                                            
+                                                          </div>
+                                                  </div>
+                          
+                        </div>
+                        <a class="carousel-control-prev" href="#cat" data-slide="prev">
+                          <span class="carousel-control-prev-icon"></span>
+                        </a>
+                        <a class="carousel-control-next" href="#cat" data-slide="next">
+                          <span class="carousel-control-next-icon"></span>
+                        </a>
+                      
+                      </div>
+            </div>
+            <br>
+        </div>
+    </div>
+    
+</body>
+</html>
