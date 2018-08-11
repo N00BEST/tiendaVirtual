@@ -28,7 +28,7 @@
                         </button>
 
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <a class="navbar-brand" href="../">
+                            <a class="navbar-brand" href="/">
                                 <img src="../IMG/logo/tv_22.png" width="150" height="50" alt="">
                             </a>
                             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -37,10 +37,10 @@
                             </button>
                             <ul class="navbar-nav mr-3">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="../">Inicio</a>
+                                    <a class="nav-link" href="/">Inicio</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="../Productos">Productos</a>
+                                    <a class="nav-link" href="/Productos">Productos</a>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
@@ -55,18 +55,18 @@
                                     </div>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="acercade.view.html">Acerca De</a>
+                                    <a class="nav-link" href="/AcercaDe">Acerca De</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="/MiCarrito">
-                                        <img src="../IMG/icono/carrito-de-la-compra.png" alt=""> Carrito</a>
+                                        <img src="/IMG/icono/carrito-de-la-compra.png" alt=""> Carrito</a>
                                 </li>
                             </ul>
                         </div>
                     </div>
                     <!-- Barra de busqueda -->
                     <div class="col-sm-6 col-md-6 col-lg-6 col-xl-3">
-                        <form class="busqueda form-inline" action="../Busqueda" method="get">
+                        <form class="busqueda form-inline" action="/Busqueda" method="get">
                             <input class="form-control" type="search" placeholder="Buscar Producto" id="buscar" name="buscar" aria-label="Search">
                         </form>
                     </div>
@@ -80,38 +80,35 @@
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h2 class="modal-title" id="ModalCenterTitle">Hola!</h2>
+                                        <h2 class="modal-title" id="ModalCenterTitle">¡Bienvenido!</h2>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
                                     <div class="modal-body">
                                         <p class="titulo">Ingresa tu cuenta aqui</p>
-
-                                        <form action="" method="" class="formulario" id="">
+                        
+                                        <form action="javascript:void(0)" method="post" class="formulario" id="form_MiniLogin">
                                             <div class="form-group">
                                                 <label for="">Correo</label>
-                                                <input type="text" class="form-control" placeholder="correo@ejemplo.com" name="Correo" id="Correo" pattern="[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.-]+\.[a-zA-Z0-9.-]+">
+                                                <input type="text" class="form-control" placeholder="correo@ejemplo.com" name="correo" id="correo">
                                             </div>
-
+                            
                                             <div class="form-group mt-3">
                                                 <label for="">Contraseña</label>
-                                                <input type="password" class="form-control" placeholder="Ejem: 123456789" name="pass" id="pass">
+                                                <input type="password" class="form-control" placeholder=" ******** " name="pass" id="pass">
                                             </div>
                                         </form>
-
+                        
                                         <div class="nocuenta">
-                                            <p class="no_cuenta">¿Aun no tienes cuenta?
-                                                <a href="registrate.view.html"> Registrate</a>
-                                            </p>
+                                            <p class="no_cuenta">¿Aún no tienes cuenta? <a href="/Registrarse">Regístrate</a></p>
                                         </div>
                                     </div>
-
                                     <div class="modal-footer">
                                         <button type="button" class="cerrar btn" data-dismiss="modal">Cerrar</button>
-                                        <button type="button" class="ingresar btn">Ingresar</button>
+                                        <button type="button" class="ingresar btn" id="submit">Ingresar</button>
                                     </div>
-                                </div>
+                                </div> 
                             </div>
                         </div>
                         <button type="button" class="btn-crear btn">
@@ -181,10 +178,11 @@
         </div>
     </footer>
 
-    <script src="../JS/jquery.min.js"></script>
-    <script src="../JS/carrito.js"></script>
-    <script src="../JS/productos.js"></script>
-    <script src="../JS/bootstrap.min.js"></script>
+    <script src="JS/jquery.min.js"></script>
+    <script src="JS/carrito.js"></script>
+    <script src="JS/productos.js"></script>
+    <script src="JS/login.js"></script>
+    <script src="JS/bootstrap.min.js"></script>
 </body>
 
 </html>

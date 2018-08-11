@@ -29,10 +29,10 @@
 		  			</button>
 		  		<ul class="navbar-nav mr-3">
 		  			<li class="nav-item">
-		  				<a class="nav-link" href="#">Inicio</a>
+		  				<a class="nav-link" href="/">Inicio</a>
 		  			</li>
 		  			<li class="nav-item">
-		  				<a class="nav-link" href="#">Productos</a>
+		  				<a class="nav-link" href="/Productos">Productos</a>
 		  			</li>
 		  			<li class="nav-item dropdown">
 		  				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categorias</a>
@@ -46,17 +46,17 @@
 		  				</div>
 		  			</li>
 		  			<li class="nav-item">
-		  				<a class="nav-link" href="#">Acerca De</a>
+		  				<a class="nav-link" href="/AcercaDe">Acerca De</a>
 		  			</li>
 		  			<li class="nav-item">
-		  				<a class="nav-link" href="#"><img src="IMG/icono/carrito-de-la-compra.png" alt=""> Carrito</a>
+		  				<a class="nav-link" href="/MiCarrito"><img src="IMG/icono/carrito-de-la-compra.png" alt=""> Carrito</a>
 		  			</li>
 		  			</ul>
 		  		</div>
 		  	</div>
 			<!-- Barra de busqueda -->
 			<div class="col-sm-6 col-md-6 col-lg-6 col-xl-3">
-				<form class="busqueda form-inline" action="../Busqueda" method="get">
+				<form class="busqueda form-inline" action="/Busqueda" method="get">
 					<input class="form-control" type="search" placeholder="Buscar Producto" id="buscar" name="buscar" aria-label="Search">
 				</form>
 			</div>
@@ -284,66 +284,7 @@
 				<div class="col">
 					<!-- Card's para los articulos -->
 					<div class="card-columns" id="Productos">
-						<!--<div class="card" style="width: 18rem;">
-						  	<img class="card-img-top" src="IMG/BG/1.jpg" alt="Card image cap">
-						  	<div class="card-body">
-						  		<h5 class="card-title">Titulo del Articulo</h5>
-						    	<p class="card-text">Descripcion del articulo</p>
-						    	<p class="text-muted">Precio del articulos</p>
-						    	<a href="#">Ver Más</a>
-						  </div>
-						</div>
-
-						<div class="card" style="width: 18rem;">
-						  	<img class="card-img-top" src="IMG/BG/bg5.jpg" alt="Card image cap">
-						  	<div class="card-body">
-						  		<h5 class="card-title">Titulo del Articulo</h5>
-						    	<p class="card-text">Descripcion del articulo</p>
-						    	<p class="text-muted">Precio: 250.000</p>
-						    	<a href="#">Ver Más</a>
-						  </div>
-						</div>
-
-						<div class="card" style="width: 18rem;">
-						  	<img class="card-img-top" src="IMG/BG/bg4.jpg" alt="Card image cap">
-						  	<div class="card-body">
-						  		<h5 class="card-title">Titulo del Articulo</h5>
-						    	<p class="card-text">Descripcion del articulo</p>
-						    	<p class="text-muted">Precio: 250.000</p>
-						    	<a href="#">Ver Más</a>
-						  </div>
-						</div>
-
-						<div class="card" style="width: 18rem;">
-						  	<img class="card-img-top" src="IMG/BG/bg3.jpg" alt="Card image cap">
-						  	<div class="card-body">
-						  		<h5 class="card-title">Titulo del Articulo</h5>
-						    	<p class="card-text">Descripcion del articulo</p>
-						    	<p class="text-muted">Precio: 250.000</p>
-						    	<a href="#">Ver Más</a>
-						  </div>
-						</div>
-
-						<div class="card" style="width: 18rem;">
-						  	<img class="card-img-top" src="IMG/BG/bg2.jpg" alt="Card image cap">
-						  	<div class="card-body">
-						  		<h5 class="card-title">Titulo del Articulo</h5>
-						    	<p class="card-text">Descripcion del articulo</p>
-						    	<p class="text-muted">Precio: 250.000</p>
-						    	<a href="#">Ver Más</a>
-						  </div>
-						</div>
-
-						<div class="card" style="width: 18rem;">
-						  	<img class="card-img-top" src="IMG/BG/bg.jpg" alt="Card image cap">
-						  	<div class="card-body">
-						  		<h5 class="card-title">Titulo del Articulo</h5>
-						    	<p class="card-text">Descripcion del articulo</p>
-						    	<p class="text-muted">Precio: 250.000</p>
-						    	<a href="#">Ver Más</a>
-						  </div>
-						</div>
-						-->
+						
 					</div>
 				</div>
 			</div>
@@ -379,6 +320,9 @@
 	</footer>
 
 	<script src="JS/jquery.min.js"></script>
+	<script src="JS/carrito.js"></script>
+	<script src="JS/productos.js"></script>
+	<script src="JS/login.js"></script>
 	<script src="JS/bootstrap.min.js"></script>
 </body>
 </html>

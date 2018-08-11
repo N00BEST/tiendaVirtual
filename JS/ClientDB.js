@@ -238,6 +238,7 @@ const Orden = database.define('orden', {
 	}
 });
 Orden.belongsTo(Pedido);
+Modelo.hasMany(Orden);
 
 database.authenticate().then(()=>{
 	console.log('Connected to database from Client sucessfully');

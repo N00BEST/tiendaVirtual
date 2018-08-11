@@ -1,6 +1,7 @@
 $(document).ready(()=>{
 	$('#correo').on('change', checkCorreo);
 	$('#submit').click(enviar);
+	$('#form_MiniLogin').on('submit', enviar);
 });
 
 var __CORREO = false;
@@ -9,35 +10,29 @@ function checkCorreo(event){
 	let correo = $('#correo').val();
 	let regex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
 	if(correo.length === 0) {
-		$('#correo').removeClass('is-valid');
 		$('#correo').addClass('is-invalid');
 		$('#alerta_correo').text('');
 		__CORREO = false; 
 	} else if(!regex.test(correo)) {
-		$('#correo').removeClass('is-valid');
 		$('#correo').addClass('is-invalid');
 		$('#alerta_correo').text('El correo es inválido.');
 		__CORREO = false;
 	} else {
 		$.get('/exists/' + correo).then((response)=>{
 			if(response === 'false'){
-				$('#correo').removeClass('is-valid');
 				$('#correo').addClass('is-invalid');
 				$('#alerta_correo').text('El correo no está registrado.');
 				__CORREO = false;
 			} else if(response === 'true'){
 				$('#correo').removeClass('is-invalid');
-				$('#correo').addClass('is-valid');
 				$('#alerta_correo').text('');
 				__CORREO = true;
 			} else {
 				$('#correo').removeClass('is-invalid');
-				$('#correo').removeClass('is-valid');
 				$('#alerta_correo').text('');
 			}
 		}).catch((err)=>{
 			$('#correo').removeClass('is-invalid');
-			$('#correo').removeClass('is-valid');
 			$('#alerta_correo').text('');
 		})
 	}

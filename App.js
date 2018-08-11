@@ -45,6 +45,7 @@ app.get('/', (req, res) => {
 		console.log(`[ Carrito Anónimo ] ${JSON.stringify(req.session.carrito)}`);
 		res.render('index');
 	} else {
+		console.log(`[ Carrito Usuario ] ${JSON.stringify(req.session.carrito)}`);
 		res.render('indexSesion', {
 			nombre: req.session.nombre
 		})
@@ -143,6 +144,9 @@ app.post('/Login', (req, res)=>{
 		Client.iniciarSesion(cliente).then((client)=>{
 			req.session.correo = client.correo;
 			req.session.nombre = client.nombre;
+			Client.sincronizarCarrito(req.session.carrito, client.correo).then(()=>{
+				Client.actualizarPedido(client.correo);
+			}).catch((err)=>{});
 			res.send('success');
 		}).catch((err)=>{
 			if(err === 'incorrecta'){
@@ -150,6 +154,7 @@ app.post('/Login', (req, res)=>{
 			} else if(err === 'no existe') {
 				res.send('email');
 			} else {
+				console.log(`[ ERROR ] Al iniciar sesión. ${err.message} `);
 				res.send('error');
 			}
 		});
@@ -189,13 +194,46 @@ app.get('/MiCarrito', (req, res)=>{
 		});
 	} else {
 		//Usuario que ya inició sesión. Caso fácil
+		Client.recuperarCarrito(req.session.correo).then((carrito)=>{
+			req.session.carrito = carrito;
+			Client.getCarrito(req.session.carrito.productos).then((rows)=>{
+				let resultado = [];
+				let tope = rows.length;
+				for(let i = 0; i < tope; i++) {
+					let articulo = rows.shift();
+					let modelo = {
+						codigo: articulo.codigo, 
+						nombre: articulo.nombre,
+						precio: articulo.precio,
+						imagen: articulo.imagen,
+						descripcion: articulo.descripcion,
+						cantidad: req.session.carrito[articulo.codigo]
+					}
+					resultado.push(modelo);
+				}
+				res.render('carrito', { 
+					error: false,
+					Carrito: resultado 
+				});
+			}).catch((err)=>{
+				console.log(`[ ERROR ] Ocurrió un error accediendo al carrito. ${err} `);
+				res.render('carrito', {
+					error: true
+				});
+			});
+		}).catch((err)=>{
+			console.log(`[ ERROR ] Ocurrió un error accediendo al carrito. ${err} `);
+			res.render('carrito', {
+				error: true
+			});
+		});
 	}
 });
 
 // -------     RUTAS DEL EMPLEADO    -------
 
 app.get('/nuevaCategoria', (req, res)=>{
-	//res.sendFile(__dirname + '/Public/HTML/newCategoria.html');
+	
 	res.render('newCategoria');
 });
 
@@ -364,10 +402,15 @@ app.get('/exists/:string', (req, res)=>{
 		Client.existeCorreo(req.params.string.trim()).then(()=>{
 			res.send('true');
 		}).catch((err)=>{
-			if(!err){
-				res.send('false');
-			} else {
-				res.send('error');
+			switch(err.message){
+				case '404':
+					res.send('false');		
+				break;
+
+				default:
+					console.log(`[ ERROR ] Ocurrió un error verificando la existencia de un correo: ${err.message} `);
+					res.send('error');
+				break;
 			}
 		});
 	} else {
@@ -472,12 +515,14 @@ app.post('/quitar/:cod', (req, res)=>{
 		});
 	} else {
 		//Si es un usuario loggeado
-		Cliente.quitarCarrito(codigo, req.session.correo).then((cantidad)=>{
+		Client.quitarCarrito(codigo, req.session.correo).then((cantidad)=>{
 			//Si se pudo quitar el artículo del carrito.
 			//Actualizamos el la cantidad de artículos del carrito
 			req.session.carrito[codigo] = cantidad;
-			res.sendStatus(200);
-		}).else((err)=>{
+			res.contentType('text/plain');
+			console.log('Cantidad: ' + cantidad);
+			res.send(`${cantidad}`);
+		}).catch((err)=>{
 			switch(err){
 				case '404':
 					//Si el artículo a retirar no existe

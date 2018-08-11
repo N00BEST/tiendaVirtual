@@ -24,6 +24,13 @@ function agregar(event) {
 		msg += response > 1 ? 's ' : ' '; 
 		msg += "de este producto en el carrito";
 		$('#cantidad_' + codigo).text(msg);
+		$('#cantidad_' + codigo).removeClass('text-muted');
+		$('#cantidad_' + codigo).addClass('text-success font-weight-bold');
+		setTimeout(()=>{
+			console.log('No funciona');
+			$('#cantidad_' + codigo).removeClass('text-success font-weight-bold');
+			$('#cantidad_' + codigo).addClass('text-muted');
+		}, 600);
 	}).catch((err)=>{
 		$('#alerta_' + codigo).removeClass('text-muted');
 		$('#alerta_' + codigo).addClass('text-danger');
@@ -59,6 +66,13 @@ function quitar(event) {
 			msg += cantidad > 1 ? 's ' : ' '; 
 			msg += "de este producto en el carrito";
 			$('#cantidad_' + codigo).text(msg);
+			$('#cantidad_' + codigo).removeClass('text-muted');
+			$('#cantidad_' + codigo).addClass('text-danger font-weight-bold');
+			setTimeout(()=>{
+				console.log('No funciona');
+				$('#cantidad_' + codigo).removeClass('text-danger font-weight-bold');
+				$('#cantidad_' + codigo).addClass('text-muted');
+			}, 600);
 		}
 		$('#alerta_' + codigo).text('Se ha quitado un artículo de este producto de su carrito.');
 	}).catch((err)=>{
