@@ -64,7 +64,6 @@ app.get('/', (req, res) => {
 			}
 			resultado.push(categoria);
 		}
-		console.log(categorias);
 		if(typeof req.session.correo === 'undefined'){	
 			res.render('index', {
 				categorias: resultado
@@ -392,8 +391,39 @@ app.get('/Admin/NuevoProducto', (req, res)=>{
 
 app.get('/Admin', (req, res)=>{
 	if(typeof req.session.rol !== 'undefined') {
-		res.render('escritorio', {
-			nombre: req.session.nombre
+		Employee.buscarUltimosProductos().then((productos)=>{
+			Employee.buscarUltimasCategorias().then((categorias)=>{
+				let resultado = {
+					nombre: req.session.nombre,
+					categorias: [],
+					productos: []
+				}
+				let tope = productos.length;
+				for(let i = 0; i < tope; i++) {
+					let producto = productos.shift();
+					resultado.productos.push({
+						nombre: producto.nombre,
+						codigo: producto.codigo,
+						imagen: producto.imagen
+					});
+				}
+				tope = categorias.length;
+				for(let i = 0; i < tope; i++) {
+					let categoria = categorias.shift();
+					resultado.categorias.push({
+						nombre: categoria.nombre,
+						codigo: categoria.codigo,
+						imagen: categoria.imagen
+					});
+				}
+				res.render('escritorio', resultado);
+			}).catch((err)=>{
+				console.log(`[ ERROR ] Ocurrió un error buscando las categorías más recientes. ${err.message} `);
+				res.render('500');
+			});
+		}).catch((err)=>{
+			console.log(`[ ERROR ] Ocurrió un error buscando los productos más recientes. ${err.message} `);
+			res.render('500');
 		});
 	} else {
 		res.render('404');

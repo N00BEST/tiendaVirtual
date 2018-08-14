@@ -225,3 +225,7 @@ footer p{
 		position: static;
 	}
 }
+
+p .btn-info {
+	background-color: #212529;
+}

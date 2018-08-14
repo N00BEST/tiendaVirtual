@@ -406,3 +406,33 @@ module.exports.login = (correo, pass) => {
 		});
 	});
 };
+
+module.exports.buscarUltimosProductos = () => {
+	return new Promise((resolve, reject)=>{
+		database.Modelo.findAll({
+			limit: 5,
+			order: [
+				[sequelize.col('createdAt'), 'DESC']
+			]
+		}).then((productos)=>{
+			resolve(productos);
+		}).catch((err)=>{
+			reject(err);
+		});
+	});
+};
+
+module.exports.buscarUltimasCategorias = () =>{
+	return new Promise((resolve, reject)=>{
+		database.Categoria.findAll({
+			limit: 5,
+			order: [
+				[sequelize.col('createdAt'), 'DESC']
+			]
+		}).then((categorias)=>{
+			resolve(categorias);
+		}).catch((err)=>{
+			reject(err);
+		});
+	});
+};

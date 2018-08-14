@@ -97,14 +97,18 @@
                         <% // Aquí va una plantilla con los productos %>
                       
                         <div class="carousel-inner">
-                            <div class="carousel-item active">
-                                <img class="carsl rounded" src="../IMG/categorias/categoria1.jpg" alt="Los Angeles">
-                                <div class="carousel-caption">
-                                    <a href="#" style="color: white">
-                                        <h4>NombreProducto</h4>
-                                    </a>                        
+                            <% let tope = productos.length; %>
+                            <% for(let i = 0; i < tope; i++){%>
+                                <% let producto = productos.shift();%>
+                                <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+                                    <img class="carsl rounded img-fluid" src=<%= '/' + producto.imagen %> alt="<%= producto.nombre %>">
+                                    <div class="carousel-caption">
+                                        <a href="<%= '/Admin/Producto/' + producto.ID %>" style="color: white">
+                                            <h4><%= producto.nombre %></h4>
+                                        </a>                        
+                                    </div>
                                 </div>
-                            </div>
+                            <% } %>
                         </div>
                       
                         <a class="carousel-control-prev" href="#producto" data-slide="prev">
@@ -132,14 +136,18 @@
                         </ul>
                       
                         <div class="carousel-inner">
-                            <div class="carousel-item active">
-                                <img class="carsl rounded" src="categoria1.jpg" alt="Los Angeles">
-                                <div class="carousel-caption">
-                                    <a href="Vista-DetallesCategoria.html" style="color: white">
-                                        <h4>NombreCategoria</h4>
-                                    </a>
+                            <% tope = categorias.length; %>
+                            <% for(let i = 0; i < tope; i++){%>
+                                <% let categoria = categorias.shift();%>
+                                <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+                                    <img class="carsl rounded img-fluid" src=<%= '/' + categoria.imagen %> alt="<%= categoria.nombre %>">
+                                    <div class="carousel-caption">
+                                        <a href="<%= '/Admin/Producto/' + categoria.ID %>" style="color: white">
+                                            <h4><%= categoria.nombre %></h4>
+                                        </a>                        
+                                    </div>
                                 </div>
-                            </div>  
+                            <% } %>
                         </div>
                         <a class="carousel-control-prev" href="#cat" data-slide="prev">
                           <span class="carousel-control-prev-icon"></span>

@@ -73,15 +73,12 @@ module.exports.getCarrito = (articulos) => {
 					codigo: { [Op.in]: articulos }
 				}
 			}).then((rows)=>{
-				console.log(`[ EXITO ] Se encontraron ${rows.length} artículos en el carrito anónimo.`);
 				resolve(rows);
 			}).catch((err)=>{
-				console.log(`[ ERROR ] No se pudo recuperar artículos del carrito anónimo. ${err}`);
 				reject(err);
 			});
 		} else {
 			//Si no hay elementos en el carrito, no se consulta la BBDD.
-			console.log(`[ EXITO ] Se devolvió un carrito anónimo vacío.`);
 			resolve([]);
 		}
 	});
