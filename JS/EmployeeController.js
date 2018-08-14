@@ -2,6 +2,9 @@ const database = require('./EmployeeDB');
 const path = require('path');
 const fs = require('fs');
 const files = require('./Files');
+const sequelize = require('sequelize');
+const sha256 = require('crypto-js/sha256');
+const Op = sequelize.Op;
 
 module.exports.postModel = (model) => {
 	return new Promise(
@@ -80,7 +83,7 @@ module.exports.existeModelo = (codigo) => {
 				if(row.length == 0) {
 					reject(null);
 				} else {
-					resolve();
+					resolve(row[0]);
 				}
 			}).catch((err)=>{
 				reject(err);
@@ -131,7 +134,7 @@ module.exports.agregarModelo = (modelo, file) => {
 				}
 				modelo.imagen = imagen;
 				module.exports.postModel(modelo).then((row)=>{
-					resolve();
+					resolve(row);
 				}).catch((err)=>{
 					reject(err);
 				});
@@ -153,6 +156,28 @@ module.exports.getCategorias = () =>{
 	});
 };
 
+module.exports.getCategoria = (id) =>{
+	if(typeof id === 'undefined' || isNaN(id) || id.length === 0) {
+		return Promise.reject(new Error('404'));
+	} else {
+		return new Promise((resolve, reject)=>{
+			database.Categoria.find({
+				where: {
+					ID: id
+				}
+			}).then((categoria)=>{
+				if(categoria){
+					resolve(categoria);
+				} else {
+					reject(new Errro('404'));
+				}
+			}).catch((err)=>{
+				reject(err);
+			})
+		});
+	}
+};
+
 module.exports.pertenece = (modelo, categoria) =>{
 	if(typeof modelo === 'undefined' || typeof categoria === 'undefined'
 	   || modelo.length === 0 || categoria.length === 0){
@@ -162,7 +187,7 @@ module.exports.pertenece = (modelo, categoria) =>{
 		return new Promise((resolve, reject)=>{
 			let row = {
 				modeloID: modelo,
-				categoriaID: categoria
+				categoriumID: categoria
 			}
 			database.Pertenece.create(row).then((row)=>{
 				resolve();
@@ -175,7 +200,6 @@ module.exports.pertenece = (modelo, categoria) =>{
 
 module.exports.agregarCategoria = (categoria, file) => {
 	return new Promise((resolve, reject)=>{
-		console.log('Intentando agregar la categoría');
 		module.exports.postCategoria(categoria).then((guardada)=>{
 			let imagen;
 			if(typeof file !== 'undefined'){
@@ -196,6 +220,188 @@ module.exports.agregarCategoria = (categoria, file) => {
 			});
 		}).catch((err)=>{
 			console.log('[ ERROR ] ' + err.message);
+			reject(err);
+		});
+	});
+};
+
+module.exports.existeCategoria = (nombre) => {
+	console.log(`[ BUSCANDO - Empleado ] ${nombre} `)
+	if(typeof nombre === 'undefined' || nombre === '') {
+		//Si el nombre es undefined 
+		return Promise.reject(new Error('404'));
+	} else {
+		return new Promise((resolve, reject)=>{
+			//Select * from database where nombre = 'nombre'
+			database.Categoria.findAll({
+				where: {
+					nombre: nombre
+				}
+			}).then((categorias)=>{
+				if(categorias.length === 0){
+					reject(new Error('404'));
+				} else {
+					resolve(categorias[0]);
+				}
+			}).catch((err)=>{
+				reject(err);
+			});
+		});
+	}
+};
+
+module.exports.getProductosCategoria = (id) => {
+	if(typeof id === 'undefined' || isNaN(id) || id.length === 0){
+		return Promise.reject(new Error(400));
+	} else {
+		return new Promise ((resolve, reject)=>{
+			database.Pertenece.findAll({
+			attributes: ['modeloID'],
+			where: {
+				categoriumID: id
+			}, 
+			order: [
+				[sequelize.col('modeloID'), 'ASC']
+			]
+			}).then((consulta)=>{
+				if(consulta.length > 0) {
+					//Tratar ID's para la segunda consulta
+					let ids = [];
+					let tope = consulta.length;
+					for(let i = 0; i < tope; i++) {
+						let producto = consulta.shift();
+						ids.push(producto.modeloID);
+					}
+					database.Modelo.findAll({
+						where: {
+							ID: {
+								[Op.in]: ids
+							}
+						}
+					}).then((productos)=>{
+						resolve(productos);
+					}).catch((err)=>{
+						reject(err);
+					})
+				} else {
+					resolve([]);
+				}
+			}).catch((err)=>{
+				reject(err);
+			});
+		});
+	}
+};
+
+module.exports.visitarCategoria = (id) =>{
+	if(typeof id === 'undefined' || isNaN(id) || id.length === 0) {
+		return Promise.reject(new Error('404'));
+	} else {
+		return database.DB.transaction((t)=>{
+			return database.Categoria.find({
+				where: { 
+					ID: id
+				}
+			}, { transaction: t }).then((categoria)=>{
+				if(categoria){
+					return categoria.updateAttributes({
+						visitas: categoria.visitas + 1
+					}, { transaction: t }).then((row)=>{
+					}).catch((err)=>{
+						throw err;
+					});
+				} else {
+					throw new Error('404');
+				}
+			}).catch((err)=>{
+				throw err;
+			});
+		});
+	}
+};
+
+module.exports.getProductos = () => {
+	return new Promise((resolve, reject)=>{
+		database.Modelo.findAll({
+			order: [
+				[sequelize.col('codigo'), 'ASC']
+			]
+		}).then((productos)=>{
+			resolve(productos);
+		}).catch((err)=>{
+			reject(err);
+		});
+	});
+};
+
+module.exports.existeCorreo = (correo) => {
+	if(typeof correo === 'undefined' || correo.length === 0) {
+		return Promise.reject(new Error('400'));
+	} else {
+		return new Promise((resolve, reject)=>{
+			database.Empleado.findAll({
+				where: {
+					correo: correo
+				}
+			}).then((empleado)=>{
+				if(empleado.length === 0) {
+					reject(new Error('404'));
+				} else {
+					resolve(empleado[0]);
+				}
+			}).catch((err)=>{
+				reject(err);
+			});
+		});
+	}
+};
+
+module.exports.postEmpleado = (empleado) => {
+	return new Promise((resolve, reject)=>{
+		switch(empleado.rol.toLowerCase()){
+			case 'administrador': 
+				empleado.rol = "Admin";
+			break;
+
+			case 'gerente':
+				empleado.rol = "Gerente"; 
+			break; 
+
+			case 'vendedor': 
+				empleado.rol = "Vendedor";
+			break;
+		}
+
+		let token = files.genRandomName(64);
+		let hash = sha256(empleado.correo + token + empleado.password).toString();
+		console.log("Hash creado " + hash);
+
+		empleado.password = hash;
+		empleado.token = token;
+		database.Empleado.create(empleado).then((row)=>{
+			resolve();
+		}).catch((err)=>{
+			reject(err);
+		})
+	});
+};
+
+module.exports.login = (correo, pass) => {
+	return new Promise((resolve, reject)=>{
+		database.Empleado.find({
+			where: {
+				correo: correo
+			}
+		}).then((empleado) => {
+			let token = empleado.token;
+			let hash = sha256(correo + token + pass).toString();
+			console.log('Hash para verificar ' + hash);
+			if(hash === empleado.password){
+				resolve();
+			} else {
+				reject(new Error('401'));
+			}
+		}).catch((err)=>{
 			reject(err);
 		});
 	});

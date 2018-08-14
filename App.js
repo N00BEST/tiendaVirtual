@@ -40,16 +40,45 @@ app.use((req, res, next) => {
 	next();
 });
 
+// Contabilizar visitas a las categorías
+app.use('/Categoria/:nombre', (req, res, next) => {
+	Client.existeCategoria(req.params.nombre).then((categoria)=>{
+		Employee.visitarCategoria(categoria.ID).then(()=>{}).catch((err)=>{
+			console.log(`[ ERROR ] No se pudo contar la visita a la categoría ${categoria.nombre}. ${err.msg} `);
+		});
+	}).catch((err)=>{});
+	next();
+});
+
 // -------     RUTAS DEL CLIENTE     -------
 // ROUTE TO INDEX 
 app.get('/', (req, res) => {
-	if(typeof req.session.correo === 'undefined'){
-		res.render('index');
-	} else {
-		res.render('indexSesion', {
-			nombre: req.session.nombre
-		})
-	}
+	Client.buscarMejoresCategorias().then((categorias)=>{
+		let resultado = [];
+		for(let i = 0; i < categorias.length; i++) {
+			let categoria = {
+				id: categorias[i].ID,
+				nombre: categorias[i].nombre,
+				descripcion: categorias[i].descripcion,
+				imagen: categorias[i].imagen
+			}
+			resultado.push(categoria);
+		}
+		console.log(categorias);
+		if(typeof req.session.correo === 'undefined'){	
+			res.render('index', {
+				categorias: resultado
+			});
+		} else {
+			res.render('indexSesion', {
+				nombre: req.session.nombre,
+				categorias: resultado
+			});
+		}
+	}).catch((err)=>{
+		console.log(`[ ERROR ] Hubo un error al buscar mejores categorías. ${err.message} `);
+		res.render('500');
+	});
 });
 
 app.get('/Productos', (req, res)=>{
@@ -273,40 +302,198 @@ app.get('/AcercaDe', (req, res)=>{
 	});
 });
 
+//Esta ruta está incompleta
+app.get('/Categoria/:nombre', (req, res) =>{
+	Client.existeCategoria(req.params.nombre).then((categoria)=>{
+		Client.getProductosCategoria(categoria.ID).then((productos)=>{
+			res.render('categoria', {
+				error: false,
+				categoria: categoria,
+				productos: productos
+			});
+		}).catch((err)=>{
+			switch(err.message){
+				case '404': 
+					res.render('404');
+				break;
+	
+				default:
+					res.render(500);
+				break;
+			}
+		})
+	}).catch((err)=>{
+		switch(err.message){
+			case '404': 
+				res.render('404');
+			break;
+
+			default:
+				res.render(500);
+			break;
+		}
+	});
+});
+
+app.get('/Categorias', (req, res)=>{
+	Client.getCategorias().then((categorias)=>{
+		res.render('categorias', {
+			categorias: categorias
+		});
+	}).catch((err)=>{
+		switch(err.message){
+			default:
+				console.log(`[ ERROR ] Ocurrió un error intentando acceder a /Categorias. ${err.message} `);
+				res.render('500');
+			break;
+		}
+	});
+});
+
 // -------     RUTAS DEL EMPLEADO    -------
 
 app.get('/Admin/NuevaCategoria', (req, res)=>{
-	
-	res.render('newCategoria', {
-		error: false,
-		msg: ''
-	});
+	if(typeof req.session.rol !== 'undefined'){
+		res.render('newCategoria', {
+			error: false,
+			msg: '',
+			nombre: req.session.nombre
+		});
+	} else {
+		res.render('404');
+	}
 });
 
 app.get('/Admin/NuevoProducto', (req, res)=>{
-	Employee.getCategorias().then((rows)=>{
-		let resultado = {
-			categorias: [],
-			error: false
-		}
-		let tope = rows.length;
-		for(let i = 0; i < tope; i++){
-			let categoria = rows.shift();
-			let nueva = {
-				id: categoria.ID
+	if(typeof req.session.rol !== 'undefined'){
+		Employee.getCategorias().then((rows)=>{
+			let resultado = {
+				categorias: [],
+				error: false, 
+				nombre: req.session.nombre
 			}
-			resultado.categorias.push(nueva);
-		}
-		res.render('newProducto', resultado);
-	}).catch(()=>{
-		res.render('newProducto');
-	});
+			let tope = rows.length;
+			for(let i = 0; i < tope; i++){
+				let categoria = rows.shift();
+				let nueva = {
+					id: categoria.ID, 
+					nombre: categoria.nombre,
+				}
+				resultado.categorias.push(nueva);
+			}
+			res.render('newProducto', resultado);
+		}).catch(()=>{
+			res.render('newProducto');
+		});
+	} else {
+		res.render('404');
+	}
 });
 
 app.get('/Admin', (req, res)=>{
-	res.render('escritorio', {
-		nombre: req.session.nombre
-	});
+	if(typeof req.session.rol !== 'undefined') {
+		res.render('escritorio', {
+			nombre: req.session.nombre
+		});
+	} else {
+		res.render('404');
+	}
+});
+
+app.get('/Admin/Categorias', (req, res)=>{
+	if(typeof req.session.rol !== 'undefined'){
+		res.render('adminCategorias', {
+			nombre: req.session.nombre
+		});
+	} else {
+		res.render('404');
+	}
+});
+
+app.get('/Admin/Categoria/:cat', (req, res)=>{
+	if(typeof req.session.rol !== 'undefined'){
+		Employee.getCategoria(req.params.cat).then((categoria)=>{
+			res.render('modificarCategoria', {
+				nombre: req.session.nombre, 
+				categoria: categoria
+			});
+		}).catch((err)=>{
+			console.log(`[ ERROR ] Ocurrió un error obteniendo categoría. ${err.message} `);
+			res.render('500');
+		});
+	} else {
+		res.render('404');
+	}
+});
+
+app.get('/Admin/Producto/:codigo', (req, res)=>{
+	if(typeof req.session.rol !== 'undefined') {
+		Employee.existeModelo(req.params.codigo).then((modelo)=>{
+			Employee.getCategorias().then((categorias)=>{
+				let producto = {
+					codigo: modelo.codigo,
+					nombre: modelo.nombre,
+					imagen: modelo.imagen, 
+					precio: modelo.precio,
+					publico: modelo.publico,
+					descripcion: modelo.descripcion
+				}
+				res.render('modificarProducto', {
+					nombre: req.session.nombre,
+					producto: producto, 
+					exito: true,
+					error: false,
+					msg: '', 
+					categorias: categorias
+				});
+			}).catch((err)=>{
+				console.log(`[ ERROR ] Ocurrió un error: ${err.message} `);
+				res.render('500');
+			});
+		}).catch((err)=>{
+			switch(err){
+				case null: 
+					res.render('404');
+				break;
+				
+				default: 
+					console.log(`[ ERROR ] Ocurrió un error: ${err.message} `);
+					res.render('500');
+				break;
+			}
+		});
+	} else {
+		res.render('404');
+	}
+});
+
+app.get('/Admin/Productos', (req, res)=>{
+	if(typeof req.session.rol !== 'undefined'){
+		res.render('buscarProducto', {
+			nombre: req.session.nombre
+		});
+	} else {
+		res.render('404');
+	}
+});
+
+app.get('/Admin/Login', (req, res)=>{
+	if(typeof req.session.rol === 'undefined'){
+		res.render('adminLogin');
+	} else {
+		res.redirect('/Admin');
+	}
+});
+
+app.get('/Admin/NuevoEmpleado', (req, res)=>{
+
+	if(typeof req.session.rol !== 'undefined' && req.session.rol === 'Admin'){
+		res.render('nuevoEmpleado', {
+			nombre: req.session.nombre
+		});
+	} else {
+		res.render('404');
+	}
 });
 
 // ------     RUTAS TIPO API      -------
@@ -410,7 +597,6 @@ app.post('/Admin/NuevoProducto', (req, res)=>{
 				error: false,
 				nombre: req.session.nombre
 			}
-			console.log(req.body);
 			let valido = true;
 			valido = modelo.codigo.length > 0 && modelo.nombre.length > 0 && !isNaN(modelo.precio) && !isNaN(modelo.cantidad) 
 			&& !isNaN(modelo.descuento) && modelo.descuento >= 0 && (req.body.visibilidad === 'publico' || req.body.visibilidad === 'privado')
@@ -421,15 +607,21 @@ app.post('/Admin/NuevoProducto', (req, res)=>{
 				modelo.descuento = modelo.descuento === '' ? 0.0 : modelo.descuento;
 				Employee.agregarModelo(modelo, req.file).then((row)=>{
 					obj = {
-						producto: modelo,
 						error: false,
-						nombre: req.session.nombre
+						nombre: req.session.nombre,
+						exito: true,
+						msg: `El producto ${modelo.codigo} - "${modelo.nombre}" fue agregado con éxito`
 					};
 
 					Employee.getCategorias().then((categorias)=>{
 						let tope = categorias.length;
 						for(let i = 0; i < tope; i++) {
-							let id = categorias.shift().ID;
+							let id = categorias.shift();
+							id = id.ID;
+							obj.categorias.push({
+								id: id.ID,
+								nombre: id.nombre
+							});
 							if(typeof req.body[id] !== 'undefined'){
 								Employee.pertenece(row.ID, id).then(()=>{
 									console.log(`[ EXITO ] ${row.ID} agregado a ${id} `);
@@ -438,9 +630,30 @@ app.post('/Admin/NuevoProducto', (req, res)=>{
 								})
 							}
 						}
-					}).catch((err)=>{});
-					console.log(`[ EXITO ] Agregado el modelo ${modelo.codigo}-${modelo.nombre} `);
-					res.render('newProducto', obj);
+					}).catch((err)=>{
+						console.log(`[ ERROR ] Al intentar consultar las categorías. ${err.message} `);
+					});
+					Employee.getCategorias().then((rows)=>{
+						let resultado = {
+							categorias: [],
+							error: false,
+							exito: true,
+							msg: `El producto ${modelo.codigo} - "${modelo.nombre}" fue agregado exitosamente.`
+						}
+						let tope = rows.length;
+						for(let i = 0; i < tope; i++){
+							let categoria = rows.shift();
+							let nueva = {
+								id: categoria.ID, 
+								nombre: categoria.nombre,
+							}
+							resultado.categorias.push(nueva);
+						}
+						res.render('newProducto', resultado);
+					}).catch((err)=>{
+						console.log(`[ ERROR ] Al intentar consultar las categorías. ${err.message} `);
+						res.render('500');
+					});
 				}).catch((err)=>{
 					let msg = '';
 					if(err != 'duplicado') {
@@ -646,25 +859,25 @@ app.post('/quitar/:cod', (req, res)=>{
 
 // OBTENER INFORMACIÓN SOBRE UN PRODUCTO
 app.get('/producto/:producto', (req, res)=>{
-	if(req.params.producto === 'all'){
-		//res.contentType = 'application/json';
-		Client.getProductos().then((row)=>{
-			let resultado = [];
-			row.forEach(p => {
-				let obj = {
-					codigo: p.codigo, 
-					nombre: p.nombre, 
-					precio: p.precio, 
-					disponible: p.cantidad > 0, 
-					imagen: p.imagen, 
-					descripcion: p.descripcion
-				};
-				resultado.push(obj);
+	/*if(req.params.producto === 'all'){
+			//res.contentType = 'application/json';
+			Client.getProductos().then((row)=>{
+				let resultado = [];
+				row.forEach(p => {
+					let obj = {
+						codigo: p.codigo, 
+						nombre: p.nombre, 
+						precio: p.precio, 
+						disponible: p.cantidad > 0, 
+						imagen: p.imagen, 
+						descripcion: p.descripcion
+					};
+					resultado.push(obj);
+				});
+				res.send(resultado);
+			}).catch((err)=>{
+				res.send(err);
 			});
-			res.send(resultado);
-		}).catch((err)=>{
-			res.send(err);
-		});
 	} else {
 		Client.getProducto(req.params.producto).then((producto)=>{
 			if(producto.publico){
@@ -683,9 +896,19 @@ app.get('/producto/:producto', (req, res)=>{
 		}).catch((err)=>{
 			res.sendStatus(404);
 		});
+	}*/
+
+	if(req.params.producto === 'all'){
+		Employee.getProductos().then((productos)=>{
+			res.send(productos);
+		}).catch((err)=>{
+			console.log(`[ ERROR ] Ocurrió un error intentando recuperar todos los productos. ${err.message} `);
+			res.sendStatus(500);
+		});
 	}
 });
 
+// OBTENER INFORMACIÓN DE UNA CATEGORÍA RUTA SÓLO PARA EMPLEADOS
 app.get('/categoria/:cat', (req, res)=>{
 	if(req.params.cat === 'all'){
 		Employee.getCategorias().then((categorias)=>{
@@ -693,11 +916,45 @@ app.get('/categoria/:cat', (req, res)=>{
 			let tope = categorias.length;
 			for(let i = 0; i < tope; i++) {
 				let categoria = categorias.shift();
-				resultado.push(categoria.nombre);
+				let insert = {
+					id: categoria.ID,
+					nombre: categoria.nombre,
+					descripcion: categoria.descripcion
+				}
+				resultado.push(insert);
 			}
 			res.send(resultado);
 		}).catch((err)=>{
+			console.log('[ ERROR ] Al consultar las categorias. ' + err.message);
 			res.sendStatus(500);
+		});
+	} else {
+		Employee.getProductosCategoria(req.params.cat).then((productos)=>{
+			let resultado = [];
+			let tope = productos.length;
+			for(let i = 0; i < tope; i++) {
+				let producto = productos.shift();
+				resultado.push({
+					codigo: producto.codigo,
+					nombre: producto.nombre
+				});
+			}
+			res.send(resultado);
+		}).catch((err)=>{
+			switch(err.message){
+				case '404': 
+					res.sendStatus(404);
+				break;
+
+				case '400': 
+					res.sendStatus(400);
+				break;
+
+				default: 
+					console.log(`[ ERROR ] Error al buscar categoría tipo API. ${err.message} `);
+					res.sendStatus(500);
+				break;
+			}
 		});
 	}
 });
@@ -713,6 +970,154 @@ app.get('/Logout', (req, res)=>{
 	}
 });
 
+app.get('/nuevos/:cat', (req, res)=>{
+	if(typeof req.params.cat === 'undefined' || isNaN(req.params.cat)){
+		res.sendStatus(400);
+	} else {
+		Client.buscarRecientes(req.params.cat).then((productos)=>{
+			let resultado = [];
+			let tope = productos.length;
+			for(let i = 0; i < tope; i++) {
+				let producto = productos.shift();
+				let obj = {
+					nombre: producto.nombre,
+					codigo: producto.codigo,
+					precio: producto.precio,
+					imagen: producto.imagen,
+					descripcion: producto.descripcion,
+					disponible: producto.cantidad > 0
+				}
+				resultado.push(obj);
+			}
+			res.send(resultado);
+		}).catch((err)=>{
+			switch(err.message){
+				default: 
+					console.log(`[ ERROR ] Error al buscar los productos recientes de ${req.params.cat}. ${err.message} `);
+					res.sendStatus(500);
+				break;
+			}
+		});
+	}
+});
+
+app.get('/admin/exists/:correo', (req, res)=>{
+	if(/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/g.test(req.params.correo)){
+		Employee.existeCorreo(req.params.correo).then(()=>{
+			res.sendStatus(200);
+		}).catch((err)=>{
+			switch(err.message){
+				case '404': 
+					res.sendStatus(404);
+				break;
+
+				case '400': 
+					res.sendStatus(400);
+				break;
+
+				default: 
+					console.log(`[ ERROR ] Al consultar correo. ${err.message} `);
+					res.sendStatus(500);
+				break;
+			}
+		});
+	} else {
+		res.sendStatus(404);
+	}
+});
+
+app.post('/nuevoEmpleado', (req, res)=>{
+	if(!/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/g.test(req.body.correo) || 
+		req.body.pass !== req.body.pass2 || req.body.pass.length < 8 || !/^(Administrador|Gerente|Vendedor)$/i.test(req.body.rol)){
+		
+		res.contentType('text/plain');
+		if(req.body.pass !== req.body.pass2){
+			res.send('no match');
+		} else if(req.body.pass.length < 8) {
+			res.send('too short');
+		} else if(!/^(Administrador|Gerente|Vendedor)$/i.test(req.body.rol)){
+			res.send('invalid rol');
+		} else {
+			res.sendStatus(400);
+		}
+	} else {
+		Employee.existeCorreo(req.body.correo).then(()=>{
+			res.contentType('text/plain');
+			res.send('email in use');
+		}).catch((err)=>{
+			if(err.message === '404'){
+				let empleado = {
+					correo: req.body.correo,
+					password: req.body.pass,
+					rol: req.body.rol,
+					nombre: req.body.rol,
+					apellido: req.body.apellido
+				}
+				Employee.postEmpleado(empleado).then(()=>{
+					console.log(`[ EXITO ] Se ha creado un empleado ${empleado.rol} nuevo`);
+					res.sendStatus(200);
+				}).catch((err)=>{
+					console.log(`[ ERROR ] Ocurrió un error creando un empleado. ${err.message} `);
+					res.sendStatus(500);
+				});
+			} else {
+				switch(err.message) {
+					case '400': 
+						res.sendStatus(400);
+					break;
+
+					default: 
+						console.log(`[ ERROR ] Ocurrió un error verificando un correo de empleado. ${err.message} `);
+						res.sendStatus(500);
+					break;
+				}
+			}
+		});
+			
+	}
+});
+
+app.post('/admin/login', (req, res)=> {
+	if(/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/g.test(req.body.correo) || req.body.pass.length < 8){
+		Employee.existeCorreo(req.body.correo).then((empleado)=>{
+			Employee.login(req.body.correo, req.body.pass).then(()=>{
+				req.session.nombre = empleado.nombre;
+				req.session.apellido = empleado.apellido;
+				req.session.correo = empleado.correo;
+				req.session.rol = empleado.rol;
+				res.send("/Admin");
+			}).catch((err)=>{
+				switch(err.message){
+					case '401': 
+						res.sendStatus(401);
+					break;
+
+					default: 
+						console.log(`[ ERROR ] Ocurrió un error intentando iniciar sesión. ${err.message}`);
+						res.sendStatus(500);
+					break;
+				}
+			});
+		}).catch((err)=>{
+			switch(err.message){
+				case '404': 
+					res.sendStatus(400);
+				break;
+
+				case '400': 
+					res.sendStatus(400);
+				break;
+
+				default: 
+					console.log(`[ ERROR ] Ocurrió un error intentando iniciar sesión. ${err.message}`);
+					res.sendStatus(500);
+				break;
+			}
+		});
+	} else {
+		res.sendStatus(400);
+	}
+});
 
 
 
@@ -724,8 +1129,8 @@ app.get('/test', (req, res)=>{
 });
 
 app.post('/test', (req, res)=>{
-	console.log(req.body.namCat);
-	res.send(req.body.nombre);
+	console.log(req.header('Referer'));
+	res.send(req.header);
 });
 
 // DESPLEGAR PÁGINA DE 404

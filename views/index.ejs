@@ -169,50 +169,19 @@
 			
 				<div class="row mt-3">
 				<div class="card-group">
-
-					<!-- Tarjeta Tecnologia -->
-					<div class="col-xm-4 col-sm-6 col-md-3">
-						<div class="card mb-3">
-							<a href="#"><img src="IMG/categorias/tecnologia/1.jpg" class="card-img-top img-fluid" alt=""></a>
-							<div class="card-block">
-								<h3 class="card-title">Tecnologia</h3>
-								<a href="#" class="btn btn-block">Ver más</a>
+					<% let tope = categorias.length; %>
+					<% for(let i = 0; i < tope; i ++) {%>
+						<% let categoria = categorias.shift(); %>
+						<div class="col-xm-4 col-sm-6 col-md-3">
+							<div class="card mb-3">
+								<a href=<%= '/Categoria/' + categoria.id %>><img src=<%= '/' + categoria.imagen %> class="card-img-top img-fluid" alt=""></a>
+								<div class="card-block">
+									<h3 class="card-title"><%= categoria.nombre %></h3>
+									<a href=<%= '/Categoria/' + categoria.id %> class="btn btn-block">Ver más</a>
+								</div>
 							</div>
 						</div>
-					</div>
-
-					<!-- Tarjeta Deporte -->
-					<div class="col-xm-4 col-sm-6 col-md-3">
-						<div class="card mb-3">
-							<a href="#"><img src="IMG/categorias/deporte/1.jpg" class="card-img-top img-fluid" alt=""></a>
-							<div class="card-block">
-								<h3 class="card-title">Deporte</h3>
-								<a href="#" class="btn  btn-block">Ver más</a>
-							</div>
-						</div>
-					</div>
-
-					<!-- Tarjeta Moda -->
-					<div class="col-sm-4 col-sm-6 col-md-3">
-						<div class="card mb-3">
-							<a href="#"><img src="IMG/categorias/moda/1.jpg" class="card-img-top img-fluid" alt=""></a>
-							<div class="card-block">
-								<h3 class="card-title">Moda</h3>
-								<a href="#" class="btn  btn-block">Ver más</a>
-							</div>
-						</div>
-					</div>
-
-					<!-- Tarjeta Instrumentos Musicales -->
-					<div class="col-xm-4 col-sm-6 col-md-3">
-						<div class="card mb-3">
-							<a href="#"><img src="IMG/categorias/instrumentos_musicales/1.jpg" class="card-img-top img-fluid" alt=""></a>
-							<div class="card-block">
-								<h3 class="card-title">Musica</h3>
-								<a href="#" class="btn  btn-block">Ver más</a>
-							</div>	
-						</div>
-					</div>
+					<% } %>
 				</div>
 				</div>
 			</div>
@@ -294,66 +263,6 @@
 				<div class="col">
 					<!-- Card's para los articulos -->
 					<div class="card-columns" id="Productos">
-						<!--<div class="card" style="width: 18rem;">
-						  	<img class="card-img-top" src="IMG/BG/1.jpg" alt="Card image cap">
-						  	<div class="card-body">
-						  		<h5 class="card-title">Titulo del Articulo</h5>
-						    	<p class="card-text">Descripcion del articulo</p>
-						    	<p class="text-muted">Precio del articulos</p>
-						    	<a href="#">Ver Más</a>
-						  </div>
-						</div>
-
-						<div class="card" style="width: 18rem;">
-						  	<img class="card-img-top" src="IMG/BG/bg5.jpg" alt="Card image cap">
-						  	<div class="card-body">
-						  		<h5 class="card-title">Titulo del Articulo</h5>
-						    	<p class="card-text">Descripcion del articulo</p>
-						    	<p class="text-muted">Precio: 250.000</p>
-						    	<a href="#">Ver Más</a>
-						  </div>
-						</div>
-
-						<div class="card" style="width: 18rem;">
-						  	<img class="card-img-top" src="IMG/BG/bg4.jpg" alt="Card image cap">
-						  	<div class="card-body">
-						  		<h5 class="card-title">Titulo del Articulo</h5>
-						    	<p class="card-text">Descripcion del articulo</p>
-						    	<p class="text-muted">Precio: 250.000</p>
-						    	<a href="#">Ver Más</a>
-						  </div>
-						</div>
-
-						<div class="card" style="width: 18rem;">
-						  	<img class="card-img-top" src="IMG/BG/bg3.jpg" alt="Card image cap">
-						  	<div class="card-body">
-						  		<h5 class="card-title">Titulo del Articulo</h5>
-						    	<p class="card-text">Descripcion del articulo</p>
-						    	<p class="text-muted">Precio: 250.000</p>
-						    	<a href="#">Ver Más</a>
-						  </div>
-						</div>
-
-						<div class="card" style="width: 18rem;">
-						  	<img class="card-img-top" src="IMG/BG/bg2.jpg" alt="Card image cap">
-						  	<div class="card-body">
-						  		<h5 class="card-title">Titulo del Articulo</h5>
-						    	<p class="card-text">Descripcion del articulo</p>
-						    	<p class="text-muted">Precio: 250.000</p>
-						    	<a href="#">Ver Más</a>
-						  </div>
-						</div>
-
-						<div class="card" style="width: 18rem;">
-						  	<img class="card-img-top" src="IMG/BG/bg.jpg" alt="Card image cap">
-						  	<div class="card-body">
-						  		<h5 class="card-title">Titulo del Articulo</h5>
-						    	<p class="card-text">Descripcion del articulo</p>
-						    	<p class="text-muted">Precio: 250.000</p>
-						    	<a href="#">Ver Más</a>
-						  </div>
-						</div>
-						-->
 					</div>
 				</div>
 			</div>

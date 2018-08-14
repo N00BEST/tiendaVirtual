@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <title>Tu Carrito | TiendaVirtual</title>
+    <title>Categorías | TiendaVirtual</title>
     <link rel="icon" href="IMG/icono/tag.png">
     <link rel="stylesheet" href="CSS/bootstrap.min.css">
-    <link rel="stylesheet" href="CSS/estilos_categorias.css">
+    <link rel="stylesheet" href="CSS/categorias.css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Lobster" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
 </head>
+
 <body>
+
     <!-- barra de busqueda, nav, modal -->
     <header>
         <div class="row">
             <div class="col">
-
+                <!-- Menu de Navegacion -->
                 <nav class="navbar navbar-expand-xl">
-                    <!-- Menu de Navegacion -->
                     <div class="col-sm-4 col-md-6 col-lg-4 col-xl-6">
                         <button class="navbar-toggler navbar-toggler-right navbar-dark" data-toggle="collapse" data-target="#navbarSupportedContent"
                             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Menu">
@@ -41,7 +43,7 @@
                                     <a class="nav-link" href="/Productos">Productos</a>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+                                    <a class="nav-link dropdown-toggle" href="/Categorias" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
                                         aria-expanded="false">Categorias</a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                         <a class="dropdown-item" href="tecnologia.view.html">Tecnologia</a>
@@ -153,76 +155,47 @@
         </div>
     </header>
 
-    <!-- ARTICULOS DESDE LA BASE DE DATOS -->
+    <!-- Contenido -->
     <main>
         <div class="container mt-5 mb-3">
-            <div class="row justify-content-center ">
-                <div class="articulos_title col-12 mt-5">
-                    <p>Artículos en el Carrito <button class="btn btn-info float-right w-25 hx-auto" id="comprar">Comprar</button></p> 
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-6">
+                    <h6>Categorías</h6>
                 </div>
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        <% if(error) { %>
-                            <h1>Lo sentimos...</h1>
-                            <p>Ocurrió un error al acceder a esta página</p>
-                        <% } else if(Carrito.length === 0) { %>
-                            <h1>Aún no ha agregado productos a su carrito</h1>
-                            <p>
-                                Puede ir a <a href='/Productos'>Productos</a> para ver los artículos disponibles...
-                                <% if(typeof nombre === 'undefined'){ %>
-                                    <br/>O <a href='/Login'>Iniciar Sesión</a> para ver los artículos que ya ha añadido.
-                                <% } %>
-                            </p>
+                <div class="row mt-3">
+                    <div class="card-group" id="Categorias">
+                        <% let tope = categorias.length; %>
+                        <% for(let i = 0; i < tope; i++) { %>
+                            <% let categoria = categorias.shift(); %>
+                            <div class="col-xm-4 col-sm-6 col-md-3" id=<%= categoria.ID %>>
+                                <div class="card mb-3">
+                                    <a href=<%= '/Categoria/' + categoria.nombre %>>
+                                        <img src=<%= categoria.imagen %> class="card-img-top img-fluid" alt="Card image cap">
+                                    </a>
+                                    <div class="card-block">
+                                        <a href=<%= '/Categoria/' + categoria.nombre %>>
+                                            <h3 class="card-title"><%= categoria.nombre %></h3>
+                                        </a>
+                                        <ul class="list-group list-group-flush" id=<%= 'lista_' + categoria.ID %>>
+                                        </ul>
+                                    </div>
+                                    <a href=<%= '/Categoria/' + categoria.nombre %> class="btn btn-block">Ver más</a>
+                                </div>
+                            </div>
                         <% } %>
                     </div>
-                    <div class="col-md-12">
-                        <!-- Card's para los articulos -->
-                        <div class="card-columns" id="Productos">
-                            <!-- Cada card tiene un tamaño automatico, al añadirle el articulo desde la base de datos, se debe adaptar automaticamente -->
-                            <% if(!error){ %>
-                                <% let tope = Carrito.length; %>
-                                <% for(let i = 0; i < tope; i++) { %>
-                                    <% let producto = Carrito.shift(); %>
-                                    <div class="card" id=<%=producto.codigo%>>
-                                        <a href=<%= '/Producto/' + producto.codigo %> style="text-decoration: none !important;">
-                                            <img class="card-img-top" src=<%=producto.imagen%> alt="Card image cap">
-                                        </a>
-                                        <div class="card-body">
-                                            <a href=<%= '/Producto/' + producto.codigo %> style="text-decoration: none !important;">
-                                                <small class="text-muted text-center" id=<%= 'cantidad_' + producto.codigo%>>
-                                                    Tiene <%= producto.cantidad %> artículo<%=producto.cantidad > 1 ? 's' : ''%> de este producto en el carrito
-                                                </small>
-                                                <h5 class="card-title"><%= producto.nombre %></h5>
-                                                <small class="text-muted font-weight-bold"><%= producto.disponible ? '' : 'AGOTADO' %></small>
-                                                <p class="card-text text-body"><%= producto.descripcion %></p>
-                                                <p class="text-muted"><%= producto.precio %></p>
-                                            </a>
-                                            <button id=<%= 'boton_' + producto.codigo %> class="btn btn-danger agg">Agregar otro</button>
-                                            <button id=<%= 'boton_' + producto.codigo %> class="btn btn-danger quit">Quitar</button><br />
-                                            <small id=<%='alerta_' + producto.codigo%>></small>
-                                        </div>
-                                    </div>
-                                <% } %>
-                            <% } %>
-                        </div>
-                    </div>
                 </div>
-            </div>
-        </div>
     </main>
 
     <!-- Redes sociales, Acerca de , Mi cuenta -->
-    <footer class="contenedor-footer mt-5 align-bottom">
-        <!-- Acerca De, redes sociales, mi cuenta -->
+    <footer class="container mt-3">
         <div class="row">
-            <!-- Acerca De -->
             <div class="col-md-4 mb-3">
                 <h6>Acerca De</h6>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. At distinctio repellat reprehenderit omnis expedita
                     odio maiores dolor magnam ipsum perferendis, aperiam delectus, commodi dolores, alias provident voluptas
                     quis cupiditate nobis incidunt hic dolorum debitis minima.</p>
             </div>
-            <!-- Redes Sociales -->
             <div class="redes_sociales col-md-4 mb-5 ">
                 <h6>Redes Sociales</h6>
                 <a href="#">
@@ -241,8 +214,9 @@
                 <a href="/Login">Ingresar</a>
                 <a href="/Registrarse">Crear cuenta</a>
             </div>
+
+
         </div>
-        <!-- Copyright -->
         <div class="row">
             <div class="col-12">
                 <p>Copyright © 2018-2018 TiendaVirtual Venezuela</p>
@@ -251,8 +225,8 @@
     </footer>
 
     <script src="JS/jquery.min.js"></script>
-    <script src="JS/carrito.js"></script>
-    <script src="JS/login.js"></script>
+    <script src="JS/categorias.js"></script>
     <script src="JS/bootstrap.min.js"></script>
 </body>
+
 </html>

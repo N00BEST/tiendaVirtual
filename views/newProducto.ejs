@@ -1,5 +1,6 @@
 <% producto = typeof producto === 'undefined' ? {} : producto; %>
 <% categorias = typeof categorias === 'undefined' ? {} : categorias %>
+<% exito = typeof exito === 'undefined' ? false : exito; %>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -19,7 +20,7 @@
     <header>
         <div class="container">
             <nav class="navbar navbar-expand-md navbar-dark cursor">
-                <a class="navbar-brand" href="/Admin/Principal">NombreTitulo</a>
+                    <a class="navbar-brand" href="/Admin">NombreTitulo</a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -54,7 +55,7 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">NombreEmpleado</a>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" role="button" href="#">Cerrar Sesión</a>
+                                    <a class="dropdown-item" role="button" href="/Logout">Cerrar Sesión</a>
                                 </div>
                             </li>                         
                         </ul>
@@ -69,10 +70,10 @@
         <div class="col-sm-2 col-md-3"></div>
         <div class="col-xs-12 col-sm-8 col-md-6">
             <div class="container">
-                <div class="">
+                <div class="form-group">
                         <h2>Crear producto</h2>
-                        <div class="alert font-weight-bold text-danger" id="notificacion">
-                            <%= error ? msg : ''%>
+                        <div class="alert font-weight-bold text-<%= error ? 'danger' : 'success' %>" id="notificacion">
+                            <%= error || exito ? msg : ''%>
                         </div>
                 </div>
                 <form action="/Admin/NuevoProducto" method="post" enctype="multipart/form-data" id="form_NuevoProducto">
@@ -148,7 +149,7 @@
                                 <% for(let i = 0; i < tope; i++) {%>
                                     <% let categoria = categorias.shift();%>
                                     <tr>
-                                        <td>
+                                        <td style="width: 10%;">
                                             <div class="form-check-inline">
                                                 <label class="form-check-label">
                                                     <input type="checkbox" class="form-check-input" name=<%= categoria.id %> value="true">

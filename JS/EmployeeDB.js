@@ -135,6 +135,10 @@ const Categoria = database.define('categoria', {
 	descripcion: {
 		type: Sequelize.TEXT,
 		defaultValue: ''
+	},
+	visitas: {
+		type: Sequelize.INTEGER(10).UNSIGNED, 
+		defaultValue: 0
 	}
 });
 
@@ -166,11 +170,6 @@ const Empleado = database.define('empleado', {
 		primaryKey: true,
 		autoIncrement: true
 	}, 
-	user: {
-		type: Sequelize.STRING(10),
-		unique: true,
-		allowNull: false
-	},
 	password: {
 		type: Sequelize.STRING(64),
 		allowNull: false
@@ -189,6 +188,11 @@ const Empleado = database.define('empleado', {
 	},
 	apellido: {
 		type: Sequelize.STRING(100)
+	},
+	token: {
+		type: Sequelize.STRING(64),
+		allowNull: false, 
+		unique: true
 	}
 });
 
@@ -303,3 +307,4 @@ module.exports.Talla = Talla;
 module.exports.Inventario = Inventario;
 module.exports.Pedido = Pedido;
 module.exports.Orden = Orden;
+module.exports.DB = database;

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+    <title>Pagina - Intranet - Modificar Producto</title>
+    <link rel="stylesheet" href="estilos/estilogeneral.css">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar navbar-expand-md navbar-dark cursor">
+                <a class="navbar-brand" href="Vista-Escritorio.html">NombreTitulo</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">Productos</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="Vista-CrearProducto.html">Crear</a>
+                                    <a class="dropdown-item" href="Vista-BuscarProducto.html">Modificar</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">Categorías</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="Vista-CrearCategoria.html">Crear</a>
+                                    <a class="dropdown-item" href="Vista-BuscarCategoria.html">Modificar</a>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="Vista-Pedido.html">Pedidos</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">Empleados</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="Vista-CrearEmpleado.html">Crear</a>
+                                    <a class="dropdown-item" href="Vista-BuscarEmpleado.html">Modificar</a>
+                                </div>
+                            </li> 
+                        </ul>
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">NombreEmpleado</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" role="button" href="#">Cerrar Sesión</a>
+                                </div>
+                            </li>                         
+                        </ul>
+                    </div>  
+            </nav>
+        </div>  
+    </header>
+    
+    <br>
+
+    <div class="container contenido">
+        <div class="row">
+        <div class="col-sm-2 col-md-3"></div>
+        <div class="col-xs-12 col-sm-8 col-md-6">
+            <div class="container">
+                <form action="javascript:void(0)" methot="get">
+                    <div class="form-group">
+                        <h2>Modificar producto</h2>
+                    </div>
+                    <div class="form-group">
+                        <label for="cod">Código de modelo:</label>
+                        <input class="form-control form-control-sm" type="text" name="cod" id="cod" maxlength="20" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nomelo">Nombre:</label>
+                        <input class="form-control form-control-sm" type="text" name="nombre" id="nombre"  maxlength="100" required>
+                    </div>    
+                    <div class="form-group">
+                        <label for="descripcion">Descripción:</label>
+                        <input class="form-control form-control-sm" type="textarea" name="descr" id="descripcion"  maxlength="500">
+                    </div>
+                    <div class="form-group">
+                        <label for="img">Imagen:</label>
+                        <input class="form-control form-control-sm form-control-file border" type="file" name="img" id="img">
+                    </div>
+                    <div class="form-group">
+                        <label for="precio">Precio:</label>
+                        <input class="form-control form-control-sm" type="text" name="precio" id="precio">
+                    </div>
+                    <div class="form-group">
+                        <label for="cantidad">Cantidad total:</label>
+                        <input class="form-control form-control-sm" type="text" name="cantidad" id="cantidad" >
+                    </div>
+                    <div class="form-group">
+                        <label for="estadoprpducto">Estado:</label>
+                        <select class="form-control" id="estadoprpducto">
+                            <option value="publicado">Publicar</option>
+                            <option value="oculto">No publicar</option> 
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="estadoprpducto">Descuento:</label>
+                        <input class="form-control form-control-sm" type="text" name="descuento" id="descuento">
+                    </div>
+                    <div class="form-group">
+                        <p>Categoría:</p>
+                    <div class="table-wrapper-scroll-y">
+                    <table class="table table-sm table-hover">
+                        <thead>
+                          <tr>
+                            <th></th>
+                            <th>Categoría</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>
+                                <div class="form-check-inline">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" value="opcionCategoria">
+                                    </label>
+                            </div>
+                            </td>
+                            <td>NombreCategoria</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    </div>         
+                    <div class="form-group">
+                        <input class="btn btn-info boton" type="submit" value="Aceptar">
+                    </div>
+                </form>
+            </div>
+        </div>
+    <div class="col-xs-0 col-sm-2 col-md-3"></div>
+    </div>
+</div>
+        
+    
+    
+</body>
+</html>

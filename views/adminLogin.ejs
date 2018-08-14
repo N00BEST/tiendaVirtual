@@ -4,19 +4,20 @@
 <head>
     <title>Pagina - Intranet - Login</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="estilos/estilogeneral.css">
+    <link rel="stylesheet" href="/CSS/estilogeneral.css">
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/CSS/bootstrap1.min.css">
+    <script src="/JS/jquery.min.js"></script>
+    <script src="/JS/popper.min.js"></script>
+    <script src="/JS/adminLogin.js"></script>
+    <script src="/JS/bootstrap1.min.js"></script>
 </head>
 
 <body>
     <header>
         <div class="container">
             <nav class="navbar navbar-expand-md navbar-dark">
-                <a class="navbar-brand" href="Vista-LogIn.html">NombreTitulo</a>
+                <a class="navbar-brand" href="/Admin/Login">NombreTitulo</a>
             </nav>
         </div>  
     </header>
@@ -27,8 +28,9 @@
         <div class="row">
             <div class="col-sm-2 col-md-3"></div>
             <div class="col-xs-12 col-sm-8 col-md-6">
-                <div class="container">
-                    <h2>Sistema Intranet NombrePagina</h2>
+                <div class="container text-center">
+                    <h2>Iniciar Sesión</h2>
+                    <small id="notificacion" class="text-danger"></small>
                 </div>
             </div>
             <div class="col-sm-2 col-md-3"></div>
@@ -40,16 +42,18 @@
                 <div class="container">
                     <form action="javascript:void(0)" methot="post">
                         <div class="form-group">
-                            <label for="usr">Usuario:</label>
-                            <input class="form-control form-control-sm" type="text" name="usr" id="usr" maxlength="20" required>
+                            <label for="usr">Correo:</label>
+                            <input class="form-control form-control-sm" type="text" name="correo" id="correo" maxlength="20" placeholder="correo@ejemplo.com">
+                            <small class="text-danger" id="alerta_correo"></small>
                         </div>
                         <div class="form-group">
                             <label for="psr">Contraseña:</label>
-                            <input class="form-control form-control-sm" type="password" name="psw" id="psw" maxlength="20" required>
+                            <input class="form-control form-control-sm" type="password" name="pass" id="pass" maxlength="20" placeholder=" ********">
+                            <small class="text-danger" id="alerta_pass"></small>
                         </div>
                         <div class="form-group">
                             <div class="form-group">
-                            <input class="btn btn-info boton" type="submit" value="Continuar">
+                            <input class="btn btn-info boton" id="submit" type="submit" value="Ingresar">
                         </div>
                         </div>
                     </form>

@@ -530,7 +530,7 @@ module.exports.actualizarPedido = (correo) => {
 				where: {
 					correo: correo
 				}
-			}).then((cliente)=>{
+			}, {transaction: t}).then((cliente)=>{
 				//Si la consulta fue éxitosa
 				if(cliente.length > 0) {
 					cliente = cliente[0];
@@ -540,14 +540,14 @@ module.exports.actualizarPedido = (correo) => {
 							clienteID: cliente.ID,
 							estado: 'Carrito'
 						}
-					})).then((pedido)=>{
+					}), {transaction: t}).then((pedido)=>{
 						//Si tiene carrito activo, actualizar
 						if(pedido.length > 0) {
 							pedido = pedido[0];
 							//Select * from ordens where pedidoID = 'rows.ID'
 							database.Orden.findAll({
 								where: { pedidoID: pedido.ID }
-							}).then((ordenes)=>{
+							}, { transaction: t }).then((ordenes)=>{
 								if(ordenes.length > 0){
 									//Si hay órdenes en el pedido
 									let costo = 0.00; 
@@ -558,7 +558,7 @@ module.exports.actualizarPedido = (correo) => {
 									}
 									pedido.updateAttributes({
 										costo_total: costo
-									}).then(()=>{
+									}, {transaction: t}).then(()=>{
 										console.log(`[ EXITO ] Pedido actualizado. `);
 									}).catch((err)=>{
 										throw err;
@@ -567,7 +567,7 @@ module.exports.actualizarPedido = (correo) => {
 									//Si no hay órdenes en el pedido.
 									pedido.updateAttributes({
 										costo_total: 0.00
-									}).then(()=>{
+									}, {transaction: t }).then(()=>{
 										console.log(`[ EXITO ] Pedido actualizado. `);
 									}).catch((err)=>{
 										throw err;
@@ -658,7 +658,6 @@ module.exports.recuperarCarrito = (correo) => {
 							productos: []
 						});
 					}
-
 				}).catch((err)=>{
 					console.log(`[ ERROR ] No se pudo consultar un pedido. ${err.message}`);
 					reject(err);
@@ -666,4 +665,159 @@ module.exports.recuperarCarrito = (correo) => {
 			})
 		});
 	}
+};
+
+module.exports.existeCategoria = (nombre) => {
+	if(typeof nombre === 'undefined' || nombre === '') {
+		//Si el nombre es undefined 
+		return Promise.reject(new Error('404'));
+	} else {
+		return new Promise((resolve, reject)=>{
+			//Select * from database where nombre = 'nombre'
+			database.Categoria.findAll({
+				where: {
+					nombre: nombre
+				}
+			}).then((categorias)=>{
+				if(categorias.length === 0){
+					reject(new Error('404'));
+				} else {
+					resolve(categorias[0]);
+				}
+			}).catch((err)=>{
+				reject(err);
+			});
+		});
+	}
+};
+
+module.exports.buscarRecientes = (categoria) => {
+	if(typeof categoria === 'undefined' || isNaN(categoria) || categoria.length === 0) {
+		return Promise.reject(new Error('404'));
+	} else {
+		return new Promise((resolve, reject)=>{
+			database.Pertenece.findAll({
+				attributes: ['modeloID'],
+				where: {
+					categoriumID: categoria
+				}
+			}).then((identidades)=>{
+				if(identidades.length > 0) {
+					let ids = [];
+					let tope = identidades.length;
+					//Armar arreglo con los códios encontrados
+					for(let i = 0; i < tope; i++) {
+						let producto = identidades.shift();
+						ids.push(producto.modeloID);
+					}
+					//Seleccionar a lo sumo 3 artículos que sean los más recientes de la categoría
+					database.Modelo.findAll({
+						where: {
+							ID: {
+								[Op.in]: ids
+							}, 
+							publico: true
+						}, 
+						limit: 3,
+						order: [
+							[sequelize.col('createdAt'), 'DESC']
+						]
+					}).then((productos)=>{
+						resolve(productos);
+					}).catch((err)=>{
+						reject(err);
+					});
+				} else {
+					//Si no hay productos en la categoria, enviamos un arreglo vacío
+					resolve([]);
+				}
+			}).catch((err)=>{
+				reject(err);
+			});
+		});
+	}
+};
+
+module.exports.getCategorias = () => {
+	return new Promise((resolve, reject) => {
+		database.Categoria.findAll().then((categorias)=>{
+			resolve(categorias);
+		}).catch((err)=>{
+			reject(err);
+		});
+	});
+};
+
+module.exports.getProductosCategoria = (id) => {
+	if(typeof id === 'undefined' || isNaN(id) || id.length === 0){
+		return Promise.reject(new Error('404'));
+	} else {
+		return new Promise((resolve, reject) => {
+			database.Categoria.find({
+				where: {
+					ID: id
+				}
+			}).then((categoria)=>{
+				if(categoria){
+					database.Pertenece.findAll({
+						attributes: ['modeloID'],
+						where: {
+							categoriumID: categoria.ID
+						},
+						order: [
+							[sequelize.col('modeloID'), 'ASC']
+						]
+					}).then((consulta)=>{
+						if(consulta.length > 0) {
+							//Separar los ids para buscar los códigos
+							let tope = consulta.length;
+							let ids = [];
+							for(let i = 0; i < tope; i++) {
+								let row = consulta.shift();
+								ids.push(row.modeloID);
+							}
+							//Buscar los productos con esos ID's
+							//Select * from modelos where ID in ids order by createdAt DESC
+							database.Modelo.findAll({
+								where: {
+									ID: {
+										[Op.in]: ids
+									}
+								}, 
+								order: [
+									[sequelize.col('createdAt'), 'DESC']
+								]
+							}).then((productos)=>{
+								resolve(productos);
+							}).catch((err)=>{
+								reject(err);
+							});
+						} else {
+							resolve([]);
+						}
+					}).catch((err)=>{
+						reject(err);
+					});
+				} else {
+					reject(new Error('404'));
+				}
+			}).catch((err)=>{
+				reject(err);
+			});
+		});
+	}
+};
+
+module.exports.buscarMejoresCategorias = () => {
+	return new Promise((resolve, reject) => {
+		database.Categoria.findAll({
+			order: [
+				[sequelize.col('visitas'), 'DESC']
+			]
+		}).then((categorias)=>{
+			resolve(categorias);
+		}).catch((err)=>{
+			reject(err);
+		});
+	});
 };

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<title>Pagina - Intranet - Modificar categoría</title>
+<meta charset="utf-8">
+<link rel="stylesheet" href="/CSS/estilogeneral.css">
+
+<link rel="stylesheet" href="/CSS/bootstrap1.min.css">
+<script src="/JS/jquery.min.js"></script>
+<script src="/JS/popper.min.js"></script>
+<script src="/JS/bootstrap1.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar navbar-expand-md navbar-dark cursor">
+                <a class="navbar-brand" href="/Admin">NombreTitulo</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">Productos</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="/Admin/NuevoProducto">Crear</a>
+                                    <a class="dropdown-item" href="/Admin/Productos">Modificar</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">Categorías</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="/Admin/NuevaCategoria">Crear</a>
+                                    <a class="dropdown-item" href="/Admin/Categorias">Modificar</a>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Admin/Pedidos">Pedidos</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">Empleados</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="/Admin/NuevoEmpleado">Crear</a>
+                                    <a class="dropdown-item" href="/Admin/Empleados">Modificar</a>
+                                </div>
+                            </li> 
+                        </ul>
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown"><%= nombre %></a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" role="button" href="/Logout">Cerrar Sesión</a>
+                                </div>
+                            </li>                         
+                        </ul>
+                    </div>  
+            </nav>
+        </div>  
+    </header>
+    
+    <br>
+
+    <div class="container">
+        <div class="row">
+            <div class="form-group text-center">
+                <h2>Modificar categoría</h2><br />
+            </div>
+        </div>
+        <form action="javascript:void(0)" method="post">
+            <div class="row">
+                <!--Campos del formulario -->
+                <div class="form-group col-sm-5">
+                    <div class="form-group">
+                        <input class="form-control form-control-sm" type="text" name="ID" id="ID" value="<%= categoria.ID %>" readonly style="display: none;">
+                    </div>
+                    <div class="form-group">
+                        <label for="nombre">Nombre:</label>
+                        <input class="form-control form-control-sm" type="text" name="nombre" id="nombre" value="<%= categoria.nombre %>">
+                    </div>
+                    <div class="form-group">
+                        <label for="descripcion">Descripción:</label>
+                        <textarea class="form-control form-control-sm" type="text" name="descripcion" id="descripcion" maxlength="500"><%= categoria.descripcion %></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="imagen">Imagen:</label>
+                        <small class="text-muted" id="notificacionImagen">No ha seleccionado ningún archivo.</small>
+                        <div class="custom-file mb-3">
+                            <input type="file" class="custom-file-input" accept="image/*" id="imagen" name="imagen">
+                            <label class="custom-file-label" for="imagen">Seleccionar archivo...</label>
+                        </div>
+                        <small class="text-danger" id="alerta_imagen"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Imagen Actual: </label>
+                        <img class="img-fluid mx-auto d-block" src=<%= '/' + categoria.imagen %>>
+                    </div>
+                    
+                </div>
+                <!-- Tablas -->   
+                <div class="form-group col-sm-7">
+                    <h3>Productos en esta categoría:</h3>
+                    <!-- Tabla Agregados -->
+                    <div class="form-group">
+                        <p>Quitar productos</p>
+                        <input class="form-control" id="busquedaQuitar" type="text" placeholder="Buscar producto...">
+                        <br>
+                        <div class="table-wrapper-scroll-y">
+                            <table class="table table-sm table-hover">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 10%;"></th>
+                                        <th class="w-25">Código</th>
+                                        <th>Nombre</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tablaProductoQuitar">
+                                </tbody>
+                            </table>
+                        </div>
+                        <script>
+                            $(document).ready(function(){
+                                $("#busquedaQuitar").on("keyup", function() {
+                                    var value = $(this).val().toLowerCase();
+                                    $("#tablaProductoQuitar tr").filter(function() {
+                                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                                    });
+                                });
+                            });
+                        </script>
+                    </div>
+                    <br>
+                    <!-- Tabla Sin Agregar -->
+                    <div class="form-group">
+                        <p>Agregar productos</p>
+                        <input class="form-control" id="busquedaAgregar" type="text" placeholder="Buscar producto...">
+                        <br>
+                        <div class="table-wrapper-scroll-y">
+                            <table class="table table-sm table-hover">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 10%;"></th>
+                                        <th class="w-25">Código</th>
+                                        <th>Nombre</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tablaProductoAgregar">
+                                </tbody>
+                            </table>
+                        </div>
+                        <script>
+                            $(document).ready(function(){
+                                $("#busquedaAgregar").on("keyup", function() {
+                                    var value = $(this).val().toLowerCase();
+                                    $("#tablaProductoAgregar tr").filter(function() {
+                                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                                    });
+                                });
+                            });
+                        </script>
+                    </div>               
+                </div>           
+                </div>
+            </div>
+            <div class="row">
+                <div class="mx-auto w-75">
+                    <div class="col-sm-4 form-group w-50 float-right">
+                        <input class="btn btn-info boton w-100" id="submit" type="submit" value="Guardar">
+                    </div>
+                    <div class="col-sm-4 form-group w-50">
+                        <a href="/Admin/Categorias"><button class="btn btn-info boton w-100">Cancelar</button></a>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        </div>
+        
+    </div>
+    
+</body>
+</html>

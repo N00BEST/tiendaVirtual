@@ -12,14 +12,26 @@
 		<script src="JS/test.js"></script>
 	</head>
 	<body>
-		<form action="/test" method="post">
-			<input type="text" id="nombre" name="nombre" placeholder="nombre"><br />
-			<div class="form-check-inline">
-				<label class="form-check-label">
-					<input type="checkbox" class="form-check-input" name="namCat" id="idCategoria" value="valCat">
-				</label>
-			</div>
-			<input type="submit" value="Enviar">
-		</form>
+		<table class="table table-sm table-hover">
+			<thead>
+			<tr>
+				<th></th>
+				<th>Categoría</th>
+			</tr>
+			</thead>
+			<tbody id="tablaCategoria">
+			<% let tope = 5 %>
+			<% for(let i = 0; i < tope; i++) {%>
+				<tr>
+					<td>
+						<div class="form-check-inline">
+							<input type="checkbox" class="form-check-input" id=<%= i + 1 %> name=<%= i + 1 %> value="true" style="display: none;">
+							<label for=<%= i + 1 %>>Categoría <%= i + 1 %></label>
+						</div>
+					</td>
+				</tr>
+			<% } %>
+			</tbody>
+		</table>
 	</body>
 </html>

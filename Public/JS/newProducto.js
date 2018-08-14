@@ -28,6 +28,8 @@ function submit(event) {
 		event.preventDefault();
 		$('#notificacion').empty(); 
 		$('#notificacion').addClass('alert-danger'); 
+		$('#notificacion').removeClass('text-success');
+		$('#notificacion').addClass('');
 		$('#notificacion').text('El formulario contiene errores. Por favor corríjalos antes de continuar.');
 		$(window).scrollTop(0);
 	}

@@ -158,40 +158,6 @@ const Pedido = database.define('pedido', {
 
 Cliente.hasMany(Pedido);
 
-//Empleado(id, user, pw, nombre, apellido, rol, correo)
-const Empleado = database.define('empleado', {
-	ID: {
-		type: Sequelize.INTEGER.UNSIGNED,
-		allowNull: false,
-		primaryKey: true,
-		autoIncrement: true
-	}, 
-	user: {
-		type: Sequelize.STRING(10),
-		unique: true,
-		allowNull: false
-	},
-	password: {
-		type: Sequelize.STRING(64),
-		allowNull: false
-	},
-	correo: {
-		type: Sequelize.STRING(50),
-		unique: true,
-		allowNull: false
-	},
-	rol: {
-		type: Sequelize.ENUM('Admin', 'Gerente', 'Vendedor'),
-		defaultValue: 'Vendedor'
-	},
-	nombre: {
-		type: Sequelize.STRING(100)
-	},
-	apellido: {
-		type: Sequelize.STRING(100)
-	}
-});
-
 //Talla (id, nombre)
 const Talla = database.define('talla', {
 	ID: {
@@ -275,10 +241,6 @@ Pedido.sync({force: false}).then(()=>{
 	console.log('Oops, something went wrong with Pedido\n' + err);
 });
 
-Empleado.sync({force: false}).then(()=>{
-	console.log('Tabla Empleado sincronizada');
-});
-
 Orden.sync({force: false}).then(()=>{
 	console.log('Tabla Orden sincronizada');
 });
@@ -295,7 +257,6 @@ Inventario.sync({force: false}).then(()=>{
 
 module.exports.Modelo = Modelo;
 module.exports.Cliente = Cliente;
-module.exports.Empleado = Empleado;
 module.exports.Categoria = Categoria;
 module.exports.Pertenece = Pertenece;
 module.exports.Color = Color;

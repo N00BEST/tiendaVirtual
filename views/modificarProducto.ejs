@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Pagina - Intranet - Modificar Producto</title>
+    <link rel="stylesheet" href="/CSS/estilogeneral.css">
+
+    <link rel="stylesheet" href="/CSS/bootstrap.min.css">
+    <script src="/JS/jquery.min.js"></script>
+    <script src="/JS/popper.min.js"></script>
+    <script src="/JS/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar navbar-expand-md navbar-dark cursor">
+                <a class="navbar-brand" href="/Admin">NombreTitulo</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">Productos</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="/Admin/NuevoProducto">Crear</a>
+                                    <a class="dropdown-item" href="/Admin/Productos">Modificar</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">Categorías</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="/Admin/NuevaCategoria">Crear</a>
+                                    <a class="dropdown-item" href="/Admin/Categorias">Modificar</a>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Admin/Pedidos">Pedidos</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">Empleados</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="/Admin/NuevoEmpleado">Crear</a>
+                                    <a class="dropdown-item" href="/Admin/Empleados">Modificar</a>
+                                </div>
+                            </li> 
+                        </ul>
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">NombreEmpleado</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" role="button" href="/Logout">Cerrar Sesión</a>
+                                </div>
+                            </li>                         
+                        </ul>
+                    </div>  
+            </nav>
+        </div>  
+    </header>
+    
+    <br>
+
+    <div class="">
+        <div class="row">
+            <div class="col-sm-2 col-md-3 border-right"></div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 col-md-6">
+                    <div class="form-group">
+                            <h2>Modificar producto</h2>
+                            <div class="alert font-weight-bold text-<%= error ? 'danger' : 'success' %>" id="notificacion">
+                                <%= error || exito ? msg : ''%>
+                            </div>
+                    </div>
+                    <form action="javascript:void(0)" methot="get">
+                        <!-- Código -->
+                        <div class="form-group">
+                            <label for="codigo">Código de modelo:</label>
+                            <input class="form-control form-control-sm" type="text" name="codigo" id="codigo" maxlength="20" value=<%= typeof producto.codigo !== 'undefined' ? producto.codigo : ''%> readonly>
+                            <small class="text-danger" id="alerta_codigo"></small>
+                        </div>
+                        <!-- Nombre -->
+                        <div class="form-group">
+                            <label for="nomelo">Nombre:</label>
+                            <input class="form-control form-control-sm" type="text" name="nombre" id="nombre"  maxlength="100" value=<%= typeof producto.nombre !== 'undefined' ? producto.nombre : ''%>>
+                            <small class="text-danger" id="alerta_nombre"></small>
+                        </div> 
+                        <!-- Descripción -->   
+                        <div class="form-group">
+                            <label for="descripcion">Descripción:</label>
+                            <textarea class="form-control form-control-sm" type="textarea" name="descripcion" id="descripcion"  maxlength="500"><%= typeof producto.descripcion !== 'undefined' ? producto.descripcion : ''%></textarea>
+                        </div>
+                        <!-- Imagen -->
+                        <div class="form-group">
+                            <label for="imagen">Imagen:</label>
+                            <small class="text-muted" id="notificacionImagen">No ha seleccionado ningún archivo.</small>
+                            <div class="custom-file mb-3">
+                                <input type="file" class="custom-file-input" accept="image/*" id="imagen" name="imagen">
+                                <label class="custom-file-label" for="imagen">Seleccionar archivo...</label>
+                            </div>
+                            <small class="text-danger" id="alerta_imagen"></small>
+                        </div>
+                        <!-- Precio -->
+                        <div class="form-group">
+                            <label for="precio">Precio:</label>
+                            <input class="form-control form-control-sm text-right" type="text" name="precio" id="precio" placeholder="0.00" value=<%= typeof producto.precio !== 'undefined' ? producto.precio : ''%>>
+                            <small class="text-danger" id="alerta_precio"></small>
+                        </div>
+                        <!-- Cantidad Total -->
+                        <div class="form-group">
+                            <label for="cantidad">Cantidad total:</label>
+                            <input class="form-control form-control-sm text-right" type="text" name="cantidad" id="cantidad" placeholder="0" value=<%= typeof producto.cantidad !== 'undefined' ? producto.cantidad : ''%>>
+                            <small class="text-danger" id="alerta_cantidad"></small>
+                        </div>
+                        <!-- Visibilidad -->
+                        <div class="form-group">
+                            <label for="visibilidad">Visibilidad:</label>
+                            <select class="form-control custom-select-sm" id="visibilidad" name="visibilidad">
+                                <option value="privado">Privado</option>
+                                <option value="publico">Público</option> 
+                            </select>
+                            <small class="text-muted" id="alerta_visibilidad">El producto no podrá ser visualizado por los clientes.</small>
+                        </div>
+                        <!-- Descuento -->
+                        <div class="form-group">
+                            <label for="estadoprpducto">Descuento:</label>
+                            <input class="form-control form-control-sm text-right" type="text" name="descuento" id="descuento" placeholder="0" value=<%= typeof producto.descuento !== 'undefined' ? producto.descuento : '' %>>
+                            <small class="text-danger" id="alerta_descuento"></small>
+                        </div> 
+                        <!-- Categorías -->
+                        <div class="form-group">
+                            <p>Categoría:</p>
+                            <input class="form-control" id="busqueda" type="text" placeholder="Buscar...">
+                            <br>
+                            <div class="table-wrapper-scroll-y">
+                                <table class="table table-sm table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Categoría</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="tablaCategoria">
+                                    <% let tope = categorias.length; %>
+                                    <% for(let i = 0; i < tope; i++) {%>
+                                        <% let categoria = categorias.shift();%>
+                                        <tr class=<%= categoria.pertenece ? 'success' : '' %> id=<%= categoria.ID %>>
+                                            <td style="width: 10%;">
+                                                <div class="form-check-inline">
+                                                    <label class="form-check-label">
+                                                        <input type="checkbox" class="form-check-input" name=<%= categoria.id %> value="true">
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td><%= categoria.nombre %></td>
+                                        </tr>
+                                    <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div> 
+                        <!-- Botón de Submit -->      
+                        <div class="form-group">
+                            <input class="btn btn-info boton" id="submit" type="submit" value="Crear Producto">
+                        </div>
+                    </form>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <h3>Datos Actuales:</h3>
+                    <img class="card-image-top img-fluid" src=<%= '/' + producto.imagen %> alt="car-image-cap"><br><br>
+                    <div class="articulos-body">
+                        <h6><%= producto.nombre %></h6>
+                        <small class="text-muted font-weight-bold"><%= producto.disponible ? '' : 'AGOTADO' %></small>
+                        <p><%= producto.descripcion %></p>
+                        <p class="text-muted"><%= producto.precio %></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div class="col-xs-0 col-sm-2 col-md-3"></div>
+    </div>
+</div>
+        
+<%     %>
+    
+</body>
+</html>
